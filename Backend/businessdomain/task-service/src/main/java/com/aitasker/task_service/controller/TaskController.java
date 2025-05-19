@@ -1,4 +1,55 @@
 package com.aitasker.task_service.controller;
 
+import com.aitasker.task_service.dto.TaskRequestDTO;
+import com.aitasker.task_service.dto.TaskResponseDTO;
+import com.aitasker.task_service.service.TaskService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/tasks")
+@RequiredArgsConstructor
 public class TaskController {
+
+    private final TaskService taskService;
+
+    @PostMapping
+    public ResponseEntity<TaskResponseDTO> createTask(@RequestBody @Valid TaskRequestDTO requestDTO) {
+        TaskResponseDTO created = taskService.createTask(requestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TaskResponseDTO>> getTasks(
+            @RequestParam(name = "date", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate date
+    ) {
+        List<TaskResponseDTO> tasks = taskService.getTasks(Optional.ofNullable(date));
+        return ResponseEntity.ok(tasks);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskResponseDTO> updateTask(
+            @PathVariable Long id,
+            @RequestBody @Valid TaskRequestDTO requestDTO
+    ) {
+        TaskResponseDTO updated = taskService.updateTask(id, requestDTO);
+        return ResponseEntity.ok(updated);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+        taskService.deleteTask(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
