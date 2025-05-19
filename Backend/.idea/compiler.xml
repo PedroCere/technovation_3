@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="api-gateway" />
+        <module name="config-server" />
+        <module name="auth-service" />
+        <module name="task-service" />
+        <module name="eureka-server" />
+        <module name="ai-service" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ai-service" options="" />
+      <module name="api-gateway" options="" />
+      <module name="auth-service" options="" />
+      <module name="config-server" options="" />
+      <module name="eureka-server" options="" />
+      <module name="task-service" options="" />
+    </option>
+  </component>
+</project>
