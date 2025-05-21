@@ -5,7 +5,7 @@ import Inbox from './pages/Inbox';
 import Today from './pages/Today';
 import Upcoming from './pages/Upcoming';
 import Tasks from './pages/Today';
-import Completed from './pages/Today';
+import Completed from './pages/Completed';
 import Calendar from './pages/Today';
 import Planner from './pages/Today';
 import Stats from './pages/Today';
