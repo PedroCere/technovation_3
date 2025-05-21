@@ -10,10 +10,8 @@ const Navbar = ({ sidebarCollapsed }) => {
 
   return (
     <header className="relative h-12 flex items-center justify-end pr-4 border-b bg-white text-black shadow-sm">
-      {/* Right-side controls - only when sidebar is expanded */}
       {!sidebarCollapsed && (
         <div className="flex items-center gap-4 relative">
-          {/* View dropdown */}
           <div className="relative">
             <button
               onClick={() => {
@@ -23,7 +21,7 @@ const Navbar = ({ sidebarCollapsed }) => {
               className="hover:text-black"
               title="View Options"
             >
-              <SlidersHorizontal className="w-5 h-5" />
+              <SlidersHorizontal className="w-4 h-4 text-gray-500" />
             </button>
             {viewOpen && (
               <div className="absolute right-0 top-10 z-50 w-64 bg-white border rounded-md shadow-lg py-2 text-sm">
@@ -37,12 +35,10 @@ const Navbar = ({ sidebarCollapsed }) => {
             )}
           </div>
 
-          {/* Chat icon */}
           <button title="Comments">
-            <MessageSquare className="w-5 h-5" />
+            <MessageSquare className="w-4 h-4 text-gray-500" />
           </button>
 
-          {/* More menu */}
           <div className="relative">
             <button
               onClick={() => {
@@ -51,7 +47,7 @@ const Navbar = ({ sidebarCollapsed }) => {
               }}
               title="More"
             >
-              <MoreVertical className="w-5 h-5" />
+              <MoreVertical className="w-4 h-4 text-gray-500" />
             </button>
             {menuOpen && (
               <div className="absolute right-0 top-10 z-50 w-64 bg-white border rounded-md shadow-lg py-2 text-sm">
