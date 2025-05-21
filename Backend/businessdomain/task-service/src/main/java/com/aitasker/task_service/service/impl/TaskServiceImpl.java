@@ -2,6 +2,7 @@ package com.aitasker.task_service.service.impl;
 
 import com.aitasker.task_service.client.AiServiceClient;
 import com.aitasker.task_service.domain.Task;
+import com.aitasker.task_service.dto.SuggestedBlockDTO;
 import com.aitasker.task_service.dto.TaskRequestDTO;
 import com.aitasker.task_service.dto.TaskResponseDTO;
 import com.aitasker.task_service.exception.TaskNotFoundException;
@@ -64,4 +65,18 @@ public class TaskServiceImpl implements TaskService {
         }
         taskRepository.deleteById(id);
     }
+
+    @Override
+    public TaskResponseDTO updateSuggestedTimeBlock(Long taskId, SuggestedBlockDTO dto) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
+
+        task.setRecommendedDay(dto.getDay());
+        task.setStartTime(dto.getStart());
+        task.setEndTime(dto.getEnd());
+
+        Task updated = taskRepository.save(task);
+        return taskMapper.toDTO(updated);
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.aitasker.ai_service.controller;
 
+import com.aitasker.ai_service.dto.ScheduleRequestDTO;
+import com.aitasker.ai_service.dto.ScheduledTaskDTO;
 import com.aitasker.ai_service.dto.ScoredTaskDTO;
 import com.aitasker.ai_service.dto.TaskRequestDTO;
 import com.aitasker.ai_service.service.AiService;
@@ -27,4 +29,13 @@ public class AiController {
         List<ScoredTaskDTO> result = aiService.prioritizeTasks(tasks);
         return ResponseEntity.ok(result);
     }
+
+    @PostMapping("/schedule")
+    public ResponseEntity<List<ScheduledTaskDTO>> scheduleTasks(
+            @RequestBody @Valid ScheduleRequestDTO request
+    ) {
+        List<ScheduledTaskDTO> result = aiService.scheduleTasks(request);
+        return ResponseEntity.ok(result);
+    }
+
 }

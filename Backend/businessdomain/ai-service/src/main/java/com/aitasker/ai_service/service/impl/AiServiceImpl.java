@@ -1,6 +1,8 @@
 package com.aitasker.ai_service.service.impl;
 
 import com.aitasker.ai_service.client.OpenRouterClient;
+import com.aitasker.ai_service.dto.ScheduleRequestDTO;
+import com.aitasker.ai_service.dto.ScheduledTaskDTO;
 import com.aitasker.ai_service.dto.ScoredTaskDTO;
 import com.aitasker.ai_service.dto.TaskRequestDTO;
 import com.aitasker.ai_service.exception.AiRequestException;
@@ -32,4 +34,14 @@ public class AiServiceImpl implements AiService {
             throw new AiRequestException("Error contacting AI model", e);
         }
     }
+
+    @Override
+    public List<ScheduledTaskDTO> scheduleTasks(ScheduleRequestDTO request) {
+        try {
+            return openRouterClient.scheduleTasks(request);
+        } catch (Exception e) {
+            throw new AiRequestException("Failed to get schedule from AI", e);
+        }
+    }
+
 }

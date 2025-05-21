@@ -1,6 +1,8 @@
 package com.aitasker.task_service.client;
 
 import com.aitasker.task_service.domain.Task;
+import com.aitasker.task_service.dto.ScheduleRequestDTO;
+import com.aitasker.task_service.dto.ScheduleTaskDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,6 @@ public interface AiServiceClient {
     void recalculatePriority(@RequestBody List<Task> tasks);
 
     @PostMapping("/ai/schedule")
-    List<ScheduledTaskDTO> scheduleTasks(@RequestBody ScheduleRequestDTO dto);
+    List<ScheduleTaskDTO> scheduleTasks(@RequestBody ScheduleRequestDTO dto);
 
 }
