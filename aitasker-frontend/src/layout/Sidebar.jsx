@@ -3,34 +3,46 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import {
   PlusCircle, Search, Inbox, Calendar, CalendarClock, Tag, CheckCircle,
   ChevronDown, Users, HelpCircle, ListTodo, BarChart2, Bot,
-  LayoutGrid, Bell, Layout, X, Command
+  LayoutGrid, Bell, Layout, X, Command, Clock, Flag, Bookmark
 } from 'lucide-react';
+import TaskForm from '../features/tasks/taskForm';
 
 const Sidebar = ({ collapsed, onToggleSidebar }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showSearchMenu, setShowSearchMenu] = useState(false);
+  const [showAddTaskModal, setShowAddTaskModal] = useState(false);
   const searchMenuRef = useRef(null);
+  const modalRef = useRef(null);
 
-  // Manejar tecla ESC
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setShowSearchMenu(false);
+      if (e.key === 'Escape') {
+        setShowSearchMenu(false);
+        setShowAddTaskModal(false);
+      }
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Cerrar al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (searchMenuRef.current && !searchMenuRef.current.contains(e.target)) {
         setShowSearchMenu(false);
       }
+      if (modalRef.current && !modalRef.current.contains(e.target)) {
+        setShowAddTaskModal(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const handleAddTaskClick = () => {
+    setShowAddTaskModal(true);
+    setShowSearchMenu(false);
+  };
 
   const menuItems = [
     { 
@@ -38,7 +50,7 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
       icon: PlusCircle, 
       count: 0, 
       path: '/tasks',
-      action: () => console.log('Add task clicked') 
+      action: handleAddTaskClick
     },
     { 
       name: 'Search', 
@@ -166,6 +178,17 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
         )}
       </aside>
 
+      {/* Modal Add Task */}
+      {showAddTaskModal && (
+        <TaskForm
+          onClose={() => setShowAddTaskModal(false)}
+          onSubmit={(newTask) => {
+            // Here you can handle the new task submission, e.g., update global state or context
+            setShowAddTaskModal(false);
+          }}
+        />
+      )}
+
       {/* Modal de búsqueda */}
       {showSearchMenu && (
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -204,7 +227,7 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
               <div className="p-4">
                 <h4 className="text-xs text-gray-500 uppercase mb-3 font-medium">Navigation</h4>
                 <div className="space-y-2">
-                  {[
+                  {[ 
                     'Go to home',
                     'Go to inbox',
                     'Go to Today',
@@ -239,5 +262,4 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
     </>
   );
 };
-
 export default Sidebar;

@@ -4,9 +4,9 @@ import ErrorPage from './pages/errorpage';
 import Inbox from './pages/Inbox';
 import Today from './pages/Today';
 import Upcoming from './pages/Upcoming';
-import Tasks from './pages/Today';
+import Tasks from './pages/tasks';
 import Completed from './pages/Completed';
-import Calendar from './pages/Today';
+import Calendar from './pages/calendar';
 import Planner from './pages/Today';
 import Stats from './pages/Today';
 import Assistant from './pages/Today';
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         path: 'upcoming',
         element: <Upcoming />
       },
-       {
+      {
         path: 'tasks',
         element: <Tasks />
       },
