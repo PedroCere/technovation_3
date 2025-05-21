@@ -1,10 +1,10 @@
 import {
   PlusCircle, Search, Inbox, Calendar, CalendarClock, Tag, CheckCircle,
-  ChevronDown, Users, HelpCircle, Sun, Moon, ListTodo, BarChart2, Bot,
-  LayoutGrid, Bell
+  ChevronDown, Users, HelpCircle, Moon, ListTodo, BarChart2, Bot,
+  LayoutGrid, Bell, Layout
 } from 'lucide-react';
 
-const Sidebar = ({ collapsed }) => {
+const Sidebar = ({ collapsed, onToggleSidebar }) => {
   const menuItems = [
     { name: 'Add task', icon: <PlusCircle className="text-red-500" /> },
     { name: 'Search', icon: <Search /> },
@@ -24,17 +24,27 @@ const Sidebar = ({ collapsed }) => {
 
   return (
     <aside
-      className={`${collapsed ? 'w-16' : 'w-72'} transition-all duration-300 h-screen flex flex-col justify-between px-4 py-4 bg-[#fefcfb] text-black font-sans`}
+      className={`${collapsed ? 'w-16 px-0' : 'w-72 px-4'} transition-all duration-300 h-screen flex flex-col justify-between py-4 bg-[#fefcfb] text-black font-sans`}
     >
       <div>
-        {/* Only show user info when expanded */}
-        {!collapsed && (
-          <div className="flex items-center justify-between mb-6">
-            <div className="w-6 h-6 bg-yellow-400 rounded-full" />
-            <span className="font-medium">Pedro</span>
-            <Bell className="w-5 h-5" />
-          </div>
-        )}
+        <div className={`flex items-center justify-between ${collapsed ? 'px-2' : 'mb-6'}`}>
+          <button
+            onClick={onToggleSidebar}
+            className="p-1 rounded hover:bg-red-200 transition"
+            title="Toggle Sidebar"
+          >
+            <Layout className="w-5 h-5" />
+          </button>
+          {!collapsed && (
+            <>
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 bg-yellow-400 rounded-full" />
+                <span className="font-medium">Pedro</span>
+              </div>
+              <Bell className="w-5 h-5" />
+            </>
+          )}
+        </div>
 
         {!collapsed && (
           <>
@@ -42,7 +52,7 @@ const Sidebar = ({ collapsed }) => {
               {menuItems.map((item, i) => (
                 <li
                   key={i}
-                  className={`flex justify-between items-center px-2 py-1.5 rounded-md cursor-pointer hover:bg-gray-200 ${
+                  className={`flex justify-between items-center px-2 py-1.5 rounded-md cursor-pointer hover:bg-red-200 ${
                     item.highlight ? 'bg-red-100 text-red-700' : ''
                   }`}
                 >
@@ -69,7 +79,7 @@ const Sidebar = ({ collapsed }) => {
                 {projectItems.map((proj, i) => (
                   <li
                     key={i}
-                    className="flex justify-between items-center px-2 py-1.5 rounded-md hover:bg-gray-200 cursor-pointer"
+                    className="flex justify-between items-center px-2 py-1.5 rounded-md hover:bg-red-200 cursor-pointer"
                   >
                     <div className="flex items-center gap-2">
                       <span className="text-sm">#</span>

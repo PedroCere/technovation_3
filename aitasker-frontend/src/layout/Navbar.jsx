@@ -1,26 +1,17 @@
 import {
-  Layout, MessageSquare, MoreVertical, SlidersHorizontal,
+  MessageSquare, MoreVertical, SlidersHorizontal,
   List, CalendarDays, Columns, Group, SortAsc, Mail, Link, Download, FilePlus2, History, Puzzle
 } from 'lucide-react';
 import { useState } from 'react';
 
-const Navbar = ({ onToggleSidebar, sidebarCollapsed }) => {
+const Navbar = ({ sidebarCollapsed }) => {
   const [viewOpen, setViewOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="relative h-12 flex items-center justify-between px-4 border-b bg-white text-black shadow-sm">
-      {/* Always show Layout toggle */}
-      <button
-        onClick={onToggleSidebar}
-        className="hover:bg-gray-200 p-1 rounded"
-        title="Toggle Sidebar"
-      >
-        <Layout className="w-5 h-5" />
-      </button>
-
-      {/* Only show the right side when the sidebar is expanded */}
-      { !sidebarCollapsed && (
+    <header className="relative h-12 flex items-center justify-end pr-4 border-b bg-white text-black shadow-sm">
+      {/* Right-side controls - only when sidebar is expanded */}
+      {!sidebarCollapsed && (
         <div className="flex items-center gap-4 relative">
           {/* View dropdown */}
           <div className="relative">
