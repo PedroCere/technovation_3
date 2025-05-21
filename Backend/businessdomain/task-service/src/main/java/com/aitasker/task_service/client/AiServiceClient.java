@@ -12,4 +12,8 @@ public interface AiServiceClient {
 
     @PostMapping("/ai/prioritize")
     void recalculatePriority(@RequestBody List<Task> tasks);
+
+    @PostMapping("/ai/schedule")
+    List<ScheduledTaskDTO> scheduleTasks(@RequestBody ScheduleRequestDTO dto);
+
 }

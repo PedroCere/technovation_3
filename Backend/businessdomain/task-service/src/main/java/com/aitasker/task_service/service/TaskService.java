@@ -1,5 +1,6 @@
 package com.aitasker.task_service.service;
 
+import com.aitasker.task_service.dto.SuggestedBlockDTO;
 import com.aitasker.task_service.dto.TaskRequestDTO;
 import com.aitasker.task_service.dto.TaskResponseDTO;
 
@@ -16,4 +17,6 @@ public interface TaskService {
     TaskResponseDTO updateTask(Long id, TaskRequestDTO taskDTO);
 
     void deleteTask(Long id);
+    public TaskResponseDTO updateSuggestedTimeBlock(Long taskId, SuggestedBlockDTO dto);
+
 }

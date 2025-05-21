@@ -1,5 +1,6 @@
 package com.aitasker.task_service.controller;
 
+import com.aitasker.task_service.dto.SuggestedBlockDTO;
 import com.aitasker.task_service.dto.TaskRequestDTO;
 import com.aitasker.task_service.dto.TaskResponseDTO;
 import com.aitasker.task_service.service.TaskService;
@@ -35,6 +36,13 @@ public class TaskController {
     ) {
         List<TaskResponseDTO> tasks = taskService.getTasks(Optional.ofNullable(date));
         return ResponseEntity.ok(tasks);
+    }
+    @PatchMapping("/{id}/schedule")
+    public ResponseEntity<TaskResponseDTO> setSuggestedTimeBlock(
+            @PathVariable Long id,
+            @RequestBody @Valid SuggestedBlockDTO blockDTO
+    ) {
+        return ResponseEntity.ok(taskService.updateSuggestedTimeBlock(id, blockDTO));
     }
 
     @PutMapping("/{id}")
