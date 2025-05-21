@@ -27,11 +27,14 @@ const Sidebar = ({ collapsed }) => {
       className={`${collapsed ? 'w-16' : 'w-72'} transition-all duration-300 h-screen flex flex-col justify-between px-4 py-4 bg-[#fefcfb] text-black font-sans`}
     >
       <div>
-        <div className="flex items-center justify-between mb-6">
-          <div className="w-6 h-6 bg-yellow-400 rounded-full" />
-          {!collapsed && <span className="font-medium">Pedro</span>}
-          <Bell className="w-5 h-5" />
-        </div>
+        {/* Only show user info when expanded */}
+        {!collapsed && (
+          <div className="flex items-center justify-between mb-6">
+            <div className="w-6 h-6 bg-yellow-400 rounded-full" />
+            <span className="font-medium">Pedro</span>
+            <Bell className="w-5 h-5" />
+          </div>
+        )}
 
         {!collapsed && (
           <>
