@@ -36,8 +36,13 @@ public class AiController {
     }
 
     @PostMapping("/advice/anti-procrastination")
-    public ResponseEntity<ProcrastinationAdviceResponseDTO> getAdvice(@RequestBody ProcrastinationAdviceRequestDTO request) {
+    public ResponseEntity<AdviceResponseDTO> getAdvice(@RequestBody ProcrastinationAdviceRequestDTO request) {
         return ResponseEntity.ok(aiService.getAntiProcrastinationAdvice(request));
+    }
+
+    @PostMapping("/advice/optimization")
+    public ResponseEntity<AdviceResponseDTO> getOptimizationAdvice(@RequestBody OptimizationAdviceRequestDTO request) {
+        return ResponseEntity.ok(aiService.getOptimizationAdvice(request));
     }
 
 

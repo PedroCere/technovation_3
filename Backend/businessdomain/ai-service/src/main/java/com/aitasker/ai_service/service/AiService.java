@@ -9,7 +9,8 @@ public interface AiService {
 
     public List<ScheduledTaskDTO> scheduleTasks(ScheduleRequestDTO request);
 
-    ProcrastinationAdviceResponseDTO getAntiProcrastinationAdvice(ProcrastinationAdviceRequestDTO request);
+    AdviceResponseDTO getAntiProcrastinationAdvice(ProcrastinationAdviceRequestDTO request);
 
+    AdviceResponseDTO getOptimizationAdvice(OptimizationAdviceRequestDTO request);
 
 }

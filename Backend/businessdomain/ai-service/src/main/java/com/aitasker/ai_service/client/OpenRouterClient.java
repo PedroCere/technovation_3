@@ -166,4 +166,44 @@ public class OpenRouterClient {
         }
     }
 
+    public String getOptimizationAdvice(OptimizationAdviceRequestDTO request) {
+        StringBuilder prompt = new StringBuilder(
+                "You will receive a list of tasks with title, description, due date and priority.\n" +
+                        "Based on this list, return a concise, specific productivity tip to help the user work more efficiently today.\n" +
+                        "Do NOT include any explanation or text beyond the advice itself.\n\n"
+        );
+
+        prompt.append("Tasks:\n");
+        for (Task task : request.getTasks()) {
+            prompt.append("- Title: ").append(task.getTitle()).append("\n")
+                    .append("  Description: ").append(task.getDescription()).append("\n")
+                    .append("  Due Date: ").append(task.getDueDate()).append("\n")
+                    .append("  Priority: ").append(task.getPriority()).append("\n\n");
+        }
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("model", model);
+        body.put("messages", List.of(
+                Map.of("role", "user", "content", prompt.toString())
+        ));
+        body.put("temperature", 0.7);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(apiKey);
+        headers.set("HTTP-Referer", "https://aitasker.app");
+        headers.set("X-Title", "AItasker AI");
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(baseUrl, entity, String.class);
+
+        try {
+            JsonNode root = objectMapper.readTree(response.getBody());
+            return root.get("choices").get(0).get("message").get("content").asText();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse optimization advice from AI", e);
+        }
+    }
+
+
 }

@@ -1,7 +1,8 @@
 package com.aitasker.task_service.controller;
 
+import com.aitasker.task_service.dto.OptimizationAdviceRequestDTO;
 import com.aitasker.task_service.dto.ProcrastinationAdviceRequestDTO;
-import com.aitasker.task_service.dto.ProcrastinationAdviceResponseDTO;
+import com.aitasker.task_service.dto.AdviceResponseDTO;
 import com.aitasker.task_service.service.AdviceService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,17 @@ public class AdviceController {
     private final AdviceService adviceService;
 
     @PostMapping("/anti-procrastination-tip")
-    public ResponseEntity<ProcrastinationAdviceResponseDTO> getAntiProcrastinationTip(
+    public ResponseEntity<AdviceResponseDTO> getAntiProcrastinationTip(
             @RequestBody @Valid ProcrastinationAdviceRequestDTO request
     ) {
         return ResponseEntity.ok(adviceService.getAntiProcrastinationAdvice(request));
     }
+
+    @PostMapping("/optimization-tip")
+    public ResponseEntity<AdviceResponseDTO> getOptimizationTip(
+            @RequestBody @Valid OptimizationAdviceRequestDTO request
+    ) {
+        return ResponseEntity.ok(adviceService.getOptimizationAdvice(request));
+    }
+
 }

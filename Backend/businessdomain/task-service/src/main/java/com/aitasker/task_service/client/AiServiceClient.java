@@ -1,10 +1,7 @@
 package com.aitasker.task_service.client;
 
 import com.aitasker.task_service.domain.Task;
-import com.aitasker.task_service.dto.ProcrastinationAdviceRequestDTO;
-import com.aitasker.task_service.dto.ProcrastinationAdviceResponseDTO;
-import com.aitasker.task_service.dto.ScheduleRequestDTO;
-import com.aitasker.task_service.dto.ScheduleTaskDTO;
+import com.aitasker.task_service.dto.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,5 +18,10 @@ public interface AiServiceClient {
     List<ScheduleTaskDTO> scheduleTasks(@RequestBody ScheduleRequestDTO dto);
 
     @PostMapping("/ai/advice/anti-procrastination")
-    ProcrastinationAdviceResponseDTO getAntiProcrastinationAdvice(@RequestBody ProcrastinationAdviceRequestDTO request);
+    AdviceResponseDTO getAntiProcrastinationAdvice(@RequestBody ProcrastinationAdviceRequestDTO request);
+
+    @PostMapping("/ai/advice/optimization")
+    AdviceResponseDTO getOptimizationAdvice(@RequestBody OptimizationAdviceRequestDTO request);
+
+
 }

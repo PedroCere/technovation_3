@@ -42,15 +42,28 @@ public class AiServiceImpl implements AiService {
     }
 
     @Override
-    public ProcrastinationAdviceResponseDTO getAntiProcrastinationAdvice(ProcrastinationAdviceRequestDTO request) {
+    public AdviceResponseDTO getAntiProcrastinationAdvice(ProcrastinationAdviceRequestDTO request) {
         try {
             String advice = openRouterClient.getAntiProcrastinationAdvice(request);
-            ProcrastinationAdviceResponseDTO response = new ProcrastinationAdviceResponseDTO();
+            AdviceResponseDTO response = new AdviceResponseDTO();
             response.setAdvice(advice.trim());
             return response;
         } catch (Exception e) {
             throw new AiRequestException("Failed to get procrastination advice", e);
         }
     }
+
+    @Override
+    public AdviceResponseDTO getOptimizationAdvice(OptimizationAdviceRequestDTO request) {
+        try {
+            String advice = openRouterClient.getOptimizationAdvice(request);
+            AdviceResponseDTO response = new AdviceResponseDTO();
+            response.setAdvice(advice.trim());
+            return response;
+        } catch (Exception e) {
+            throw new AiRequestException("Failed to get optimization advice", e);
+        }
+    }
+
 
 }
