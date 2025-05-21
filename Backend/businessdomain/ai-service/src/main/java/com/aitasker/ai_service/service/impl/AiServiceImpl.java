@@ -1,10 +1,7 @@
 package com.aitasker.ai_service.service.impl;
 
 import com.aitasker.ai_service.client.OpenRouterClient;
-import com.aitasker.ai_service.dto.ScheduleRequestDTO;
-import com.aitasker.ai_service.dto.ScheduledTaskDTO;
-import com.aitasker.ai_service.dto.ScoredTaskDTO;
-import com.aitasker.ai_service.dto.TaskRequestDTO;
+import com.aitasker.ai_service.dto.*;
 import com.aitasker.ai_service.exception.AiRequestException;
 import com.aitasker.ai_service.mapper.AiMapper;
 import com.aitasker.ai_service.model.Task;
@@ -41,6 +38,18 @@ public class AiServiceImpl implements AiService {
             return openRouterClient.scheduleTasks(request);
         } catch (Exception e) {
             throw new AiRequestException("Failed to get schedule from AI", e);
+        }
+    }
+
+    @Override
+    public ProcrastinationAdviceResponseDTO getAntiProcrastinationAdvice(ProcrastinationAdviceRequestDTO request) {
+        try {
+            String advice = openRouterClient.getAntiProcrastinationAdvice(request);
+            ProcrastinationAdviceResponseDTO response = new ProcrastinationAdviceResponseDTO();
+            response.setAdvice(advice.trim());
+            return response;
+        } catch (Exception e) {
+            throw new AiRequestException("Failed to get procrastination advice", e);
         }
     }
 

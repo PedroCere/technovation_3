@@ -1,8 +1,6 @@
 package com.aitasker.ai_service.client;
 
-import com.aitasker.ai_service.dto.ScheduleRequestDTO;
-import com.aitasker.ai_service.dto.ScheduledTaskDTO;
-import com.aitasker.ai_service.dto.ScoredTaskDTO;
+import com.aitasker.ai_service.dto.*;
 import com.aitasker.ai_service.model.Task;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -126,6 +124,45 @@ public class OpenRouterClient {
             return objectMapper.readValue(content, new TypeReference<List<ScheduledTaskDTO>>() {});
         } catch (Exception e) {
             throw new RuntimeException("Failed to parse schedule response", e);
+        }
+    }
+
+    public String getAntiProcrastinationAdvice(ProcrastinationAdviceRequestDTO request) {
+        StringBuilder prompt = new StringBuilder(
+                "Given the user's habits and available free time, provide a short and practical tip to avoid procrastination today.\n" +
+                        "DO NOT include any explanation, only return the tip as plain text.\n\n"
+        );
+
+        prompt.append("Habits:\n").append(request.getHabits().toString()).append("\n\n");
+
+        prompt.append("Free Time:\n");
+        for (TimeSlot slot : request.getFreeTime()) {
+            prompt.append("- ").append(slot.getDay())
+                    .append(" from ").append(slot.getStart())
+                    .append(" to ").append(slot.getEnd()).append("\n");
+        }
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("model", model);
+        body.put("messages", List.of(
+                Map.of("role", "user", "content", prompt.toString())
+        ));
+        body.put("temperature", 0.7);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(apiKey);
+        headers.set("HTTP-Referer", "https://aitasker.app");
+        headers.set("X-Title", "AItasker AI");
+
+        HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(baseUrl, requestEntity, String.class);
+
+        try {
+            JsonNode root = objectMapper.readTree(response.getBody());
+            return root.get("choices").get(0).get("message").get("content").asText();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse advice from AI", e);
         }
     }
 

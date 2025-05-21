@@ -1,9 +1,6 @@
 package com.aitasker.ai_service.controller;
 
-import com.aitasker.ai_service.dto.ScheduleRequestDTO;
-import com.aitasker.ai_service.dto.ScheduledTaskDTO;
-import com.aitasker.ai_service.dto.ScoredTaskDTO;
-import com.aitasker.ai_service.dto.TaskRequestDTO;
+import com.aitasker.ai_service.dto.*;
 import com.aitasker.ai_service.service.AiService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,5 +34,11 @@ public class AiController {
         List<ScheduledTaskDTO> result = aiService.scheduleTasks(request);
         return ResponseEntity.ok(result);
     }
+
+    @PostMapping("/advice/anti-procrastination")
+    public ResponseEntity<ProcrastinationAdviceResponseDTO> getAdvice(@RequestBody ProcrastinationAdviceRequestDTO request) {
+        return ResponseEntity.ok(aiService.getAntiProcrastinationAdvice(request));
+    }
+
 
 }
