@@ -3,7 +3,7 @@ import Layout from './layout/Layout';
 import ErrorPage from './pages/errorpage';
 import Inbox from './pages/Inbox';
 import Today from './pages/Today';
-import Upcoming from './pages/Today';
+import Upcoming from './pages/Upcoming';
 import Tasks from './pages/Today';
 import Completed from './pages/Today';
 import Calendar from './pages/Today';
