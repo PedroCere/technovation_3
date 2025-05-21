@@ -1,7 +1,7 @@
 import {
   PlusCircle, Search, Inbox, Calendar, CalendarClock, Tag, CheckCircle,
   ChevronDown, Users, HelpCircle, Sun, Moon, ListTodo, BarChart2, Bot,
-  LayoutGrid
+  LayoutGrid, Bell
 } from 'lucide-react';
 
 const Sidebar = ({ collapsed }) => {
@@ -26,59 +26,60 @@ const Sidebar = ({ collapsed }) => {
     <aside
       className={`${collapsed ? 'w-16' : 'w-72'} transition-all duration-300 h-screen flex flex-col justify-between px-4 py-4 bg-[#fefcfb] text-black font-sans`}
     >
-      {/* Top Section */}
       <div>
-        {!collapsed && (
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-6 h-6 bg-yellow-400 rounded-full" />
-            <span className="font-medium">Pedro</span>
-          </div>
-        )}
-
-        <ul className="space-y-1">
-          {menuItems.map((item, i) => (
-            <li
-              key={i}
-              className={`flex justify-between items-center px-2 py-1.5 rounded-md cursor-pointer hover:bg-gray-200 ${
-                item.highlight ? 'bg-red-100 text-red-700' : ''
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                {item.icon}
-                {!collapsed && <span>{item.name}</span>}
-              </div>
-              {!collapsed && item.count !== null && item.count !== undefined && (
-                <span className="text-xs font-semibold text-gray-500">
-                  {item.count}
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
+        <div className="flex items-center justify-between mb-6">
+          <div className="w-6 h-6 bg-yellow-400 rounded-full" />
+          {!collapsed && <span className="font-medium">Pedro</span>}
+          <Bell className="w-5 h-5" />
+        </div>
 
         {!collapsed && (
-          <div className="mt-6">
-            <div className="flex items-center justify-between text-sm text-gray-500 uppercase font-semibold mb-2">
-              <span>My Projects</span>
-              <ChevronDown className="w-4 h-4" />
-            </div>
-            <ul>
-              {projectItems.map((proj, i) => (
+          <>
+            <ul className="space-y-1">
+              {menuItems.map((item, i) => (
                 <li
                   key={i}
-                  className="flex justify-between items-center px-2 py-1.5 rounded-md hover:bg-gray-200 cursor-pointer"
+                  className={`flex justify-between items-center px-2 py-1.5 rounded-md cursor-pointer hover:bg-gray-200 ${
+                    item.highlight ? 'bg-red-100 text-red-700' : ''
+                  }`}
                 >
                   <div className="flex items-center gap-2">
-                    <span className="text-sm">#</span>
-                    <span>{proj.name}</span>
+                    {item.icon}
+                    <span>{item.name}</span>
                   </div>
-                  <span className="text-xs font-semibold text-gray-500">
-                    {proj.count}
-                  </span>
+                  {item.count !== null && item.count !== undefined && (
+                    <span className="text-xs font-semibold text-gray-500">
+                      {item.count}
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
-          </div>
+
+            {/* Projects */}
+            <div className="mt-6">
+              <div className="flex items-center justify-between text-sm text-gray-500 uppercase font-semibold mb-2">
+                <span>My Projects</span>
+                <ChevronDown className="w-4 h-4" />
+              </div>
+              <ul>
+                {projectItems.map((proj, i) => (
+                  <li
+                    key={i}
+                    className="flex justify-between items-center px-2 py-1.5 rounded-md hover:bg-gray-200 cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">#</span>
+                      <span>{proj.name}</span>
+                    </div>
+                    <span className="text-xs font-semibold text-gray-500">
+                      {proj.count}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
         )}
       </div>
 
@@ -92,11 +93,8 @@ const Sidebar = ({ collapsed }) => {
             <HelpCircle className="w-4 h-4" />
             Help
           </button>
-          <button
-            className="self-center mt-2 p-2 rounded-full hover:bg-gray-200 transition"
-          >
+          <button className="self-center mt-2 p-2 rounded-full hover:bg-gray-200 transition">
             <Moon className="w-5 h-5 text-gray-800" />
-            <span className="sr-only">Toggle Theme</span>
           </button>
         </div>
       )}
