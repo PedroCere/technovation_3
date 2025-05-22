@@ -8,7 +8,7 @@ import Tasks from './pages/tasks';
 import Completed from './pages/Completed';
 import Calendar from './pages/calendar';
 import Planner from './pages/Planner';
-import Stats from './pages/Today';
+import Stats from './pages/stats';
 import Assistant from './pages/Assistant';
 import Filters from './pages/Filters';
 
