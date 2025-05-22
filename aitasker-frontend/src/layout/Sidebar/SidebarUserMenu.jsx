@@ -3,21 +3,33 @@ import {
   Settings, Users, Activity, Printer, Megaphone,
   ArrowUpCircle, RefreshCw, LogOut, BookOpenText, User
 } from 'lucide-react';
+import SettingsLayout from './SettingsLayout';
 
 const SidebarUserMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const menuRef = useRef(null);
 
-  // Cerrar menú al hacer clic fuera
+  
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setIsOpen(false);
+        setShowSettings(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const openSettings = () => {
+    setIsOpen(false);
+    setShowSettings(true);
+  };
+
+  const closeSettings = () => {
+    setShowSettings(false);
+  };
 
   return (
     <div className="relative" ref={menuRef}>
@@ -41,7 +53,11 @@ const SidebarUserMenu = () => {
 
           <div className="p-2 space-y-1">
             {/* Grupo superior */}
-            <button className="flex items-center gap-2 w-full p-2 hover:bg-gray-50 rounded">
+            <button
+              onClick={openSettings}
+              className="flex items-center gap-2 w-full p-2 hover:bg-gray-50 rounded"
+              id="open-settings-button"
+            >
               <Settings className="w-4 h-4 text-gray-600" />
               <span className="text-sm">Settings</span>
             </button>
@@ -94,6 +110,25 @@ const SidebarUserMenu = () => {
                   <span>Changelog</span>
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Settings modal */}
+      {showSettings && (
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="w-[800px] max-w-[90%] bg-white rounded-xl shadow-2xl p-6 relative h-[90vh] flex flex-col">
+            <button
+              onClick={closeSettings}
+              className="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl font-bold"
+              aria-label="Close settings"
+            >
+              &times;
+            </button>
+            <h2 className="text-2xl font-semibold mb-6">Settings</h2>
+            <div className="flex-1 overflow-auto">
+              <SettingsLayout />
             </div>
           </div>
         </div>
