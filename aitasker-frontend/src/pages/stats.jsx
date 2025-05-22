@@ -7,10 +7,10 @@ const Stats = () => {
     completionRate: 75,
     productivityTrend: [65, 59, 80, 81, 56, 55, 40],
     categories: [
-      { name: 'Trabajo', value: 40, color: 'bg-red-500' },
-      { name: 'Personal', value: 30, color: 'bg-red-400' },
-      { name: 'Estudio', value: 20, color: 'bg-red-300' },
-      { name: 'Otros', value: 10, color: 'bg-red-200' }
+      { name: 'Trabajo', value: 40, color: 'bg-blue-500' },
+      { name: 'Personal', value: 30, color: 'bg-green-500' },
+      { name: 'Estudio', value: 20, color: 'bg-purple-500' },
+      { name: 'Otros', value: 10, color: 'bg-yellow-500' }
     ],
     weeklyActivity: {
       labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
@@ -33,7 +33,7 @@ const Stats = () => {
          
           <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center gap-3 mb-3">
-              <FiCheckSquare className="w-6 h-6 text-red-500" />
+              <FiCheckSquare className="w-6 h-6 text-green-500" />
               <span className="text-sm font-medium">Tareas Completadas</span>
             </div>
             <div className="text-3xl font-bold text-gray-800">
@@ -50,7 +50,7 @@ const Stats = () => {
           {/* Tarjeta Tendencia Productiva */}
           <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center gap-3 mb-4">
-              <FiActivity className="w-6 h-6 text-red-500" />
+              <FiActivity className="w-6 h-6 text-blue-500" />
               <span className="text-sm font-medium">Tendencia Semanal</span>
             </div>
             <div className="h-20">
@@ -62,7 +62,7 @@ const Stats = () => {
                     y={80 - value}
                     width="20"
                     height={value}
-                    className="fill-red-500"
+                className="fill-blue-500"
                   />
                 ))}
               </svg>
@@ -72,7 +72,7 @@ const Stats = () => {
           {/* Tarjeta Distribución */}
           <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center gap-3 mb-4">
-              <FiPieChart className="w-6 h-6 text-red-500" />
+              <FiPieChart className="w-6 h-6 text-purple-500" />
               <span className="text-sm font-medium">Distribución</span>
             </div>
             <div className="space-y-2">
@@ -89,14 +89,14 @@ const Stats = () => {
           {/* Tarjeta Actividad */}
           <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center gap-3 mb-4">
-              <FiCalendar className="w-6 h-6 text-red-500" />
+              <FiCalendar className="w-6 h-6 text-yellow-500" />
               <span className="text-sm font-medium">Actividad Diaria</span>
             </div>
             <div className="flex gap-1 h-20 items-end">
               {statsData.weeklyActivity.data.map((value, index) => (
                 <div 
                   key={index}
-                  className="flex-1 bg-red-100 hover:bg-red-200 transition-all rounded-t"
+                className="flex-1 bg-green-200 hover:bg-green-300 transition-all rounded-t"
                   style={{ height: `${value * 10}%` }}
                 >
                   <span className="sr-only">
@@ -121,7 +121,7 @@ const Stats = () => {
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
-                <Bar dataKey="progreso" fill="#ef4444" />
+                <Bar dataKey="progreso" fill="#6366F1" />
               </BarChart>
             </ResponsiveContainer>
           </div>
