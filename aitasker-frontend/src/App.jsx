@@ -11,10 +11,8 @@ import Planner from './pages/Planner';
 import Stats from './pages/stats';
 import Assistant from './pages/Assistant';
 import Filters from './pages/Filters';
-
-
-
-
+import Landing from './pages/landing';
+import Login from './pages/login';
 
 const router = createBrowserRouter([
   {
@@ -24,13 +22,16 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        element: <Landing />
+      },{
+        path:'inbox' ,
         element: <Inbox />
       },
       {
         path: 'today',
         element: <Today />
       },
-        {
+      {
         path: 'filters',
         element: <Filters />
       },
@@ -42,27 +43,31 @@ const router = createBrowserRouter([
         path: 'tasks',
         element: <Tasks />
       },
-       {
+      {
         path: 'calendar',
         element: <Calendar />
       },
-        {
+      {
         path: 'planner',
         element: <Planner/>
       },
-        {
+      {
         path: 'stats',
         element: <Stats />
       },
-        {
+      {
         path: 'assistant',
         element: <Assistant />
       },
-        {
+      {
         path: 'completed',
         element: <Completed />
       }
     ]
+  },
+  {
+    path: '/login',
+    element: <Login />
   }
 ]);
 

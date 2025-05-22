@@ -2,7 +2,7 @@ import { FiActivity, FiCheckSquare, FiPieChart, FiCalendar } from 'react-icons/f
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
 const Stats = () => {
-  // Datos de ejemplo - reemplazar con datos reales
+ 
   const statsData = {
     completionRate: 75,
     productivityTrend: [65, 59, 80, 81, 56, 55, 40],
@@ -18,7 +18,7 @@ const Stats = () => {
     }
   };
 
-  // Prepare data for recharts BarChart
+
   const monthlyProgressData = statsData.productivityTrend.map((value, index) => ({
     name: `Semana ${index + 1}`,
     progreso: value
@@ -30,7 +30,7 @@ const Stats = () => {
         <h1 className="text-2xl font-bold mb-6">Estadísticas de Productividad</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          {/* Tarjeta Tareas Completadas */}
+         
           <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center gap-3 mb-3">
               <FiCheckSquare className="w-6 h-6 text-red-500" />

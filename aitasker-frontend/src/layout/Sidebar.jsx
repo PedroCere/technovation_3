@@ -59,7 +59,7 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
       count: 0,
       action: () => setShowSearchMenu(true)
     },
-    { name: 'Inbox', icon: Inbox, count: 3, path: '/' },
+    { name: 'Inbox', icon: Inbox, count: 3, path: '/inbox' },
     { name: 'Today', icon: Calendar, count: 3, path: '/today' },
     { name: 'Upcoming', icon: CalendarClock, count: 0, path: '/upcoming' },
     { name: 'Filters & Labels', icon: Tag, count: 0, path: '/filters' },
@@ -185,7 +185,7 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
         <TaskForm
           onClose={() => setShowAddTaskModal(false)}
           onSubmit={(newTask) => {
-            // Here you can handle the new task submission, e.g., update global state or context
+          
             setShowAddTaskModal(false);
           }}
         />

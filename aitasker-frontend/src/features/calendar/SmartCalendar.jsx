@@ -37,7 +37,7 @@ const SmartCalendar = ({ view = 'week', events }) => {
           </button>
         </div>
       </div>
-      {/* Vista de calendario aquí */}
+   
     </div>
   );
 };

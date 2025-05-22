@@ -1,10 +1,10 @@
-// features/planner/Planner.jsx
+
 import { useState } from 'react';
 import TaskList from '../features/tasks/TaskList';
 import SmartCalendar from '../features/calendar/SmartCalendar';
 import AutoPlanner from '../features/ai/AutoPlanner';
 
-// Datos mockeados
+
 const mockTasks = [
   {
     id: 1,
@@ -52,7 +52,6 @@ const Planner = () => {
   const [view, setView] = useState('list');
   const [tasks, setTasks] = useState(mockTasks);
 
-  // Convertir tareas a eventos para el calendario
   const calendarEvents = tasks.map(task => ({
     title: task.title,
     start: new Date(task.dueDate),
@@ -99,8 +98,7 @@ const Planner = () => {
 
       <div className="space-y-6">
         <AutoPlanner tasks={tasks} />
-        {/* Sección adicional para widgets */}
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+       <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
           <h3 className="font-medium mb-3">Resumen Semanal</h3>
           <div className="space-y-2">
             <div className="flex justify-between">

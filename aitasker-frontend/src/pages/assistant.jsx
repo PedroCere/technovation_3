@@ -1,4 +1,4 @@
-// features/assistant/Assistant.jsx
+
 import { useState } from 'react';
 import { FiMic, FiSend } from 'react-icons/fi';
 import IARecommendations from '../features/ai/IARecommendations';
@@ -16,7 +16,7 @@ const Assistant = () => {
     setMessages([...messages, { text: query, fromAI: false }]);
     setQuery('');
     
-    // Simular respuesta de IA
+   
     setTimeout(() => {
       setMessages(prev => [...prev, { 
         text: `He analizado tu consulta sobre "${query}". Aquí tienes algunas recomendaciones:`, 
