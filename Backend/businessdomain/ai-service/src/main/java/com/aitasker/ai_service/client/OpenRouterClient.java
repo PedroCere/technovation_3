@@ -18,6 +18,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -129,9 +130,24 @@ public class OpenRouterClient {
 
     public String getAntiProcrastinationAdvice(ProcrastinationAdviceRequestDTO request) {
         StringBuilder prompt = new StringBuilder(
-                "Given the user's habits and available free time, provide a short and practical tip to avoid procrastination today.\n" +
-                        "DO NOT include any explanation, only return the tip as plain text.\n\n"
-        );
+                """
+You are a productivity coach. Based on the user's current free time and daily habits,
+give ONE short, clear, and actionable tip to help them avoid procrastination today.
+
+DO NOT include any greetings, explanations, or extra comments. 
+Return ONLY the advice in plain text.
+
+Habits:
+%s
+
+Free Time Blocks:
+%s
+""".formatted(
+                        request.getHabits().toString(),
+                        request.getFreeTime().stream()
+                                .map(slot -> slot.getDay() + " " + slot.getStart() + " - " + slot.getEnd())
+                                .collect(Collectors.joining("\n"))
+        ));
 
         prompt.append("Habits:\n").append(request.getHabits().toString()).append("\n\n");
 
@@ -168,10 +184,21 @@ public class OpenRouterClient {
 
     public String getOptimizationAdvice(OptimizationAdviceRequestDTO request) {
         StringBuilder prompt = new StringBuilder(
-                "You will receive a list of tasks with title, description, due date and priority.\n" +
-                        "Based on this list, return a concise, specific productivity tip to help the user work more efficiently today.\n" +
-                        "Do NOT include any explanation or text beyond the advice itself.\n\n"
-        );
+                """
+You are an AI productivity assistant. Given the user's current list of pending tasks, 
+suggest ONE practical and focused piece of advice to help them optimize their work today.
+
+DO NOT include lists, explanations, or comments. Return ONLY the advice in plain text.
+
+Here is the task list:
+%s
+""".formatted(
+                        request.getTasks().stream()
+                                .map(task -> "- Title: " + task.getTitle() +
+                                        "\n  Description: " + task.getDescription() +
+                                        "\n  Due Date: " + task.getDueDate() +
+                                        "\n  Priority: " + task.getPriority())
+                                .collect(Collectors.joining("\n\n")) ));
 
         prompt.append("Tasks:\n");
         for (Task task : request.getTasks()) {
