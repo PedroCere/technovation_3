@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -12,7 +13,7 @@ const Register = () => {
     return /\S+@\S+\.\S+/.test(email);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateEmail(email)) {
@@ -25,12 +26,34 @@ const Register = () => {
       return;
     }
 
-    const userData = { email, password };
-    localStorage.setItem('registeredUser', JSON.stringify(userData));
+    if (username.trim() === '') {
+      setError('El nombre de usuario es obligatorio.');
+      return;
+    }
 
-    setError('');
-    setSuccess('Registro exitoso. Redirigiendo...');
-    setTimeout(() => navigate('/inbox'), 1500);
+    const userData = { username, email, password };
+
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.message || 'Error en el registro.');
+        return;
+      }
+
+      setError('');
+      setSuccess('Registro exitoso. Redirigiendo...');
+      setTimeout(() => navigate('/inbox'), 1500);
+    } catch (error) {
+      setError('Error de conexión con el servidor.');
+    }
   };
 
   return (
@@ -43,6 +66,17 @@ const Register = () => {
 
         {error && <p className="text-red-600 mb-4 text-center">{error}</p>}
         {success && <p className="text-green-600 mb-4 text-center">{success}</p>}
+
+        <div className="mb-4">
+          <label className="block text-sm text-gray-600 mb-1">Nombre de usuario</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full p-2 rounded-lg bg-gray-100 border border-gray-300 text-gray-900"
+            required
+          />
+        </div>
 
         <div className="mb-4">
           <label className="block text-sm text-gray-600 mb-1">Email</label>

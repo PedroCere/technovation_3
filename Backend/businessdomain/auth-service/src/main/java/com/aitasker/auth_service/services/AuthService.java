@@ -31,6 +31,7 @@ public class AuthService {
         user.setUsername(request.username);
         user.setEmail(request.email);
         user.setPassword(passwordEncoder.encode(request.password));
+        user.setTotalTasks(1); // Set default totalTasks to 1 as per request
         userRepository.save(user);
         String token = jwtTokenUtil.generateToken(user.getEmail());
         return new AuthResponse(token, user);

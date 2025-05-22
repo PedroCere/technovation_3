@@ -7,14 +7,32 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (email === '1234' && password === '1234') {
+    const loginData = { email, password };
+
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.message || 'Credenciales incorrectas. Inténtalo de nuevo.');
+        return;
+      }
+
       setError('');
+      // Assuming backend returns some auth token or user info, handle it here if needed
+      // For now, just redirect to /home or /inbox
       navigate('/home');
-    } else {
-      setError('Credenciales incorrectas. Intentalo de nuevo.');
+    } catch (error) {
+      setError('Error de conexión con el servidor.');
     }
   };
 
@@ -34,7 +52,7 @@ const Login = () => {
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 rounded-lg bg-gray-100 border border-red-600 text-gray-900"
+            className="w-full p-2 rounded-lg bg-gray-100 border border-gray-300 text-gray-900"
             required
           />
         </div>
@@ -44,7 +62,7 @@ const Login = () => {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 rounded-lg bg-gray-100 border border-red-600 text-gray-900"
+            className="w-full p-2 rounded-lg bg-gray-100 border border-gray-300 text-gray-900"
             required
           />
         </div>
