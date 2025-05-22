@@ -18,6 +18,7 @@ import List from './pages/list';
 import Board from './pages/board';
 import Settings from './pages/Inbox';
 import Register from './pages/Register';
+import { UserProvider } from './context/UserContext';
 
 const router = createBrowserRouter([
   {
@@ -48,7 +49,9 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <RouterProvider router={router} />
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   );
 }
 

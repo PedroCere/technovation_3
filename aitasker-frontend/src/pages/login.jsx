@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { setUser } = useUser();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,9 +29,11 @@ const Login = () => {
         return;
       }
 
+      const authResponse = await response.json();
+      setUser(authResponse.user);
+      console.log('Logged in user set in context:', authResponse.user);
+
       setError('');
-      // Assuming backend returns some auth token or user info, handle it here if needed
-      // For now, just redirect to /home or /inbox
       navigate('/home');
     } catch (error) {
       setError('Error de conexión con el servidor.');

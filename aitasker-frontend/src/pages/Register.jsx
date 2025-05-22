@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -8,6 +9,7 @@ const Register = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
+  const { setUser } = useUser();
 
   const validateEmail = (email) => {
     return /\S+@\S+\.\S+/.test(email);
@@ -47,6 +49,10 @@ const Register = () => {
         setError(errorData.message || 'Error en el registro.');
         return;
       }
+
+      const authResponse = await response.json();
+      setUser(authResponse.user);
+      console.log('Registered user set in context:', authResponse.user);
 
       setError('');
       setSuccess('Registro exitoso. Redirigiendo...');
