@@ -14,6 +14,10 @@ public interface TaskService {
 
     List<TaskResponseDTO> getTasks(Optional<LocalDate> date);
 
+    TaskResponseDTO getTask(Long id);
+
+    List<TaskResponseDTO> getAllTasks();
+
     TaskResponseDTO updateTask(Long id, TaskRequestDTO taskDTO);
 
     void deleteTask(Long id);

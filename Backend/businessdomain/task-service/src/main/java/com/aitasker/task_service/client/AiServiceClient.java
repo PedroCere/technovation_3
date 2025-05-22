@@ -12,7 +12,8 @@ import java.util.List;
 public interface AiServiceClient {
 
     @PostMapping("/ai/prioritize")
-    void recalculatePriority(@RequestBody List<Task> tasks);
+    List<ScoredTaskDTO> recalculatePriority(@RequestBody List<TaskRequestDTO> tasks);
+
 
     @PostMapping("/ai/schedule")
     List<ScheduleTaskDTO> scheduleTasks(@RequestBody ScheduleRequestDTO dto);

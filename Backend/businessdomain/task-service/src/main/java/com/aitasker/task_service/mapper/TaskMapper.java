@@ -8,29 +8,40 @@ import com.aitasker.task_service.dto.TaskResponseDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class TaskMapper {
 
     public Task toEntity(TaskRequestDTO dto) {
-        return Task.builder()
+        Task task = Task.builder()
                 .title(dto.getTitle())
                 .description(dto.getDescription())
                 .dueDate(dto.getDueDate())
                 .priority(dto.getPriority())
                 .completed(false)
-                .subtasks(dto.getSubtasks() != null ?
-                        dto.getSubtasks().stream()
-                                .map(sub -> SubTask.builder()
-                                        .title(sub.getTitle())
-                                        .done(sub.isDone())
-                                        .build())
-                                .collect(Collectors.toList())
-                        : new ArrayList<>()
-                )
                 .build();
+
+        if (dto.getSubtasks() != null) {
+            List<SubTask> subs = dto.getSubtasks().stream()
+                    .map(sub -> {
+                        SubTask entity = SubTask.builder()
+                                .title(sub.getTitle())
+                                .done(sub.isDone())
+                                .task(task)
+                                .build();
+                        return entity;
+                    })
+                    .collect(Collectors.toList());
+            task.setSubtasks(subs);
+        } else {
+            task.setSubtasks(new ArrayList<>());
+        }
+
+        return task;
     }
+
 
     public TaskResponseDTO toDTO(Task task) {
         return TaskResponseDTO.builder()
@@ -55,4 +66,25 @@ public class TaskMapper {
                 )
                 .build();
     }
+
+    public TaskRequestDTO toRequestDTO(Task task) {
+        TaskRequestDTO dto = new TaskRequestDTO();
+        dto.setTitle(task.getTitle());
+        dto.setDescription(task.getDescription());
+        dto.setDueDate(task.getDueDate());
+        dto.setPriority(task.getPriority());
+        dto.setSubtasks(task.getSubtasks() != null ?
+                task.getSubtasks().stream()
+                        .map(sub -> {
+                            SubTaskDTO subDto = new SubTaskDTO();
+                            subDto.setTitle(sub.getTitle());
+                            subDto.setDone(sub.isDone());
+                            return subDto;
+                        })
+                        .collect(Collectors.toList())
+                : new ArrayList<>()
+        );
+        return dto;
+    }
+
 }

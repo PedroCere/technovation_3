@@ -2,6 +2,7 @@ package com.aitasker.task_service.service.impl;
 
 import com.aitasker.task_service.client.AiServiceClient;
 import com.aitasker.task_service.domain.Task;
+import com.aitasker.task_service.dto.ScoredTaskDTO;
 import com.aitasker.task_service.dto.SuggestedBlockDTO;
 import com.aitasker.task_service.dto.TaskRequestDTO;
 import com.aitasker.task_service.dto.TaskResponseDTO;
@@ -29,10 +30,21 @@ public class TaskServiceImpl implements TaskService {
     public TaskResponseDTO createTask(TaskRequestDTO taskDTO) {
         Task task = taskMapper.toEntity(taskDTO);
         Task saved = taskRepository.save(task);
-        // Mandar a recalcular prioridad
-        aiServiceClient.recalculatePriority(List.of(saved));
+
+        List<ScoredTaskDTO> scoredList = aiServiceClient.recalculatePriority(
+                List.of(taskMapper.toRequestDTO(saved))
+        );
+
+        scoredList.forEach(scored -> {
+            if (scored.getTitle().equals(saved.getTitle())) {
+                saved.setImportanceScore(scored.getImportanceScore());
+                taskRepository.save(saved);
+            }
+        });
+
         return taskMapper.toDTO(saved);
     }
+
 
     @Override
     public List<TaskResponseDTO> getTasks(Optional<LocalDate> date) {
@@ -53,10 +65,23 @@ public class TaskServiceImpl implements TaskService {
         task.setDueDate(taskDTO.getDueDate());
         task.setPriority(taskDTO.getPriority());
 
-        Task updated = taskRepository.save(task);
-        aiServiceClient.recalculatePriority(List.of(updated));
-        return taskMapper.toDTO(updated);
+        Task saved = taskRepository.save(task);
+
+        List<ScoredTaskDTO> scoredList = aiServiceClient.recalculatePriority(
+                List.of(taskMapper.toRequestDTO(saved))
+        );
+
+        scoredList.forEach(scored -> {
+            if (scored.getTitle().equals(saved.getTitle())) {
+                saved.setImportanceScore(scored.getImportanceScore());
+                taskRepository.save(saved);
+            }
+        });
+
+
+        return taskMapper.toDTO(saved);
     }
+
 
     @Override
     public void deleteTask(Long id) {
@@ -74,9 +99,27 @@ public class TaskServiceImpl implements TaskService {
         task.setRecommendedDay(dto.getDay());
         task.setStartTime(dto.getStart());
         task.setEndTime(dto.getEnd());
+        task.setSuggestedTimeBlock(dto.getDay() + " " + dto.getStart() + " - " + dto.getEnd());
+
 
         Task updated = taskRepository.save(task);
         return taskMapper.toDTO(updated);
     }
 
+    @Override
+    public TaskResponseDTO getTask(Long taskId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
+
+        return taskMapper.toDTO(task);
+    }
+
+    @Override
+    public List<TaskResponseDTO> getAllTasks() {
+        List<Task> tasks = taskRepository.findAll();
+
+        return tasks.stream()
+                .map(taskMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }

@@ -35,7 +35,7 @@ public class Task {
 
     private String suggestedTimeBlock; // Sugerido por IA
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "task", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubTask> subtasks;
 
     private LocalDate recommendedDay;

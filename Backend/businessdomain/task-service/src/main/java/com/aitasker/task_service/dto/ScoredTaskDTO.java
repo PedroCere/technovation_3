@@ -1,12 +1,9 @@
-package com.aitasker.ai_service.dto;
+package com.aitasker.task_service.dto;
 
 import lombok.Data;
 
-import java.time.LocalDate;
-
 @Data
 public class ScoredTaskDTO {
-
     private String title;
     private double importanceScore;
 }

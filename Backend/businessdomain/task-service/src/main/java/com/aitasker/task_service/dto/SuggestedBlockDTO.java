@@ -1,5 +1,6 @@
 package com.aitasker.task_service.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -8,12 +9,11 @@ import java.time.LocalTime;
 
 @Data
 public class SuggestedBlockDTO {
-    @NotNull
     private LocalDate day;
 
-    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime start;
 
-    @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime end;
 }

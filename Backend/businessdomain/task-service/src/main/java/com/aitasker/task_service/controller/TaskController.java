@@ -1,5 +1,6 @@
 package com.aitasker.task_service.controller;
 
+import com.aitasker.task_service.domain.Task;
 import com.aitasker.task_service.dto.SuggestedBlockDTO;
 import com.aitasker.task_service.dto.TaskRequestDTO;
 import com.aitasker.task_service.dto.TaskResponseDTO;
@@ -37,8 +38,22 @@ public class TaskController {
         List<TaskResponseDTO> tasks = taskService.getTasks(Optional.ofNullable(date));
         return ResponseEntity.ok(tasks);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskResponseDTO> getTask(@RequestParam(name = "id") @PathVariable Long id){
+        TaskResponseDTO task = taskService.getTask(id);
+        return ResponseEntity.ok(task);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<TaskResponseDTO>> getAllTasks(){
+        List<TaskResponseDTO> tasks = taskService.getAllTasks();
+        return ResponseEntity.ok(tasks);
+    }
+
     @PatchMapping("/{id}/schedule")
     public ResponseEntity<TaskResponseDTO> setSuggestedTimeBlock(
+            @RequestParam(name = "id")
             @PathVariable Long id,
             @RequestBody @Valid SuggestedBlockDTO blockDTO
     ) {
@@ -55,7 +70,7 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTask( @RequestParam(name = "id") @PathVariable Long id) {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
     }
