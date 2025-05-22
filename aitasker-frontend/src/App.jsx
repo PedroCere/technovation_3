@@ -7,9 +7,9 @@ import Upcoming from './pages/Upcoming';
 import Tasks from './pages/tasks';
 import Completed from './pages/Completed';
 import Calendar from './pages/calendar';
-import Planner from './pages/Today';
+import Planner from './pages/Planner';
 import Stats from './pages/Today';
-import Assistant from './pages/Today';
+import Assistant from './pages/Assistant';
 import Filters from './pages/Filters';
 
 
