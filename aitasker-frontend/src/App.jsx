@@ -17,6 +17,7 @@ import Home from './pages/home';
 import List from './pages/list';
 import Board from './pages/board';
 import Settings from './pages/Inbox';
+import Register from './pages/Register';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
     ]
   },
   { path: '/login', element: <Login /> },
+  { path: '/register', element: <Register /> },
   { path: '/home', element: <Home /> },
   { path: '/list', element: <List /> },
   { path: '/board', element: <Board /> }
