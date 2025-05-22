@@ -3,15 +3,16 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import {
   PlusCircle, Search, Inbox, Calendar, CalendarClock, Tag, CheckCircle,
   ChevronDown, Users, HelpCircle, ListTodo, BarChart2, Bot,
-  LayoutGrid, Bell, Layout, X, Command, Clock, Flag, Bookmark
+  LayoutGrid, Bell, Layout, X, Command
 } from 'lucide-react';
-import TaskForm from '../features/tasks/taskForm';
+import TaskForm from '../features/tasks/TaskForm';
 
 const Sidebar = ({ collapsed, onToggleSidebar }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showSearchMenu, setShowSearchMenu] = useState(false);
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
   const searchMenuRef = useRef(null);
   const modalRef = useRef(null);
 
@@ -20,6 +21,7 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
       if (e.key === 'Escape') {
         setShowSearchMenu(false);
         setShowAddTaskModal(false);
+        setShowHelp(false);
       }
     };
     document.addEventListener('keydown', handleKeyDown);
@@ -45,30 +47,18 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
   };
 
   const menuItems = [
-    { 
-      name: 'Add task', 
-      icon: PlusCircle, 
-      count: 0, 
-      path: '/tasks',
-    
-      action: handleAddTaskClick
-    },
-    { 
-      name: 'Search', 
-      icon: Search , 
-      count: 0,
-      action: () => setShowSearchMenu(true)
-    },
-    { name: 'Inbox', icon: Inbox, count: 3, path: '/inbox' },
-    { name: 'Today', icon: Calendar, count: 3, path: '/today' },
-    { name: 'Upcoming', icon: CalendarClock, count: 0, path: '/upcoming' },
-    { name: 'Filters & Labels', icon: Tag, count: 0, path: '/filters' },
-    { name: 'Completed', icon: CheckCircle, count: 0, path: '/completed' },
-    { name: 'Tasks', icon: ListTodo, count: 0, path: '/tasks' },
-    { name: 'Calendar', icon: Calendar, count: 0, path: '/calendar' },
-    { name: 'Planner', icon: LayoutGrid, count: 0, path: '/planner' },
-    { name: 'Stats', icon: BarChart2, count: 0, path: '/stats' },
-    { name: 'Assistant', icon: Bot, count: 0, path: '/assistant' },
+    { name: 'Add task', icon: PlusCircle, path: '/tasks', action: handleAddTaskClick },
+    { name: 'Search', icon: Search, action: () => setShowSearchMenu(true) },
+    { name: 'Inbox', icon: Inbox, path: '/inbox' },
+    { name: 'Today', icon: Calendar, path: '/today' },
+    { name: 'Upcoming', icon: CalendarClock, path: '/upcoming' },
+    { name: 'Filters & Labels', icon: Tag, path: '/filters' },
+    { name: 'Completed', icon: CheckCircle, path: '/completed' },
+    { name: 'Tasks', icon: ListTodo, path: '/tasks' },
+    { name: 'Calendar', icon: Calendar, path: '/calendar' },
+    { name: 'Planner', icon: LayoutGrid, path: '/planner' },
+    { name: 'Stats', icon: BarChart2, path: '/stats' },
+    { name: 'Assistant', icon: Bot, path: '/assistant' },
   ];
 
   const projectItems = [{ name: 'Mis Cosas 🧠', count: 5 }];
@@ -114,30 +104,25 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
           {!collapsed && (
             <>
               <ul className="space-y-1">
-{menuItems.map((item, i) => {
-  const Icon = item.icon;
-  const isActive = item.path === location.pathname;
-  const isAddTask = item.name === 'Add task';
-  return (
-    <li
-      key={i}
-      onClick={() => handleMenuItemClick(item)}
-      className={`flex justify-between items-center px-2 py-1.5 rounded-md cursor-pointer hover:bg-red-100 ${
-        isActive ? 'bg-red-100 text-red-700' : ''
-      }`}
-    >
-      <div className="flex items-center gap-2 text-sm">
-        <Icon className={`${isAddTask ? 'text-red-600 strokeWidth={5}' : isActive ? 'text-red-500' : 'text-gray-500'} w-4 h-4`} />
-        <span className={`${isAddTask ? 'text-red-600 font-semibold strokeWidth={2}' : ''} text-sm`}>{item.name}</span>
-      </div>
-      {item.count > 0 && (
-        <span className="text-xs font-semibold text-gray-500">
-          {item.count}
-        </span>
-      )}
-    </li>
-  );
-})}
+                {menuItems.map((item, i) => {
+                  const Icon = item.icon;
+                  const isActive = item.path === location.pathname;
+                  const isAddTask = item.name === 'Add task';
+                  return (
+                    <li
+                      key={i}
+                      onClick={() => handleMenuItemClick(item)}
+                      className={`flex justify-between items-center px-2 py-1.5 rounded-md cursor-pointer hover:bg-red-100 ${
+                        isActive ? 'bg-red-100 text-red-700' : ''
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 text-sm">
+                        <Icon className={`${isAddTask ? 'text-red-600' : isActive ? 'text-red-500' : 'text-gray-500'} w-4 h-4`} />
+                        <span className={`${isAddTask ? 'text-red-600 font-semibold' : ''} text-sm`}>{item.name}</span>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
 
               <div className="mt-6">
@@ -155,9 +140,7 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
                         <span className="text-xs text-gray-500">#</span>
                         <span className="text-sm">{proj.name}</span>
                       </div>
-                      <span className="text-xs font-semibold text-gray-500">
-                        {proj.count}
-                      </span>
+                      <span className="text-xs font-semibold text-gray-500">{proj.count}</span>
                     </li>
                   ))}
                 </ul>
@@ -172,7 +155,10 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
               <Users className="w-4 h-4" />
               Add a team
             </button>
-            <button className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800">
+            <button
+              onClick={() => setShowHelp(true)}
+              className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800"
+            >
               <HelpCircle className="w-4 h-4" />
               Help
             </button>
@@ -180,18 +166,7 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
         )}
       </aside>
 
-      {/* Modal Add Task */}
-      {showAddTaskModal && (
-        <TaskForm
-          onClose={() => setShowAddTaskModal(false)}
-          onSubmit={(newTask) => {
-          
-            setShowAddTaskModal(false);
-          }}
-        />
-      )}
-
-      {/* Modal de búsqueda */}
+      {/* Modales */}
       {showSearchMenu && (
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div ref={searchMenuRef} className="w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden border border-gray-200">
@@ -243,19 +218,34 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
                   ))}
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
 
-              {/* Footer */}
-              <div className="p-4">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
-                    <Users className="w-5 h-5 text-gray-500" />
-                    <span className="text-sm text-gray-700">Add a team</span>
-                  </div>
-                  <div className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
-                    <HelpCircle className="w-5 h-5 text-gray-500" />
-                    <span className="text-sm text-gray-700">Help</span>
-                  </div>
-                </div>
+      {showHelp && (
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-xl bg-white rounded-xl shadow-2xl p-6 relative">
+            <button onClick={() => setShowHelp(false)} className="absolute top-3 right-3 text-gray-400 hover:text-red-600">
+              <X className="w-5 h-5" />
+            </button>
+            <h2 className="text-2xl font-semibold mb-4">Centro de Ayuda</h2>
+            <div className="space-y-4 text-sm text-gray-700">
+              <div>
+                <h3 className="font-semibold">❓ Preguntas Frecuentes</h3>
+                <ul className="list-disc ml-5">
+                  <li>¿Cómo agrego una tarea?</li>
+                  <li>¿Cómo activo el modo oscuro?</li>
+                  <li>¿Cómo funciona la IA asistente?</li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="font-semibold">📘 Guía Rápida</h3>
+                <p>Usá la barra lateral para navegar entre secciones. Podés priorizar tareas, moverlas entre columnas o usar IA para sugerencias.</p>
+              </div>
+              <div>
+                <h3 className="font-semibold">📞 Contacto de Soporte</h3>
+                <p>¿Tenés algún problema? Escribinos a <code>soporte@aitasker.com</code></p>
               </div>
             </div>
           </div>
@@ -264,4 +254,5 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
     </>
   );
 };
+
 export default Sidebar;
