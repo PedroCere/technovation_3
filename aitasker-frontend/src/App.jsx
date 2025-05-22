@@ -1,46 +1,80 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Layout from './layout/Layout';
+import ErrorPage from './pages/errorpage';
+import Inbox from './pages/Inbox';
+import Today from './pages/Today';
+import Upcoming from './pages/Upcoming';
+import Tasks from './pages/tasks';
+import Completed from './pages/Completed';
+import Calendar from './pages/calendar';
+import Planner from './pages/Planner';
+import Stats from './pages/stats';
+import Assistant from './pages/Assistant';
+import Filters from './pages/Filters';
+import Landing from './pages/landing';
+import Login from './pages/login';
 
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <Landing />
+      },{
+        path:'inbox' ,
+        element: <Inbox />
+      },
+      {
+        path: 'today',
+        element: <Today />
+      },
+      {
+        path: 'filters',
+        element: <Filters />
+      },
+      {
+        path: 'upcoming',
+        element: <Upcoming />
+      },
+      {
+        path: 'tasks',
+        element: <Tasks />
+      },
+      {
+        path: 'calendar',
+        element: <Calendar />
+      },
+      {
+        path: 'planner',
+        element: <Planner/>
+      },
+      {
+        path: 'stats',
+        element: <Stats />
+      },
+      {
+        path: 'assistant',
+        element: <Assistant />
+      },
+      {
+        path: 'completed',
+        element: <Completed />
+      }
+    ]
+  },
+  {
+    path: '/login',
+    element: <Login />
+  }
+]);
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <RouterProvider router={router} />
+  );
 }
 
-export default App
+export default App;
