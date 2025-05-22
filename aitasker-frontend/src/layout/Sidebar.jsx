@@ -3,7 +3,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import {
   PlusCircle, Search, Inbox, Calendar, CalendarClock, Tag, CheckCircle,
   ChevronDown, Users, HelpCircle, ListTodo, BarChart2, Bot,
-  LayoutGrid, Bell, Layout, X, Command
+  LayoutGrid, Bell, Layout, X, Command,
+  Settings, Activity, Printer, Megaphone,
+  ArrowUpCircle, RefreshCw, LogOut, BookOpenText, User
 } from 'lucide-react';
 import TaskForm from '../features/tasks/TaskForm';
 
@@ -13,8 +15,10 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
   const [showSearchMenu, setShowSearchMenu] = useState(false);
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const searchMenuRef = useRef(null);
   const modalRef = useRef(null);
+  const userMenuRef = useRef(null);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -22,6 +26,7 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
         setShowSearchMenu(false);
         setShowAddTaskModal(false);
         setShowHelp(false);
+        setIsUserMenuOpen(false);
       }
     };
     document.addEventListener('keydown', handleKeyDown);
@@ -35,6 +40,9 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
       }
       if (modalRef.current && !modalRef.current.contains(e.target)) {
         setShowAddTaskModal(false);
+      }
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setIsUserMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -63,9 +71,22 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
 
   const projectItems = [{ name: 'Mis Cosas 🧠', count: 5 }];
 
+  const userMenuItems = [
+    { name: 'Settings', icon: Settings, path: '/settings' },
+    { name: 'Add a team', icon: Users, path: '/team' },
+    { name: 'Activity log', icon: Activity, path: '/activity' },
+    { name: 'Print', icon: Printer, path: '/print' },
+    { name: "What's new", icon: Megaphone, path: '/news' },
+    { name: 'Upgrade to Pro', icon: ArrowUpCircle, path: '/pro', color: 'text-red-600' },
+    { name: 'Sync', icon: RefreshCw, path: '/sync' },
+    { name: 'Log out', icon: LogOut, path: '/logout' },
+    { name: 'Help', icon: HelpCircle, action: () => setShowHelp(true) },
+  ];
+
   const handleMenuItemClick = (item) => {
     if (item.action) item.action();
     if (item.path) navigate(item.path);
+    setIsUserMenuOpen(false);
   };
 
   return (
@@ -75,12 +96,47 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
           <div className={`flex items-center justify-between ${collapsed ? 'px-2' : 'mb-6'}`}>
             {!collapsed ? (
               <>
+                <button
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="flex items-center gap-2 group relative"
+                  ref={userMenuRef}
+                >
+                  <div className="w-5 h-5 bg-yellow-400 rounded-full flex items-center justify-center">
+                    <User className="w-3 h-3 text-white" />
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <span className="font-medium text-sm">Pedro Cereghetti</span>
+                    <span className="text-xs text-gray-500">0/5 tasks</span>
+                  </div>
+                  {isUserMenuOpen && (
+                    <div className="absolute top-full left-0 w-64 bg-white rounded-lg shadow-xl mt-2 py-2 z-50 border border-gray-100">
+                      {userMenuItems.map((item, i) => (
+                        <button
+                          key={i}
+                          onClick={() => handleMenuItemClick(item)}
+                          className={`flex items-center gap-3 w-full px-4 py-2 text-sm ${
+                            item.color ? item.color : 'text-gray-700'
+                          } hover:bg-red-50 transition-colors`}
+                        >
+                          <item.icon className="w-4 h-4" />
+                          <span>{item.name}</span>
+                        </button>
+                      ))}
+                      <div className="border-t border-gray-100 mt-2 pt-2 px-4">
+                        <div className="text-xs text-gray-500 flex items-center gap-1">
+                          <span>v8127</span>
+                          <span className="text-gray-300">•</span>
+                          <button className="hover:text-gray-800 flex items-center gap-1">
+                            <BookOpenText className="w-3 h-3" />
+                            Changelog
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </button>
                 <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 bg-yellow-400 rounded-full" />
-                  <span className="font-medium text-sm">Pedro</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Bell className="w-4 h-4 text-gray-500" />
+                  <Bell className="w-4 h-4 text-gray-500 cursor-pointer" />
                   <button
                     onClick={onToggleSidebar}
                     className="p-1 rounded hover:bg-red-200 transition"
@@ -150,23 +206,16 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
         </div>
 
         {!collapsed && (
-          <div className="flex flex-col gap-4 mt-6">
-            <button className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800">
-              <Users className="w-4 h-4" />
-              Add a team
-            </button>
-            <button
-              onClick={() => setShowHelp(true)}
-              className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800"
-            >
-              <HelpCircle className="w-4 h-4" />
-              Help
-            </button>
-          </div>
+          <div className="flex flex-col gap-4 mt-6 border-t border-gray-200 pt-4">
+              <button className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800">
+                <LogOut className="w-4 h-4"  />
+                Log Out  
+              </button>
+            </div>
         )}
       </aside>
 
-      {/* Modales */}
+      {/* Search Modal */}
       {showSearchMenu && (
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div ref={searchMenuRef} className="w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden border border-gray-200">
@@ -175,36 +224,29 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
                 <Command className="w-5 h-5 text-gray-500" />
                 <span className="text-sm text-gray-500">Search or type a command...</span>
               </div>
-              <button 
+              <button
                 onClick={() => setShowSearchMenu(false)}
                 className="p-1.5 hover:bg-gray-200 rounded-lg transition-colors"
               >
                 <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
-
             <div className="divide-y divide-gray-100">
-              {/* Recently Viewed */}
               <div className="p-4">
                 <h4 className="text-xs text-gray-500 uppercase mb-3 font-medium">Recently viewed</h4>
                 <div className="space-y-2">
                   {['Inbox', 'Today', 'Upcoming'].map((item, i) => (
                     <label key={i} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
-                      <input 
-                        type="checkbox" 
-                        className="w-4 h-4 text-red-500 border-gray-300 rounded focus:ring-red-500"
-                      />
+                      <input type="checkbox" className="w-4 h-4 text-red-500 border-gray-300 rounded focus:ring-red-500" />
                       <span className="text-sm text-gray-700">{item}</span>
                     </label>
                   ))}
                 </div>
               </div>
-
-              {/* Navigation */}
               <div className="p-4">
                 <h4 className="text-xs text-gray-500 uppercase mb-3 font-medium">Navigation</h4>
                 <div className="space-y-2">
-                  {[ 
+                  {[
                     'Go to home',
                     'Go to inbox',
                     'Go to Today',
@@ -223,6 +265,7 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
         </div>
       )}
 
+      {/* Help Modal */}
       {showHelp && (
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="w-full max-w-xl bg-white rounded-xl shadow-2xl p-6 relative">
