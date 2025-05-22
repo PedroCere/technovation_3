@@ -50,11 +50,12 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
       icon: PlusCircle, 
       count: 0, 
       path: '/tasks',
+    
       action: handleAddTaskClick
     },
     { 
       name: 'Search', 
-      icon: Search, 
+      icon: Search , 
       count: 0,
       action: () => setShowSearchMenu(true)
     },
@@ -113,29 +114,30 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
           {!collapsed && (
             <>
               <ul className="space-y-1">
-                {menuItems.map((item, i) => {
-                  const Icon = item.icon;
-                  const isActive = item.path === location.pathname;
-                  return (
-                    <li
-                      key={i}
-                      onClick={() => handleMenuItemClick(item)}
-                      className={`flex justify-between items-center px-2 py-1.5 rounded-md cursor-pointer hover:bg-red-100 ${
-                        isActive ? 'bg-red-100 text-red-700' : ''
-                      }`}
-                    >
-                      <div className="flex items-center gap-2 text-sm">
-                        <Icon className={isActive ? 'text-red-500 w-4 h-4' : 'text-gray-500 w-4 h-4'} />
-                        <span className="text-sm">{item.name}</span>
-                      </div>
-                      {item.count > 0 && (
-                        <span className="text-xs font-semibold text-gray-500">
-                          {item.count}
-                        </span>
-                      )}
-                    </li>
-                  );
-                })}
+{menuItems.map((item, i) => {
+  const Icon = item.icon;
+  const isActive = item.path === location.pathname;
+  const isAddTask = item.name === 'Add task';
+  return (
+    <li
+      key={i}
+      onClick={() => handleMenuItemClick(item)}
+      className={`flex justify-between items-center px-2 py-1.5 rounded-md cursor-pointer hover:bg-red-100 ${
+        isActive ? 'bg-red-100 text-red-700' : ''
+      }`}
+    >
+      <div className="flex items-center gap-2 text-sm">
+        <Icon className={`${isAddTask ? 'text-red-600 strokeWidth={5}' : isActive ? 'text-red-500' : 'text-gray-500'} w-4 h-4`} />
+        <span className={`${isAddTask ? 'text-red-600 font-semibold strokeWidth={2}' : ''} text-sm`}>{item.name}</span>
+      </div>
+      {item.count > 0 && (
+        <span className="text-xs font-semibold text-gray-500">
+          {item.count}
+        </span>
+      )}
+    </li>
+  );
+})}
               </ul>
 
               <div className="mt-6">

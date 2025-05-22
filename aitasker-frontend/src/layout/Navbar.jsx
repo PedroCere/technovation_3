@@ -9,7 +9,7 @@ const Navbar = ({ sidebarCollapsed }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="relative h-12 flex items-center justify-end pr-4 border-b bg-white text-black shadow-sm">
+<header className="relative h-12 flex items-center justify-end pr-4  bg-white/10 backdrop-blur-sm text-black shadow-sm">
       {!sidebarCollapsed && (
         <div className="flex items-center gap-4 relative">
           <div className="relative">

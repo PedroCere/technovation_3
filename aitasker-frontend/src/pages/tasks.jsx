@@ -60,6 +60,8 @@ const Tasks = () => {
         <TaskForm
           onClose={() => setShowForm(false)}
           onSubmit={handleAddTask}
+          inputClassName="bg-white text-black"
+          selectClassName="bg-white text-black"
         />
       )}
     </div>

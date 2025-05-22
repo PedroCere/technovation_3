@@ -37,7 +37,7 @@ const TaskForm = ({ onClose, onSubmit, initialData }) => {
           <input
             type="text"
             placeholder="Título de la tarea"
-            className="w-full p-2 mb-4 border-b-2 border-gray-200 focus:border-red-500 outline-none"
+          className="w-full p-2 mb-4 border-b-2 border-gray-200 focus:border-red-500 outline-none bg-white text-black"
             value={formData.title}
             onChange={(e) => setFormData({...formData, title: e.target.value})}
           />
@@ -56,7 +56,7 @@ const TaskForm = ({ onClose, onSubmit, initialData }) => {
 
           <textarea
             placeholder="Descripción..."
-            className="w-full p-2 mb-4 border rounded-lg h-32"
+          className="w-full p-2 mb-4 border rounded-lg h-32 bg-white text-black"
             value={formData.description}
             onChange={(e) => setFormData({...formData, description: e.target.value})}
           />
