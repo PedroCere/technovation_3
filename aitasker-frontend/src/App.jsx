@@ -16,6 +16,7 @@ import Login from './pages/login';
 import Home from './pages/home';
 import List from './pages/list';
 import Board from './pages/board';
+import Settings from './pages/Inbox';
 
 const router = createBrowserRouter([
   {
@@ -33,7 +34,8 @@ const router = createBrowserRouter([
       { path: 'planner', element: <Planner /> },
       { path: 'stats', element: <Stats /> },
       { path: 'assistant', element: <Assistant /> },
-      { path: 'completed', element: <Completed /> }
+      { path: 'completed', element: <Completed /> },
+      { path: 'settings', element: <Settings /> },
     ]
   },
   { path: '/login', element: <Login /> },

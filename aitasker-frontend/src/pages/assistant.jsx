@@ -35,7 +35,7 @@ const Assistant = () => {
         {messages.map((msg, i) => (
           <div 
             key={i} 
-            className={`p-3 rounded-lg ${msg.fromAI ? 'bg-gray-50' : 'bg-blue-50 text-blue-800 ml-auto max-w-xs'}`}
+            className={`p-3 rounded-lg ${msg.fromAI ? 'bg-gray-100' : 'bg-blue-50 text-black-800 ml-auto max-w-xs'}`}
           >
             {msg.text}
           </div>
@@ -49,7 +49,7 @@ const Assistant = () => {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Pregunta algo al asistente..."
-            className="flex-1 p-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            className="flex-1 p-2 border rounded-lg text-black bg-blue-50 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
           <button 
             type="button" 
