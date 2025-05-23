@@ -42,3 +42,23 @@ export async function createTask(task) {
     throw error;
   }
 }
+
+export async function getTaskSuggestions(task) {
+  try {
+    const backendTask = transformTaskForBackend(task);
+    const response = await fetch(`${API_BASE_URL}/suggestions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(backendTask),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to get task suggestions');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error getting task suggestions:', error);
+    throw error;
+  }
+}
