@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class TaskRequestDTO {
@@ -19,4 +20,6 @@ public class TaskRequestDTO {
 
     @NotNull
     private Priority priority;
+
+    private List<SubTaskDTO> subtasks;
 }

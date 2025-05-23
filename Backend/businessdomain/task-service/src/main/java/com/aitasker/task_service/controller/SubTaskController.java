@@ -26,7 +26,9 @@ public class SubTaskController {
 
     @PatchMapping("/{subtaskId}")
     public ResponseEntity<SubTaskDTO> updateSubTask(
+            @RequestParam("taskId")
             @PathVariable Long taskId,
+            @RequestParam("subtaskId")
             @PathVariable Long subtaskId,
             @RequestBody @Valid SubTaskDTO subTaskDTO
     ) {
