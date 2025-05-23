@@ -1,7 +1,10 @@
 import React from "react";
-import Image from "../assets/image.png"
+import { useNavigate } from "react-router-dom";
+import Image from "../assets/image.png";
 
 export default function Landing() {
+  const navigate = useNavigate();
+
   return (
     <section className="bg-white min-h-screen flex flex-col items-center justify-center px-4 md:px-12">
       {/* Top Navigation */}
@@ -13,8 +16,13 @@ export default function Landing() {
           <a href="#" className="hover:underline">Usos</a>
           <a href="#" className="hover:underline">Recursos</a>
           <a href="#" className="hover:underline">Precios</a>
-          <a href="#" className="hover:underline">Iniciar sesión</a>
-          <button className="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-full">
+          <button onClick={() => navigate('/login')} className="hover:underline">
+            Iniciar sesión
+          </button>
+          <button
+            onClick={() => navigate('/register')}
+            className="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-full"
+          >
             Pruébala gratis
           </button>
         </nav>
@@ -36,7 +44,10 @@ export default function Landing() {
             <p className="text-gray-600 text-sm">Más de 374 mil valoraciones de ★★★★★</p>
           </div>
 
-          <button className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded-full text-base mb-1">
+          <button
+            onClick={() => navigate('/register')}
+            className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded-full text-base mb-1"
+          >
             Pruébala gratis
           </button>
 
@@ -46,7 +57,7 @@ export default function Landing() {
         {/* Image Block */}
         <div className="flex justify-center">
           <img
-            src={Image} 
+            src={Image}
             alt="Demo screen"
             className="rounded-xl shadow-2xl w-full max-w-lg"
           />

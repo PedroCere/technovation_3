@@ -58,6 +58,7 @@ const Register = () => {
       setSuccess('Registro exitoso. Redirigiendo...');
       setTimeout(() => navigate('/inbox'), 1500);
     } catch (error) {
+      console.error(error);
       setError('Error de conexión con el servidor.');
     }
   };
