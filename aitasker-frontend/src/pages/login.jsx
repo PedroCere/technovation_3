@@ -36,6 +36,7 @@ const Login = () => {
       setError('');
       navigate('/home');
     } catch (error) {
+      console.error(error);
       setError('Error de conexión con el servidor.');
     }
   };
