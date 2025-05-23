@@ -1,20 +1,42 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { setUser } = useUser();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (email === '1234' && password === '1234') {
+    const loginData = { email, password };
+
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.message || 'Credenciales incorrectas. Inténtalo de nuevo.');
+        return;
+      }
+
+      const authResponse = await response.json();
+      setUser(authResponse.user);
+      console.log('Logged in user set in context:', authResponse.user);
+
       setError('');
       navigate('/home');
-    } else {
-      setError('Credenciales incorrectas. Intentalo de nuevo.');
+    } catch (error) {
+      setError('Error de conexión con el servidor.');
     }
   };
 
@@ -34,7 +56,7 @@ const Login = () => {
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 rounded-lg bg-gray-100 border border-red-600 text-gray-900"
+            className="w-full p-2 rounded-lg bg-gray-100 border border-gray-300 text-gray-900"
             required
           />
         </div>
@@ -44,7 +66,7 @@ const Login = () => {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 rounded-lg bg-gray-100 border border-red-600 text-gray-900"
+            className="w-full p-2 rounded-lg bg-gray-100 border border-gray-300 text-gray-900"
             required
           />
         </div>

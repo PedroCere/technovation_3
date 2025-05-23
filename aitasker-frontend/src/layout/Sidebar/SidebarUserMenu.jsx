@@ -4,13 +4,16 @@ import {
   ArrowUpCircle, RefreshCw, LogOut, BookOpenText, User
 } from 'lucide-react';
 import SettingsLayout from './SettingsLayout';
+import { useUser } from '../../context/UserContext';
 
 const SidebarUserMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const menuRef = useRef(null);
+  const { user } = useUser();
 
-  
+  console.log('SidebarUserMenu user from context:', user);
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -42,7 +45,7 @@ const SidebarUserMenu = () => {
           <User className="w-4 h-4 text-white" />
         </div>
         <div className="text-left">
-          <p className="text-sm font-medium">Pedro Cereghetti</p>
+          <p className="text-sm font-medium">{user?.username || 'Usuario'}</p>
           <p className="text-xs text-gray-500">1/5 tasks</p>
         </div>
       </button>

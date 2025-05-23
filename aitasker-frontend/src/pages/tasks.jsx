@@ -1,30 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TaskList from '../features/tasks/TaskList';
 import TaskForm from '../features/tasks/taskForm';
+import { getTasks, createTask } from '../services/taskService';
 
 const Tasks = () => {
-  const [tasks, setTasks] = useState([
-    {
-      id: '1',
-      title: 'Example Task 1',
-      description: 'This is an example task',
-      priority: 'high',
-      dueDate: '2024-06-30',
-      label: 'Work',
-      status: 'todo'
-    },
-    {
-      id: '2',
-      title: 'Example Task 2',
-      description: 'Another example task',
-      priority: 'medium',
-      dueDate: '2024-07-05',
-      label: 'Personal',
-      status: 'in-progress'
-    }
-  ]);
-
+  const [tasks, setTasks] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        setLoading(true);
+        const data = await getTasks();
+        setTasks(data);
+      } catch (err) {
+        setError('Failed to load tasks');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTasks();
+  }, []);
 
   const handleStatusChange = (taskId, newStatus) => {
     setTasks(tasks.map(task => task.id === taskId ? { ...task, status: newStatus } : task));
@@ -38,9 +36,18 @@ const Tasks = () => {
     setTasks(reorderedTasks);
   };
 
-  const handleAddTask = (newTask) => {
-    setTasks([...tasks, { ...newTask, id: Date.now().toString(), status: 'todo' }]);
+  const handleAddTask = async (newTask) => {
+    try {
+      const createdTask = await createTask(newTask);
+      setTasks([...tasks, createdTask]);
+      setShowForm(false);
+      setError(null); // Clear error on success
+    } catch (err) {
+      setError('Failed to create task');
+    }
   };
+
+  if (loading) return <div className="max-w-4xl mx-auto p-6">Loading tasks...</div>;
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -53,6 +60,8 @@ const Tasks = () => {
           Add Task
         </button>
       </div>
+
+      {error && <div className="mb-4 text-red-500">{error}</div>}
 
       <TaskList tasks={tasks} onDragEnd={handleDragEnd} onStatusChange={handleStatusChange} />
 

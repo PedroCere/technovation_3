@@ -1,6 +1,9 @@
 import React from 'react';
+import { useUser } from '../../../context/UserContext';
 
 const AccountPanel = () => {
+  const { user } = useUser();
+
   return (
     <div className="bg-white p-6 rounded shadow max-w-3xl">
       <h2 className="text-xl font-semibold mb-4">Account</h2>
@@ -20,14 +23,14 @@ const AccountPanel = () => {
       <input
         type="text"
         className="w-full border p-2 rounded mb-4 bg-gray-100"
-        value="Pedro Cereghetti"
+        value={user?.username || ''}
         readOnly
       />
 
       {/* Email */}
       <div className="mb-4">
         <label className="text-sm block mb-1">Email</label>
-        <p className="text-sm">pedrocerega@gmail.com</p>
+        <p className="text-sm">{user?.email || ''}</p>
         <button className="mt-1 text-sm px-3 py-1 bg-gray-100 rounded hover:bg-gray-200">Change email</button>
       </div>
 
@@ -53,7 +56,7 @@ const AccountPanel = () => {
       <div className="mt-6 border-t pt-4">
         <p className="text-sm mb-1 font-medium">Connected accounts</p>
         <p className="text-sm mb-2">
-          You can log in to Todoist with your Google account <strong>pedrocerega@gmail.com</strong>.
+          You can log in to Todoist with your Google account <strong>{user?.email || ''}</strong>.
         </p>
         <p className="text-xs text-gray-500 mb-4">
           Your password is not set, so we cannot disconnect you from your Google account.
