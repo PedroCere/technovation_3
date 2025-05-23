@@ -7,6 +7,7 @@ import SettingsModal from './SettingsModal';
 import SearchModal from './SearchModal';
 import HelpModal from './HelpModal';
 import TaskForm from './TaskForm';
+import { createTask } from '../../services/taskService';
 
 const Sidebar = ({ collapsed, onToggleSidebar }) => {
   const [showSearchMenu, setShowSearchMenu] = useState(false);
@@ -49,6 +50,17 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handleAddTaskSubmit = async (taskData) => {
+    try {
+      await createTask(taskData);
+      setShowAddTaskModal(false);
+      // Optionally, you could trigger a refresh or state update here if needed
+    } catch (error) {
+      console.error('Failed to create task:', error);
+      // Optionally, show error feedback to user
+    }
+  };
+
   return (
     <>
       <aside className={`${collapsed ? 'w-16' : 'w-72'} transition-all h-screen flex flex-col bg-[#fefcfb] text-black font-sans text-sm`}>
@@ -75,7 +87,7 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
       {showSettingsModal && <SettingsModal onClose={() => setShowSettingsModal(false)} />}
       {showSearchMenu && <SearchModal onClose={() => setShowSearchMenu(false)} />}
       {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
-      {showAddTaskModal && <TaskForm onClose={() => setShowAddTaskModal(false)} />}
+      {showAddTaskModal && <TaskForm onClose={() => setShowAddTaskModal(false)} onSubmit={handleAddTaskSubmit} />}
     </>
   );
 };
