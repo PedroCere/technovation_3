@@ -43,14 +43,23 @@ const TaskForm = ({ onClose, onSubmit, initialData }) => {
           />
 
           <div className="flex gap-2 mb-4">
-            <button type="button" className="task-form-button">
-              <AiOutlineCalendar className="mr-1" /> Fecha
+            <button
+              type="button"
+              className="task-form-button bg-gray-100 text-gray-800 hover:bg-gray-200 focus:ring-2 focus:ring-red-500 rounded-md px-3 py-1 flex items-center gap-1"
+            >
+              <AiOutlineCalendar className="mr-1" /> Date
             </button>
-            <button type="button" className="task-form-button">
-              <AiOutlineFlag className="mr-1" /> Prioridad
+            <button
+              type="button"
+              className="task-form-button bg-gray-100 text-gray-800 hover:bg-gray-200 focus:ring-2 focus:ring-red-500 rounded-md px-3 py-1 flex items-center gap-1"
+            >
+              <AiOutlineFlag className="mr-1" /> Priority
             </button>
-            <button type="button" className="task-form-button">
-              <AiOutlineClockCircle className="mr-1" /> Recordatorio
+            <button
+              type="button"
+              className="task-form-button bg-gray-100 text-gray-800 hover:bg-gray-200 focus:ring-2 focus:ring-red-500 rounded-md px-3 py-1 flex items-center gap-1"
+            >
+              <AiOutlineClockCircle className="mr-1" /> Reminder
             </button>
           </div>
 

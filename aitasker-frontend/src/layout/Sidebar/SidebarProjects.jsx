@@ -1,7 +1,13 @@
 import { ChevronDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const SidebarProjects = () => {
-  const projects = [{ name: 'Mis Cosas 🧠', count: 5 }];
+  const navigate = useNavigate();
+  const projects = [{ name: 'Mythings', count: 5 }];
+
+  const handleClick = (path) => {
+    navigate(path);
+  };
 
   return (
     <div className="mt-6 px-2">
@@ -13,6 +19,7 @@ const SidebarProjects = () => {
         {projects.map((proj, i) => (
           <li
             key={i}
+            onClick={() => handleClick('/mythings')}
             className="flex justify-between items-center px-2 py-1.5 rounded-md hover:bg-red-100 cursor-pointer"
           >
             <div className="flex items-center gap-2">

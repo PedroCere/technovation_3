@@ -50,7 +50,7 @@ const Upcoming = () => {
   const addNewTask = (dayIndex) => {
     const newTask = {
       id: Date.now(),
-      title: "Nueva tarea",
+      title: "New Task",
       completed: false
     };
     const updatedDays = [...days];

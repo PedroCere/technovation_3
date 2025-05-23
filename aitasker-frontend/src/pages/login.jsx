@@ -34,7 +34,7 @@ const Login = () => {
       console.log('Logged in user set in context:', authResponse.user);
 
       setError('');
-      navigate('/home');
+      navigate('/inbox');
     } catch (error) {
       console.error(error);
       setError('Error de conexión con el servidor.');
@@ -47,12 +47,12 @@ const Login = () => {
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center">Iniciar Sesión</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Log In</h2>
 
         {error && <p className="text-red-600 mb-4 text-center">{error}</p>}
 
         <div className="mb-4">
-          <label className="block text-sm text-gray-600 mb-1">Correo electrónico</label>
+          <label className="block text-sm text-gray-600 mb-1">Email</label>
           <input
             type="text"
             value={email}
@@ -62,7 +62,7 @@ const Login = () => {
           />
         </div>
         <div className="mb-6">
-          <label className="block text-sm text-gray-600 mb-1">Contraseña</label>
+          <label className="block text-sm text-gray-600 mb-1">Password</label>
           <input
             type="password"
             value={password}

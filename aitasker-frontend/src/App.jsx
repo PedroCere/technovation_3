@@ -18,6 +18,7 @@ import List from './pages/list';
 import Board from './pages/board';
 import Settings from './pages/Inbox';
 import Register from './pages/Register';
+import MyThings from './pages/MyThings';
 import { UserProvider } from './context/UserContext';
 
 const router = createBrowserRouter([
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
       { path: 'assistant', element: <Assistant /> },
       { path: 'completed', element: <Completed /> },
       { path: 'settings', element: <Settings /> },
+      { path: 'mythings', element: <MyThings /> }
     ]
   },
   { path: '/login', element: <Login /> },

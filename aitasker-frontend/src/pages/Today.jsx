@@ -12,7 +12,15 @@ const Today = () => {
     const fetchTasks = async () => {
       try {
         const data = await getTasks();
-        setTasks(data);
+        // Filter tasks to only those with dueDate equal to today
+        const today = new Date();
+        const todayStr = today.toISOString().split('T')[0]; // YYYY-MM-DD format
+        const filteredTasks = data.filter(task => {
+          if (!task.dueDate) return false;
+          // Compare only date part
+          return task.dueDate.startsWith(todayStr);
+        });
+        setTasks(filteredTasks);
       } catch (err) {
         setError("Failed to load tasks");
       } finally {

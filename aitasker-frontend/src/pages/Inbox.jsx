@@ -6,13 +6,13 @@ const Inbox = () => {
   const [tasks, setTasks] = useState([
     {
       id: 1,
-      text: "Descargar aplicaciones y complementos adicionales",
+      text: "Analize team workflow",
       completed: false,
       subtasks: ["Today"],
     },
     {
       id: 2,
-      text: "Hacer el quiz de métodos de productividad",
+      text: "Start My app",
       completed: false,
       subtasks: [
         "Obtén una recomendación especializada de Todoist",
@@ -21,7 +21,7 @@ const Inbox = () => {
     },
     {
       id: 3,
-      text: "Enviar un paquete",
+      text: "Present new Package",
       completed: false,
       subtasks: ["ejemplo1", "Tomorrow"],
     },
