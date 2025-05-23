@@ -62,3 +62,37 @@ export async function getTaskSuggestions(task) {
     throw error;
   }
 }
+
+export async function updateTask(id, task) {
+  try {
+    const backendTask = transformTaskForBackend(task);
+    const response = await fetch(`${API_BASE_URL}/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(backendTask),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to update task');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error updating task:', error);
+    throw error;
+  }
+}
+
+export async function deleteTask(id) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error('Failed to delete task');
+    }
+  } catch (error) {
+    console.error('Error deleting task:', error);
+    throw error;
+  }
+}
