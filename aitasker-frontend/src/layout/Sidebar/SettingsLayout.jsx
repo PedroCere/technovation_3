@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
 import AccountPanel from './panels/AccountPanel';
-
+import QuickAddPanel from './panels/QuickAddPanel';
+import NotificationsPanel from './panels/NotificationsPanel';
+import RemindersPanel from './panels/RemindersPanel';
+import ProductivityPanel from './panels/ProductivityPanel';
+import SubscriptionPanel from './panels/SubscriptionPanel';
+import CalendarsPanel from './panels/CalendarsPanel';
+import GeneralPanel from './panels/GeneralPanel';
+import AdvancedPanel from './panels/AdvancedPanel';
+import ThemePanel from './panels/ThemePanel';
+import FavouritesPanel from './panels/FavouritesPanel';
+import SidebarPanel from './panels/SidebarPanel';
 
 const sections = [
   { key: 'account', label: 'Account' },
@@ -13,7 +23,7 @@ const sections = [
   { key: 'productivity', label: 'Productivity' },
   { key: 'reminders', label: 'Reminders' },
   { key: 'notifications', label: 'Notifications' },
-  { key: 'backups', label: 'Backups' },
+  { key: 'favourites', label: 'Favourites' },
   { key: 'integrations', label: 'Integrations' },
   { key: 'calendars', label: 'Calendars' },
 ];
@@ -25,7 +35,28 @@ const SettingsLayout = () => {
     switch (activeSection) {
       case 'account':
         return <AccountPanel />;
-      
+      case 'quick-add':
+        return <QuickAddPanel />;
+      case 'notifications':
+        return <NotificationsPanel />;
+      case 'reminders':
+        return <RemindersPanel />;
+      case 'productivity':
+        return <ProductivityPanel />;
+      case 'subscription':
+        return <SubscriptionPanel />;
+      case 'calendars':
+        return <CalendarsPanel />;
+      case 'general':
+        return <GeneralPanel />;
+      case 'advanced':
+        return <AdvancedPanel />;
+      case 'theme':
+        return <ThemePanel />;
+      case 'favourites':
+        return <FavouritesPanel />;
+      case 'sidebar':
+        return <SidebarPanel />;
       default:
         return <div>Select a section</div>;
     }
