@@ -13,6 +13,13 @@ import Assistant from './pages/Assistant';
 import Filters from './pages/Filters';
 import Landing from './pages/landing';
 import Login from './pages/login';
+import Home from './pages/home';
+import List from './pages/list';
+import Board from './pages/board';
+import Settings from './pages/Inbox';
+import Register from './pages/Register';
+import MyThings from './pages/MyThings';
+import { UserProvider } from './context/UserContext';
 
 const router = createBrowserRouter([
   {
@@ -20,60 +27,33 @@ const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
-      {
-        index: true,
-        element: <Landing />
-      },{
-        path:'inbox' ,
-        element: <Inbox />
-      },
-      {
-        path: 'today',
-        element: <Today />
-      },
-      {
-        path: 'filters',
-        element: <Filters />
-      },
-      {
-        path: 'upcoming',
-        element: <Upcoming />
-      },
-      {
-        path: 'tasks',
-        element: <Tasks />
-      },
-      {
-        path: 'calendar',
-        element: <Calendar />
-      },
-      {
-        path: 'planner',
-        element: <Planner/>
-      },
-      {
-        path: 'stats',
-        element: <Stats />
-      },
-      {
-        path: 'assistant',
-        element: <Assistant />
-      },
-      {
-        path: 'completed',
-        element: <Completed />
-      }
+      { index: true, element: <Landing /> },
+      { path: 'inbox', element: <Inbox /> },
+      { path: 'today', element: <Today /> },
+      { path: 'filters', element: <Filters /> },
+      { path: 'upcoming', element: <Upcoming /> },
+      { path: 'tasks', element: <Tasks /> },
+      { path: 'calendar', element: <Calendar /> },
+      { path: 'planner', element: <Planner /> },
+      { path: 'stats', element: <Stats /> },
+      { path: 'assistant', element: <Assistant /> },
+      { path: 'completed', element: <Completed /> },
+      { path: 'settings', element: <Settings /> },
+      { path: 'mythings', element: <MyThings /> }
     ]
   },
-  {
-    path: '/login',
-    element: <Login />
-  }
+  { path: '/login', element: <Login /> },
+  { path: '/register', element: <Register /> },
+  { path: '/home', element: <Home /> },
+  { path: '/list', element: <List /> },
+  { path: '/board', element: <Board /> }
 ]);
 
 function App() {
   return (
-    <RouterProvider router={router} />
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   );
 }
 

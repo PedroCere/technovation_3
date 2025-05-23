@@ -11,9 +11,9 @@ const AutoPlanner = ({ tasks }) => {
     // Simulación de llamada a API de IA
     setTimeout(() => {
       setSuggestions([
-        { time: '09:00', task: 'Revisar correos importantes' },
-        { time: '11:00', task: 'Trabajar en proyecto clave' },
-        { time: '14:00', task: 'Reunión con equipo' }
+        { time: '09:00', task: 'Check new emails' },
+        { time: '11:00', task: 'Work on "Analize project workflow"' }, 
+        { time: '14:00', task: 'Meeting with team, if possible' },
       ]);
       setIsLoading(false);
     }, 1500);
@@ -27,14 +27,14 @@ const AutoPlanner = ({ tasks }) => {
     <div className="bg-white p-4 rounded-lg shadow border border-gray-100">
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-medium flex items-center gap-2">
-          <FiCalendar className="text-red-500" /> Plan Diario Automático
+          <FiCalendar className="text-red-500" /> Daily Automatic Planner
         </h3>
         <button 
           onClick={generatePlan}
           className="text-sm text-red-500 hover:text-red-600"
           disabled={isLoading}
         >
-          {isLoading ? 'Generando...' : 'Regenerar'}
+          {isLoading ? 'Generating...' : 'Regenerate'}
         </button>
       </div>
 

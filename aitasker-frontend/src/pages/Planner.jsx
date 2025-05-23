@@ -1,56 +1,24 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TaskList from '../features/tasks/TaskList';
 import SmartCalendar from '../features/calendar/SmartCalendar';
 import AutoPlanner from '../features/ai/AutoPlanner';
-
-
-const mockTasks = [
-  {
-    id: 1,
-    title: 'Revisar documentación técnica',
-    description: 'Revisar los últimos cambios en la documentación del API',
-    dueDate: '2024-03-25',
-    priority: 'high',
-    label: 'Trabajo',
-    status: 'in-progress',
-    postponedCount: 0
-  },
-  {
-    id: 2,
-    title: 'Preparar presentación mensual',
-    description: 'Recopilar métricas y preparar slides ejecutivos',
-    dueDate: '2024-03-28',
-    priority: 'medium',
-    label: 'Reuniones',
-    status: 'todo',
-    postponedCount: 2
-  },
-  {
-    id: 3,
-    title: 'Actualizar dependencias del proyecto',
-    description: 'Actualizar paquetes NPM a sus últimas versiones estables',
-    dueDate: '2024-04-01',
-    priority: 'low',
-    label: 'Desarrollo',
-    status: 'done',
-    postponedCount: 1
-  },
-  {
-    id: 4,
-    title: 'Revisar propuesta de diseño UI',
-    description: 'Feedback para el equipo de diseño sobre nuevos componentes',
-    dueDate: '2024-03-26',
-    priority: 'medium',
-    label: 'Revisión',
-    status: 'todo',
-    postponedCount: 3
-  }
-];
+import { getTasks } from '../services/taskService';
 
 const Planner = () => {
   const [view, setView] = useState('list');
-  const [tasks, setTasks] = useState(mockTasks);
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const fetchedTasks = await getTasks();
+        setTasks(fetchedTasks);
+      } catch (error) {
+        console.error('Failed to fetch tasks:', error);
+      }
+    };
+    fetchTasks();
+  }, []);
 
   const calendarEvents = tasks.map(task => ({
     title: task.title,
@@ -75,7 +43,7 @@ const Planner = () => {
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            Lista
+            List
           </button>
           <button 
             onClick={() => setView('calendar')}
@@ -85,7 +53,7 @@ const Planner = () => {
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            Calendario
+            Calendar
           </button>
         </div>
 
@@ -98,19 +66,19 @@ const Planner = () => {
 
       <div className="space-y-6">
         <AutoPlanner tasks={tasks} />
-       <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-          <h3 className="font-medium mb-3">Resumen Semanal</h3>
+        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+          <h3 className="font-medium mb-3">Weekly Summary</h3>
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span>Tareas completadas:</span>
+              <span>Tasks completed:</span>
               <span className="text-red-500">3/5</span>
             </div>
             <div className="flex justify-between">
-              <span>Tiempo promedio:</span>
-              <span className="text-red-500">2.4h/día</span>
+              <span>Average time:</span>
+              <span className="text-red-500">2.4h/day</span>
             </div>
             <div className="flex justify-between">
-              <span>Productividad:</span>
+              <span>Productivity:</span>
               <span className="text-red-500">78%</span>
             </div>
           </div>

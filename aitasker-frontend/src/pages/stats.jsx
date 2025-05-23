@@ -2,39 +2,37 @@ import { FiActivity, FiCheckSquare, FiPieChart, FiCalendar } from 'react-icons/f
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
 const Stats = () => {
- 
   const statsData = {
     completionRate: 75,
     productivityTrend: [65, 59, 80, 81, 56, 55, 40],
     categories: [
-      { name: 'Trabajo', value: 40, color: 'bg-red-500' },
-      { name: 'Personal', value: 30, color: 'bg-red-400' },
-      { name: 'Estudio', value: 20, color: 'bg-red-300' },
-      { name: 'Otros', value: 10, color: 'bg-red-200' }
+      { name: 'Work', value: 40, color: 'bg-blue-500' },
+      { name: 'Personal', value: 30, color: 'bg-green-500' },
+      { name: 'Study', value: 20, color: 'bg-purple-500' },
+      { name: 'Others', value: 10, color: 'bg-yellow-500' }
     ],
     weeklyActivity: {
-      labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
       data: [4, 5, 3, 6, 4, 3, 2]
     }
   };
 
-
   const monthlyProgressData = statsData.productivityTrend.map((value, index) => ({
-    name: `Semana ${index + 1}`,
-    progreso: value
+    name: `Week ${index + 1}`,
+    progress: value
   }));
 
   return (
     <div className="flex justify-center w-full min-h-full p-6">
       <div className="max-w-6xl w-full">
-        <h1 className="text-2xl font-bold mb-6">Estadísticas de Productividad</h1>
+        <h1 className="text-2xl font-bold mb-6">Productivity Stats</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-         
+          {/* Completion Rate Card */}
           <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center gap-3 mb-3">
-              <FiCheckSquare className="w-6 h-6 text-red-500" />
-              <span className="text-sm font-medium">Tareas Completadas</span>
+              <FiCheckSquare className="w-6 h-6 text-green-500" />
+              <span className="text-sm font-medium">Completed Tasks</span>
             </div>
             <div className="text-3xl font-bold text-gray-800">
               {statsData.completionRate}%
@@ -47,11 +45,11 @@ const Stats = () => {
             </div>
           </div>
 
-          {/* Tarjeta Tendencia Productiva */}
+          {/* Productivity Trend Card */}
           <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center gap-3 mb-4">
-              <FiActivity className="w-6 h-6 text-red-500" />
-              <span className="text-sm font-medium">Tendencia Semanal</span>
+              <FiActivity className="w-6 h-6 text-blue-500" />
+              <span className="text-sm font-medium">Weekly Trend</span>
             </div>
             <div className="h-20">
               <svg viewBox="0 0 300 80" className="w-full h-full">
@@ -62,18 +60,18 @@ const Stats = () => {
                     y={80 - value}
                     width="20"
                     height={value}
-                    className="fill-red-500"
+                    className="fill-blue-500"
                   />
                 ))}
               </svg>
             </div>
           </div>
 
-          {/* Tarjeta Distribución */}
+          {/* Category Distribution Card */}
           <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center gap-3 mb-4">
-              <FiPieChart className="w-6 h-6 text-red-500" />
-              <span className="text-sm font-medium">Distribución</span>
+              <FiPieChart className="w-6 h-6 text-purple-500" />
+              <span className="text-sm font-medium">Category Distribution</span>
             </div>
             <div className="space-y-2">
               {statsData.categories.map((category, index) => (
@@ -86,21 +84,21 @@ const Stats = () => {
             </div>
           </div>
 
-          {/* Tarjeta Actividad */}
+          {/* Daily Activity Card */}
           <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center gap-3 mb-4">
-              <FiCalendar className="w-6 h-6 text-red-500" />
-              <span className="text-sm font-medium">Actividad Diaria</span>
+              <FiCalendar className="w-6 h-6 text-yellow-500" />
+              <span className="text-sm font-medium">Daily Activity</span>
             </div>
             <div className="flex gap-1 h-20 items-end">
               {statsData.weeklyActivity.data.map((value, index) => (
                 <div 
                   key={index}
-                  className="flex-1 bg-red-100 hover:bg-red-200 transition-all rounded-t"
+                  className="flex-1 bg-green-200 hover:bg-green-300 transition-all rounded-t"
                   style={{ height: `${value * 10}%` }}
                 >
                   <span className="sr-only">
-                    {statsData.weeklyActivity.labels[index]}: {value} tareas
+                    {statsData.weeklyActivity.labels[index]}: {value} tasks
                   </span>
                 </div>
               ))}
@@ -108,11 +106,11 @@ const Stats = () => {
           </div>
         </div>
 
-        {/* Gráfico principal */}
+        {/* Monthly Progress Chart */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
             <FiActivity className="text-red-500" />
-            Progreso Mensual
+            Monthly Progress
           </h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -121,7 +119,7 @@ const Stats = () => {
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
-                <Bar dataKey="progreso" fill="#ef4444" />
+                <Bar dataKey="progress" fill="#6366F1" />
               </BarChart>
             </ResponsiveContainer>
           </div>

@@ -3,8 +3,8 @@ import { IoRadioButtonOffOutline, IoCheckmarkCircleOutline } from "react-icons/i
 
 const Filters = () => {
   const [filters, setFilters] = useState([
-    { id: 1, text: "Asignada a mí", checked: false },
-    { id: 2, text: "Prioridad 1", checked: false }
+    { id: 1, text: "Analize team Worflow", checked: false },
+    { id: 2, text: "Start the new App", checked: false }
   ]);
 
   const toggleFilter = (filterId) => {

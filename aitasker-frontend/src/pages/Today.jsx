@@ -1,28 +1,35 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { IoRadioButtonOffOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
+import { getTasks } from "../services/taskService";
 
 const Today = () => {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      text: "Task",
-      completed: false,
-      subtasks: []
-    },
-    {
-      id: 2,
-      text: "Overview",
-      completed: true,
-      subtasks: []
-    },
-    {
-      id: 3,
-      text: "Developer publications x.commitmentata adecovate para [ ], [x], [x], [x]",
-      completed: false,
-      subtasks: ["Presently", "Next: 0"]
-    }
-  ]);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const data = await getTasks();
+        // Filter tasks to only those with dueDate equal to today
+        const today = new Date();
+        const todayStr = today.toISOString().split('T')[0]; // YYYY-MM-DD format
+        const filteredTasks = data.filter(task => {
+          if (!task.dueDate) return false;
+          // Compare only date part
+          return task.dueDate.startsWith(todayStr);
+        });
+        setTasks(filteredTasks);
+      } catch (err) {
+        setError("Failed to load tasks");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTasks();
+  }, []);
 
   const toggleTask = (taskId) => {
     setTasks(
@@ -32,15 +39,13 @@ const Today = () => {
     );
   };
 
-  const addNewTask = () => {
-    const newTask = {
-      id: Date.now(),
-      text: "Nueva tarea",
-      completed: false,
-      subtasks: []
-    };
-    setTasks([...tasks, newTask]);
-  };
+  if (loading) {
+    return <div className="flex justify-center w-full min-h-full p-6">Loading tasks...</div>;
+  }
+
+  if (error) {
+    return <div className="flex justify-center w-full min-h-full p-6 text-red-600">{error}</div>;
+  }
 
   return (
     <div className="flex justify-center w-full min-h-full p-6">
@@ -73,10 +78,10 @@ const Today = () => {
                     task.completed ? "line-through opacity-50" : ""
                   }`}
                 >
-                  {task.text}
+                  {task.title || task.text}
                 </p>
 
-                {task.subtasks.length > 0 && (
+                {task.subtasks && task.subtasks.length > 0 && (
                   <div className="flex flex-col mt-1 ml-1 text-xs text-gray-500 space-y-0.5">
                     {task.subtasks.map((sub, index) => (
                       <div key={index} className="flex items-center gap-2">
@@ -89,13 +94,6 @@ const Today = () => {
               </div>
             </div>
           ))}
-
-          <button
-            onClick={addNewTask}
-            className="mt-4 text-red-500 hover:text-red-600 text-sm font-medium flex items-center gap-2 px-4 py-1 rounded"
-          >
-            <span className="text-xl">+</span> Add task
-          </button>
         </div>
       </div>
     </div>
