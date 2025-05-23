@@ -1,4 +1,3 @@
-// features/tasks/TaskForm.jsx
 import { useState } from 'react';
 import { AiOutlineCalendar, AiOutlineFlag, AiOutlineClockCircle } from 'react-icons/ai';
 
@@ -37,26 +36,41 @@ const TaskForm = ({ onClose, onSubmit, initialData }) => {
           <input
             type="text"
             placeholder="Título de la tarea"
-          className="w-full p-2 mb-4 border-b-2 border-gray-200 focus:border-red-500 outline-none bg-white text-black"
+            className="w-full p-2 mb-4 border-b-2 border-gray-200 focus:border-red-500 outline-none bg-white text-black"
             value={formData.title}
             onChange={(e) => setFormData({...formData, title: e.target.value})}
           />
 
-          <div className="flex gap-2 mb-4">
-            <button type="button" className="task-form-button">
-              <AiOutlineCalendar className="mr-1" /> Fecha
-            </button>
-            <button type="button" className="task-form-button">
-              <AiOutlineFlag className="mr-1" /> Prioridad
-            </button>
-            <button type="button" className="task-form-button">
+          <div className="flex gap-4 mb-4">
+            <div className="flex items-center gap-2">
+              <AiOutlineCalendar className="mr-1" />
+              <input
+                type="date"
+                className="border rounded p-1 text-black"
+                value={formData.dueDate ? formData.dueDate.split('T')[0] : ''}
+                onChange={(e) => setFormData({...formData, dueDate: e.target.value})}
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <AiOutlineFlag className="mr-1" />
+              <select
+                className="border rounded p-1 text-black"
+                value={formData.priority}
+                onChange={(e) => setFormData({...formData, priority: e.target.value})}
+              >
+                <option value="low">Baja</option>
+                <option value="medium">Media</option>
+                <option value="high">Alta</option>
+              </select>
+            </div>
+            <button type="button" className="task-form-button flex items-center gap-1">
               <AiOutlineClockCircle className="mr-1" /> Recordatorio
             </button>
           </div>
 
           <textarea
             placeholder="Descripción..."
-          className="w-full p-2 mb-4 border rounded-lg h-32 bg-white text-black"
+            className="w-full p-2 mb-4 border rounded-lg h-32 bg-white text-black"
             value={formData.description}
             onChange={(e) => setFormData({...formData, description: e.target.value})}
           />
@@ -82,7 +96,7 @@ const TaskForm = ({ onClose, onSubmit, initialData }) => {
                 type="submit"
                 className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
               >
-                Crear Tarea
+                {initialData ? 'Actualizar Tarea' : 'Crear Tarea'}
               </button>
             </div>
           </div>

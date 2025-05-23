@@ -1,46 +1,47 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoRadioButtonOffOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
+import { getTasks } from "../services/taskService";
+import { format, parseISO } from "date-fns";
 
 const Upcoming = () => {
-  const [days, setDays] = useState([
-    {
-      date: "May 21 - Today - Wednesday",
-      tasks: [
-        { id: 1, text: "Descargar aplicaciones y complementos adicionales para", completed: false },
-        { id: 2, text: "Yes", completed: true },
-        { id: 3, text: "Y", completed: false }
-      ]
-    },
-    {
-      date: "May 22 - Tomorrow - Thursday",
-      tasks: []
-    },
-    {
-      date: "May 23 - Friday",
-      tasks: []
-    },
-    {
-      date: "May 24 - Saturday",
-      tasks: []
-    },
-    {
-      date: "May 25 - Sunday",
-      tasks: [
-        { id: 4, text: "Hacer una revisión semanal de mis tareas y objetivos", completed: false },
-        { id: 5, text: "No", completed: false },
-        { id: 6, text: "Mis Cosas", completed: false },
-        { id: 7, text: "/ Ruinas", completed: false }
-      ]
-    },
-    {
-      date: "May 26 - Monday",
-      tasks: []
-    }
-  ]);
+  const [days, setDays] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const data = await getTasks();
+        // Group tasks by dueDate
+        const grouped = data.reduce((acc, task) => {
+          const dateKey = task.dueDate ? format(parseISO(task.dueDate), "MMM dd - EEEE") : "No Date";
+          if (!acc[dateKey]) {
+            acc[dateKey] = [];
+          }
+          acc[dateKey].push(task);
+          return acc;
+        }, {});
+
+        // Convert to array of {date, tasks}
+        const daysArray = Object.entries(grouped).map(([date, tasks]) => ({
+          date,
+          tasks
+        }));
+
+        setDays(daysArray);
+      } catch (err) {
+        setError("Failed to load tasks");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTasks();
+  }, []);
 
   const toggleTask = (dayIndex, taskId) => {
     const updatedDays = [...days];
-    updatedDays[dayIndex].tasks = updatedDays[dayIndex].tasks.map(task => 
+    updatedDays[dayIndex].tasks = updatedDays[dayIndex].tasks.map(task =>
       task.id === taskId ? { ...task, completed: !task.completed } : task
     );
     setDays(updatedDays);
@@ -49,13 +50,21 @@ const Upcoming = () => {
   const addNewTask = (dayIndex) => {
     const newTask = {
       id: Date.now(),
-      text: "Nueva tarea",
+      title: "Nueva tarea",
       completed: false
     };
     const updatedDays = [...days];
     updatedDays[dayIndex].tasks.push(newTask);
     setDays(updatedDays);
   };
+
+  if (loading) {
+    return <div className="flex justify-center w-full min-h-full p-6">Loading tasks...</div>;
+  }
+
+  if (error) {
+    return <div className="flex justify-center w-full min-h-full p-6 text-red-600">{error}</div>;
+  }
 
   return (
     <div className="flex justify-center w-full min-h-full p-6">
@@ -104,7 +113,7 @@ const Upcoming = () => {
                       )}
                     </button>
                     <span className={`text-sm ${task.completed ? 'line-through opacity-50' : 'text-gray-700'}`}>
-                      {task.text}
+                      {task.title || task.text}
                     </span>
                   </div>
                 ))}
