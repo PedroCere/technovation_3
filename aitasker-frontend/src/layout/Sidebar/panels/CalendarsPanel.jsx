@@ -59,27 +59,27 @@ const CalendarsPanel = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto bg-white p-6 rounded-xl shadow space-y-6 relative">
+    <div className="max-w-5xl mx-auto p-6 rounded-xl shadow space-y-6 relative" style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <CalendarDays className="w-6 h-6 text-red-500" />
-          <h2 className="text-xl font-bold text-gray-800">
+          <CalendarDays className="w-6 h-6" style={{ color: 'var(--primary-color)' }} />
+          <h2 className="text-xl font-bold" style={{ color: 'var(--text-color)' }}>
             Calendar – {monthName} {currentYear}
           </h2>
         </div>
         <div className="flex gap-2">
-          <button onClick={goToPreviousMonth} className="p-1 rounded hover:bg-gray-100">
-            <ChevronLeft className="w-5 h-5 text-gray-600" />
+          <button onClick={goToPreviousMonth} className="p-1 rounded hover:bg-[var(--button-bg-hover)]" style={{ backgroundColor: 'var(--button-bg)' }}>
+            <ChevronLeft className="w-5 h-5" style={{ color: 'var(--text-color)' }} />
           </button>
-          <button onClick={goToNextMonth} className="p-1 rounded hover:bg-gray-100">
-            <ChevronRight className="w-5 h-5 text-gray-600" />
+          <button onClick={goToNextMonth} className="p-1 rounded hover:bg-[var(--button-bg-hover)]" style={{ backgroundColor: 'var(--button-bg)' }}>
+            <ChevronRight className="w-5 h-5" style={{ color: 'var(--text-color)' }} />
           </button>
         </div>
       </div>
 
       <div className="grid grid-cols-7 gap-4 text-sm text-center">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
-          <div key={d} className="font-medium text-gray-500">{d}</div>
+          <div key={d} className="font-medium" style={{ color: 'var(--button-text)' }}>{d}</div>
         ))}
 
         {days.map((day, index) => {
@@ -88,11 +88,16 @@ const CalendarsPanel = () => {
             <div
               key={index}
               className={`h-28 border rounded-lg p-2 text-left text-xs cursor-pointer transition ${
-                day ? 'bg-gray-50 hover:bg-gray-100' : 'bg-transparent cursor-default'
-              } ${hasTasks ? 'border-red-400' : 'border-gray-200'}`}
+                day ? 'hover:bg-[var(--button-bg-hover)]' : 'bg-transparent cursor-default'
+              }`}
+              style={{
+                backgroundColor: day ? 'var(--button-bg)' : 'transparent',
+                borderColor: hasTasks ? 'var(--primary-color)' : 'var(--border-color)',
+                color: 'var(--text-color)'
+              }}
               onClick={() => day && hasTasks && setSelectedDay(day)}
             >
-              {day && <div className="font-bold text-gray-700">{day}</div>}
+              {day && <div className="font-bold" style={{ color: 'var(--text-color)' }}>{day}</div>}
             </div>
           );
         })}
@@ -100,18 +105,19 @@ const CalendarsPanel = () => {
 
       {selectedDay && tasksByDate[selectedDay] && (
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="bg-white w-full max-w-md rounded-xl shadow-xl p-6 relative">
+          <div className="w-full max-w-md rounded-xl shadow-xl p-6 relative" style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}>
             <button
               onClick={() => setSelectedDay(null)}
-              className="absolute top-3 right-3 text-gray-400 hover:text-red-600"
+              className="absolute top-3 right-3 hover:text-red-600"
+              style={{ color: 'var(--button-text)' }}
             >
               <X className="w-5 h-5" />
             </button>
             <h3 className="text-lg font-semibold mb-4">Tasks for {monthName} {selectedDay}, {currentYear}</h3>
             <ul className="space-y-2">
               {tasksByDate[selectedDay].map((task, i) => (
-                <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
-                  <CalendarClock className="w-4 h-4 text-blue-500" /> {task.title}
+                <li key={i} className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-color)' }}>
+                  <CalendarClock className="w-4 h-4" style={{ color: 'var(--primary-color)' }} /> {task.title}
                 </li>
               ))}
             </ul>

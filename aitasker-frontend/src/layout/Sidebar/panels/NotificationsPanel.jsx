@@ -34,16 +34,17 @@ const NotificationsPanel = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow">
+    <div className="max-w-2xl mx-auto p-6 rounded-xl shadow" style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Bell className="w-6 h-6 text-red-500" />
-          <h2 className="text-xl font-bold text-gray-800">Your Notifications</h2>
+          <Bell className="w-6 h-6" style={{ color: 'var(--primary-color)' }} />
+          <h2 className="text-xl font-bold" style={{ color: 'var(--text-color)' }}>Your Notifications</h2>
         </div>
         {notifications.length > 0 && (
           <button
             onClick={clearAll}
-            className="text-sm text-gray-500 hover:text-red-600 flex items-center gap-1"
+            className="text-sm flex items-center gap-1 hover:text-red-600"
+            style={{ color: 'var(--button-text)' }}
           >
             <Trash2 className="w-4 h-4" /> Clear all
           </button>
@@ -51,25 +52,27 @@ const NotificationsPanel = () => {
       </div>
 
       {notifications.length === 0 ? (
-        <p className="text-sm text-gray-500 text-center">You're all caught up 🎉</p>
+        <p className="text-sm text-center" style={{ color: 'var(--button-text)' }}>You're all caught up 🎉</p>
       ) : (
         <ul className="space-y-4">
           {notifications.map((n) => (
             <li
               key={n.id}
-              className="flex items-start justify-between bg-gray-50 p-3 rounded-lg border border-gray-200"
+              className="flex items-start justify-between p-3 rounded-lg border"
+              style={{ backgroundColor: 'var(--button-bg)', borderColor: 'var(--border-color)', color: 'var(--text-color)' }}
             >
               <div className="flex gap-3">
-                <div>{n.icon}</div>
+                <div>{React.cloneElement(n.icon, { style: { color: 'var(--primary-color)' } })}</div>
                 <div>
-                  <h4 className="font-semibold text-sm text-gray-800">{n.title}</h4>
-                  <p className="text-xs text-gray-500">{n.description}</p>
+                  <h4 className="font-semibold text-sm" style={{ color: 'var(--text-color)' }}>{n.title}</h4>
+                  <p className="text-xs" style={{ color: 'var(--button-text)' }}>{n.description}</p>
                 </div>
               </div>
               <button
                 onClick={() => removeNotification(n.id)}
-                className="text-gray-400 hover:text-red-500"
+                className="hover:text-red-500"
                 title="Delete"
+                style={{ color: 'var(--button-text)' }}
               >
                 <Trash2 className="w-4 h-4" />
               </button>

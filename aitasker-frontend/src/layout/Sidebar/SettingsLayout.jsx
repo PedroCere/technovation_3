@@ -58,25 +58,27 @@ const SettingsLayout = () => {
       case 'sidebar':
         return <SidebarPanel />;
       default:
-        return <div>Select a section</div>;
+        return <div className="text-[var(--text-color)]">Select a section</div>;
     }
   };
 
   return (
-    <div className="flex w-full h-full">
+    <div className="flex w-full h-full text-[var(--text-color)] transition-colors">
       {/* Sidebar */}
-      <div className="w-64 bg-white border-r p-4">
+      <div className="w-64 bg-[var(--bg-color)] border-r border-[var(--border-color)] p-4">
         <input
           type="text"
           placeholder="Search"
-          className="w-full p-2 mb-4 text-sm border rounded bg-gray-100"
+          className="w-full p-2 mb-4 text-sm rounded bg-[var(--input-bg)] text-[var(--text-color)] border border-[var(--input-border)] placeholder-opacity-70"
         />
         <ul className="space-y-1">
           {sections.map((s) => (
             <li
               key={s.key}
-              className={`p-2 cursor-pointer rounded ${
-                activeSection === s.key ? 'bg-red-100 text-red-600 font-medium' : 'hover:bg-gray-100'
+              className={`p-2 cursor-pointer rounded transition-colors ${
+                activeSection === s.key
+                  ? 'bg-[var(--primary-color)] text-white font-medium'
+                  : 'hover:bg-[var(--button-bg-hover)]'
               }`}
               onClick={() => setActiveSection(s.key)}
             >
@@ -84,13 +86,15 @@ const SettingsLayout = () => {
             </li>
           ))}
         </ul>
-        <button className="mt-4 text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1">
+        <button className="mt-4 text-sm text-[var(--text-color)]/70 hover:text-[var(--primary-color)] flex items-center gap-1 transition-colors">
           <span>＋</span> Add team
         </button>
       </div>
 
       {/* Panel de contenido */}
-      <div className="flex-1 bg-gray-50 p-8 overflow-auto">{renderPanel()}</div>
+      <div className="flex-1 bg-[var(--bg-color)] p-8 overflow-auto border-l border-[var(--border-color)]">
+        {renderPanel()}
+      </div>
     </div>
   );
 };

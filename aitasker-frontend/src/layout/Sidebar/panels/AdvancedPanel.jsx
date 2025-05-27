@@ -17,10 +17,15 @@ const AdvancedPanel = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow space-y-6">
+    <div
+      className="max-w-3xl mx-auto p-6 rounded-xl shadow space-y-6"
+      style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}
+    >
       <div className="flex items-center gap-2 mb-2">
-        <Settings2 className="w-6 h-6 text-red-500" />
-        <h2 className="text-xl font-bold text-gray-800">Advanced Settings</h2>
+        <Settings2 className="w-6 h-6" style={{ color: 'var(--primary-color)' }} />
+        <h2 className="text-xl font-bold" style={{ color: 'var(--text-color)' }}>
+          Advanced Settings
+        </h2>
       </div>
 
       <div className="space-y-4 text-sm">
@@ -60,12 +65,13 @@ const AdvancedPanel = () => {
           />
         </label>
 
-        <div className="pt-4 border-t border-gray-200">
+        <div className="pt-4 border-t" style={{ borderColor: 'var(--border-color)' }}>
           <button
             onClick={resetSettings}
-            className="flex items-center gap-2 text-sm text-red-600 hover:text-red-800"
+            className="flex items-center gap-2 text-sm hover:text-red-800"
+            style={{ color: 'var(--text-color)' }}
           >
-            <AlertTriangle className="w-4 h-4" />
+            <AlertTriangle className="w-4 h-4" style={{ color: 'var(--primary-color)' }} />
             Reset all advanced settings
           </button>
         </div>

@@ -24,19 +24,19 @@ const SidebarPanel = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto bg-white dark:bg-gray-900 p-6 rounded-xl shadow space-y-6">
+    <div className="max-w-xl mx-auto p-6 rounded-xl shadow space-y-6" style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}>
       <div className="flex items-center gap-2">
-        <Layout className="w-6 h-6 text-red-500 dark:text-white" />
-        <h2 className="text-xl font-bold text-gray-800 dark:text-white">Sidebar Customization</h2>
+        <Layout className="w-6 h-6" style={{ color: 'var(--primary-color)' }} />
+        <h2 className="text-xl font-bold" style={{ color: 'var(--text-color)' }}>Sidebar Customization</h2>
       </div>
 
-      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+      <p className="text-sm mb-2" style={{ color: 'var(--button-text)' }}>
         Enable or disable the items you want to see in your sidebar.
       </p>
 
       <ul className="space-y-2">
         {defaultItems.map((item) => (
-          <li key={item.key} className="flex items-center justify-between text-sm text-gray-800 dark:text-gray-200">
+          <li key={item.key} className="flex items-center justify-between text-sm" style={{ color: 'var(--text-color)' }}>
             <span>{item.label}</span>
             <input
               type="checkbox"

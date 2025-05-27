@@ -27,28 +27,30 @@ const RemindersPanel = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow">
+    <div className="max-w-2xl mx-auto p-6 rounded-xl shadow" style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}>
       <div className="flex items-center gap-2 mb-4">
-        <AlarmClock className="w-6 h-6 text-red-500" />
-        <h2 className="text-xl font-bold text-gray-800">Task Reminders</h2>
+        <AlarmClock className="w-6 h-6" style={{ color: 'var(--primary-color)' }} />
+        <h2 className="text-xl font-bold" style={{ color: 'var(--text-color)' }}>Task Reminders</h2>
       </div>
       {reminders.length === 0 ? (
-        <p className="text-sm text-gray-500 text-center">No reminders set ⏳</p>
+        <p className="text-sm text-center" style={{ color: 'var(--button-text)' }}>No reminders set ⏳</p>
       ) : (
         <ul className="space-y-4">
           {reminders.map((r) => (
             <li
               key={r.id}
-              className="flex items-center justify-between bg-gray-50 p-3 rounded-lg border border-gray-200"
+              className="flex items-center justify-between p-3 rounded-lg border"
+              style={{ backgroundColor: 'var(--button-bg)', borderColor: 'var(--border-color)', color: 'var(--text-color)' }}
             >
               <div>
-                <h4 className="text-sm font-medium text-gray-800">{r.task}</h4>
-                <p className="text-xs text-gray-500">{r.time}</p>
+                <h4 className="text-sm font-medium" style={{ color: 'var(--text-color)' }}>{r.task}</h4>
+                <p className="text-xs" style={{ color: 'var(--button-text)' }}>{r.time}</p>
               </div>
               <button
                 onClick={() => removeReminder(r.id)}
-                className="text-gray-400 hover:text-red-500"
+                className="hover:text-red-500"
                 title="Delete"
+                style={{ color: 'var(--button-text)' }}
               >
                 <Trash2 className="w-4 h-4" />
               </button>
