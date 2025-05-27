@@ -1,87 +1,85 @@
-🧠 AItasker - AI-Powered Task Management System
-An intelligent platform to organize, prioritize, and schedule daily tasks using artificial intelligence.
+🧠 AITasker – AI-Powered Task Management System
+AITasker es una plataforma inteligente para organizar, priorizar y programar tus tareas diarias, combinando automatización y analítica con el poder de la inteligencia artificial.
 
-🌟 Key Features
+🌟 Características Principales
 📌 Smart Task Management
-Create, edit, and delete tasks
+Crear, editar y eliminar tareas fácilmente
 
-Import from Google Calendar, Outlook, and more
+Importar desde Google Calendar, Outlook, entre otros
 
-Categories, tags, subtasks, and recurring tasks
+Soporte para categorías, etiquetas, subtareas y tareas recurrentes
 
-🧠 AI-Powered Automation
-Automatic prioritization based on urgency and habits
+🧠 Automatización con IA
+Priorización automática basada en urgencia, hábitos y patrones de uso
 
-Optimal time slot suggestions
+Sugerencia de horarios óptimos según tu calendario
 
-Auto-rescheduling for incomplete tasks
+Reprogramación inteligente de tareas incompletas
 
-🔔 Reminders & Automation
-Push, email, and popup notifications
+🔔 Recordatorios & Automatización
+Notificaciones por push, email y modal emergente
 
-Focus time blocks for deep work
+Bloques de focus time para máxima concentración
 
-📊 Productivity Analytics
-Time spent by category
+Automatización de rutinas diarias
 
-Weekly/monthly completion metrics
+📊 Productividad & Analítica
+Visualización del tiempo invertido por categoría
 
-Heatmaps and focus graphs
+Métricas de completado semanales/mensuales
 
-🌐 Premium Extras
-Multi-language with instant translation
+Mapas de calor y gráficos de enfoque
 
-Voice assistant and mobile sync
+🌐 Extras Premium
+Soporte multilenguaje con traducción instantánea
 
-GPT integration for daily planning
+Asistente de voz integrado
+
+Planificación diaria con GPT-powered assistant
 
 🛠️ Tech Stack
-Frontend
+🖼️ Frontend
 ⚛️ React 18 + Vite
 
 🎨 TailwindCSS
 
 🚀 JavaScript + Semantic HTML
 
-✨ Framer Motion (animations)
+✨ Framer Motion para animaciones fluidas
 
-Backend
+🔧 Backend
 ☕ Java 21 + Spring Boot 3
 
-🏗️ Hexagonal Architecture (Clean Architecture)
+🧱 Arquitectura Hexagonal (Clean Architecture)
 
-🧩 Microservices
+🧩 Microservicios con enfoque escalable
 
-🌿 Git Branch Strategy
-Structure
-main                → Stable releases (production)  
-└── develop         → Continuous integration (staging)  
-    ├── frontend    → Frontend base branch  
-    │   ├── pedro_front  
-    │   └── gabriel_front  
-    └── backend     → Backend base branch  
-        ├── mateo_backend  
-        └── pedro_backend  
-Workflow
-Sync base branch:
+🌿 Estrategia de Ramas (Git Branch Strategy)
 
-bash
+main         → Releases estables (producción)
+└── develop  → Integración continua (staging)
+    ├── frontend       → Rama base del frontend
+    │   ├── pedro_front
+    │   └── gabriel_front
+    └── backend        → Rama base del backend
+        ├── mateo_backend
+        └── pedro_backend
+🧪 Flujo de Trabajo
+# Cambiar a la rama base
 git checkout frontend
 git pull origin frontend
-Create feature branch:
 
-bash
-git checkout -b feature/your-feature
-Semantic commits:
+# Crear una nueva rama para la feature
+git checkout -b feature/mi-feature
 
-bash
+# Realizar commit semántico
 git commit -m "feat(scheduler): add smart time picker UI"
-Push & open PR:
 
-bash
-git push origin feature/your-feature
+# Subir cambios y abrir Pull Request
+git push origin feature/mi-feature
 🎨 UI/UX Design
-Color Palette
+🎨 Paleta de Colores
+
 {
   "primary": "#06B6D4",
   "accent": "#F472B6",
@@ -91,22 +89,23 @@ Color Palette
   "success": "#22C55E",
   "danger": "#EF4444"
 }
-Components
-🧾 Rounded task cards
+🧾 Componentes Destacados
+Tarjetas de tareas con diseño redondeado
 
-🗓️ Smart calendar with drag & drop
+🗓️ Calendario inteligente con drag & drop
 
-✨ AI-generated smart labels
+✨ Etiquetas generadas automáticamente por IA
 
 🚀 Getting Started
-Clone the repo:
 
+🔧 Clonar el repositorio
 git clone https://github.com/your-repo/aitasker.git
-Install dependencies:
 
-cd aitasker && npm install
-Run dev server:
-
+📦 Instalar dependencias
+cd aitasker
+npm install
+▶️ Ejecutar el servidor de desarrollo
 npm run dev
-
-📄 License MIT ©
+📄 Licencia
+MIT © Technovation
+Este proyecto está disponible bajo la licencia MIT. Puedes usar, modificar y distribuir libremente este software.
