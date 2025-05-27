@@ -63,7 +63,7 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
 
   return (
     <>
-      <aside className={`${collapsed ? 'w-16' : 'w-72'} transition-all h-screen flex flex-col bg-[#fefcfb] text-black font-sans text-sm`}>
+      <aside className={`${collapsed ? 'w-16' : 'w-72'} transition-all h-screen flex flex-col bg-[var(--bg-color)] text-[var(--text-color)] font-sans text-sm`}>
         
         <SidebarHeader
           collapsed={collapsed}
@@ -78,8 +78,9 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
             <SidebarMenu
               setShowAddTaskModal={setShowAddTaskModal}
               setShowSearchMenu={setShowSearchMenu}
+              primaryColor="var(--primary-color)"
             />
-            <SidebarProjects />
+            <SidebarProjects primaryColor="var(--primary-color)" />
           </>
         )}
       </aside>

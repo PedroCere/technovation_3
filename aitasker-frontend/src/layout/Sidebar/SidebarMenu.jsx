@@ -23,7 +23,7 @@ const menuItems = [
   { name: 'Assistant', icon: Bot, path: '/assistant' },
 ];
 
-const SidebarMenu = ({ setShowAddTaskModal, setShowSearchMenu }) => {
+const SidebarMenu = ({ setShowAddTaskModal, setShowSearchMenu, primaryColor = 'var(--primary-color)' }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -42,7 +42,7 @@ const SidebarMenu = ({ setShowAddTaskModal, setShowSearchMenu }) => {
   };
 
   return (
-    <ul className="space-y-1 px-2">
+    <ul className="space-y-1 px-2 text-[var(--text-color)]">
       {menuItems.map((item, i) => {
         const Icon = item.icon;
         const active = location.pathname === item.path;
@@ -51,11 +51,11 @@ const SidebarMenu = ({ setShowAddTaskModal, setShowSearchMenu }) => {
           <li
             key={i}
             onClick={() => handleClick(item)}
-            className={`flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer hover:bg-red-100 ${
-              active ? 'bg-red-100 text-red-700' : 'text-gray-700'
+            className={`flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer hover:bg-[${primaryColor}33] ${
+              active ? `bg-[${primaryColor}33] text-[${primaryColor}]` : 'text-[var(--text-color)]'
             }`}
           >
-            <Icon className={`w-4 h-4 ${item.name === 'Add task' ? 'text-red-500' : 'text-gray-500'}`} />
+            <Icon className={`w-4 h-4 ${item.name === 'Add task' ? `text-[${primaryColor}]` : 'text-[var(--text-color)]'}`} />
             <span className="text-sm">{item.name}</span>
           </li>
         );

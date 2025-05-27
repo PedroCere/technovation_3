@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { FiMic, FiSend } from 'react-icons/fi';
 import { getTasks } from '../services/taskService';
-import { getOptimizationAdvice, getAntiProcrastinationAdvice } from '../services/adviceService';
+import {
+  getOptimizationAdvice,
+  getAntiProcrastinationAdvice
+} from '../services/adviceService';
 
 const Assistant = () => {
   const [query, setQuery] = useState('');
@@ -16,7 +19,10 @@ const Assistant = () => {
         const data = await getTasks();
         setTasks(data);
       } catch (err) {
-        setMessages(prev => [...prev, { text: 'Failed to load your tasks.', fromAI: true }]);
+        setMessages(prev => [
+          ...prev,
+          { text: 'Failed to load your tasks.', fromAI: true }
+        ]);
       }
     };
     fetchTasks();
@@ -30,7 +36,10 @@ const Assistant = () => {
     setMessages(prev => [...prev, userMessage]);
     setQuery('');
 
-    const normalizedQuery = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const normalizedQuery = query
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
 
     try {
       if (normalizedQuery.includes('optimize') || normalizedQuery.includes('optimization')) {
@@ -43,25 +52,31 @@ const Assistant = () => {
             phoneUsage: {}
           },
           freeTime: [
-            { day: "MONDAY", start: "18:00", end: "20:00" }
+            { day: 'MONDAY', start: '18:00', end: '20:00' }
           ]
         };
         const response = await getAntiProcrastinationAdvice(dummyRequest);
         setMessages(prev => [...prev, { text: response.advice, fromAI: true }]);
       } else {
-        setMessages(prev => [...prev, {
-          text: "Sorry, I didn't understand. Try asking about optimization or anti-procrastination.",
-          fromAI: true
-        }]);
+        setMessages(prev => [
+          ...prev,
+          {
+            text: "Sorry, I didn't understand. Try asking about optimization or anti-procrastination.",
+            fromAI: true
+          }
+        ]);
       }
     } catch (err) {
-      setMessages(prev => [...prev, { text: 'Something went wrong. Please try again later.', fromAI: true }]);
+      setMessages(prev => [
+        ...prev,
+        { text: 'Something went wrong. Please try again later.', fromAI: true }
+      ]);
     }
   };
 
   return (
-    <div className="bg-white rounded-lg shadow overflow-hidden h-full flex flex-col">
-      <div className="p-4 border-b">
+    <div className="rounded-lg shadow overflow-hidden h-full flex flex-col bg-[var(--bg-color)] text-[var(--text-color)] transition-colors">
+      <div className="p-4 border-b border-[var(--border-color)]">
         <h3 className="font-medium">Productivity Assistant</h3>
       </div>
 
@@ -69,26 +84,38 @@ const Assistant = () => {
         {messages.map((msg, i) => (
           <div
             key={i}
-            className={`p-3 rounded-lg ${msg.fromAI ? 'bg-gray-100' : 'bg-blue-50 text-black ml-auto max-w-xs'}`}
+            className={`p-3 rounded-lg max-w-xs ${
+              msg.fromAI
+                ? 'bg-[var(--button-bg)] text-[var(--text-color)]'
+                : 'bg-[var(--primary-color)] text-white ml-auto'
+            }`}
           >
             {msg.text}
           </div>
         ))}
       </div>
 
-      <div className="p-4 border-t">
+      <div className="p-4 border-t border-[var(--border-color)]">
         <form onSubmit={handleSubmit} className="flex gap-2">
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Ask something like 'Give me optimization tips'"
-            className="flex-1 p-2 border rounded-lg text-black bg-blue-50 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="flex-1 p-2 rounded-lg bg-[var(--input-bg)] text-[var(--text-color)] border border-[var(--input-border)] placeholder-opacity-70 focus:ring-2 focus:ring-[var(--primary-color)] outline-none transition"
           />
-          <button type="button" className="p-2 text-gray-500 hover:text-red-500">
+          <button
+            type="button"
+            className="p-2 text-[var(--text-color)]/60 hover:text-[var(--primary-color)]"
+            title="Voice input (not implemented)"
+          >
             <FiMic />
           </button>
-          <button type="submit" className="p-2 text-red-500 hover:text-red-600">
+          <button
+            type="submit"
+            className="p-2 text-[var(--primary-color)] hover:text-[var(--primary-color-hover)]"
+            title="Send"
+          >
             <FiSend />
           </button>
         </form>
