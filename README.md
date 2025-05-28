@@ -1,70 +1,62 @@
-🧠 AITasker – AI-Powered Task Management System
+# AITasker – AI-Powered Task Management System
+
 AITasker es una plataforma inteligente para organizar, priorizar y programar tus tareas diarias, combinando automatización y analítica con el poder de la inteligencia artificial.
 
-🌟 Características Principales
-📌 Smart Task Management
-Crear, editar y eliminar tareas fácilmente
+# Demo https://technovation-3-chi.vercel.app/
 
-Importar desde Google Calendar, Outlook, entre otros
+## 🌟 Características Principales
 
-Soporte para categorías, etiquetas, subtareas y tareas recurrentes
+### 📌 Smart Task Management
+- Crear, editar y eliminar tareas fácilmente
+- Importar desde Google Calendar, Outlook, entre otros
+- Soporte para categorías, etiquetas, subtareas y tareas recurrentes
 
-🧠 Automatización con IA
-Priorización automática basada en urgencia, hábitos y patrones de uso
+### 🧠 Automatización con IA
+- Priorización automática basada en urgencia, hábitos y patrones de uso
+- Sugerencia de horarios óptimos según tu calendario
+- Reprogramación inteligente de tareas incompletas
 
-Sugerencia de horarios óptimos según tu calendario
+### 🔔 Recordatorios & Automatización
+- Notificaciones por push, email y modal emergente
+- Bloques de focus time para máxima concentración
+- Automatización de rutinas diarias
 
-Reprogramación inteligente de tareas incompletas
+### 📊 Productividad & Analítica
+- Visualización del tiempo invertido por categoría
+- Métricas de completado semanales/mensuales
+- Mapas de calor y gráficos de enfoque
 
-🔔 Recordatorios & Automatización
-Notificaciones por push, email y modal emergente
+### 🌐 Extras Premium
+- Soporte multilenguaje con traducción instantánea
+- Asistente de voz integrado
+- Planificación diaria con GPT-powered assistant
 
-Bloques de focus time para máxima concentración
+## 🛠️ Tech Stack
 
-Automatización de rutinas diarias
+### 🖼️ Frontend
+- ⚛️ React 18 + Vite
+- 🎨 TailwindCSS
+- 🚀 JavaScript + Semantic HTML
+- ✨ Framer Motion para animaciones fluidas
 
-📊 Productividad & Analítica
-Visualización del tiempo invertido por categoría
+### 🔧 Backend
+- ☕ Java 21 + Spring Boot 3
+- 🧱 Arquitectura Hexagonal (Clean Architecture)
+- 🧩 Microservicios con enfoque escalable
 
-Métricas de completado semanales/mensuales
+## 🌿 Estrategia de Ramas (Git Branch Strategy)
+main → Releases estables (producción)
+└── develop → Integración continua (staging)
+├── frontend → Rama base del frontend
+│ ├── pedro_front
+│ └── gabriel_front
+└── backend → Rama base del backend
+├── mateo_backend
+└── pedro_backend
 
-Mapas de calor y gráficos de enfoque
 
-🌐 Extras Premium
-Soporte multilenguaje con traducción instantánea
+## 🧪 Flujo de Trabajo
 
-Asistente de voz integrado
-
-Planificación diaria con GPT-powered assistant
-
-🛠️ Tech Stack
-🖼️ Frontend
-⚛️ React 18 + Vite
-
-🎨 TailwindCSS
-
-🚀 JavaScript + Semantic HTML
-
-✨ Framer Motion para animaciones fluidas
-
-🔧 Backend
-☕ Java 21 + Spring Boot 3
-
-🧱 Arquitectura Hexagonal (Clean Architecture)
-
-🧩 Microservicios con enfoque escalable
-
-🌿 Estrategia de Ramas (Git Branch Strategy)
-
-main         → Releases estables (producción)
-└── develop  → Integración continua (staging)
-    ├── frontend       → Rama base del frontend
-    │   ├── pedro_front
-    │   └── gabriel_front
-    └── backend        → Rama base del backend
-        ├── mateo_backend
-        └── pedro_backend
-🧪 Flujo de Trabajo
 # Cambiar a la rama base
 git checkout frontend
 git pull origin frontend
@@ -97,14 +89,15 @@ Tarjetas de tareas con diseño redondeado
 ✨ Etiquetas generadas automáticamente por IA
 
 🚀 Getting Started
-
 🔧 Clonar el repositorio
-git clone https://github.com/your-repo/aitasker.git
 
+git clone https://github.com/PedroCere/technovation_3/aitasker.git
 📦 Instalar dependencias
+
 cd aitasker
 npm install
 ▶️ Ejecutar el servidor de desarrollo
+
 npm run dev
 📄 Licencia
 MIT © Technovation
