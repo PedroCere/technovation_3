@@ -54,7 +54,7 @@ export default function Landing() {
   };
 
   return (
-    <section className="relative bg-[var(--bg-color)] text-[var(--text-color)] min-h-screen transition-colors overflow-hidden">
+    <section className="relative bg-[var(--bg-color)] text-[var(--text-color)] flex flex-col transition-colors">
       {/* Fondo animado */}
       <Particles
         id="tsparticles"
@@ -64,7 +64,7 @@ export default function Landing() {
       />
 
       {/* CONTENIDO PRINCIPAL */}
-      <div className="relative z-10 px-6 py-8">
+      <div className="relative z-10 px-6 py-8 flex-grow">
         {/* NAVBAR */}
         <div className="max-w-7xl mx-auto flex justify-between items-center mb-16">
           <span
@@ -196,7 +196,7 @@ export default function Landing() {
         </div>
 
         {/* FOOTER */}
-        <footer className="bg-[var(--primary-color)] text-[var(--bg-color)] mt-20 pt-12 pb-6 px-6 rounded-t-3xl">
+        <footer className="bg-[var(--primary-color)] text-[var(--bg-color)] pt-12 pb-6 px-6 rounded-t-3xl mt-auto">
           <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
             <div>
               <h3 className="text-xl font-bold mb-4">AITasker</h3>
@@ -242,5 +242,5 @@ export default function Landing() {
         </footer>
       </div>
     </section>
-  );
+  )
 }

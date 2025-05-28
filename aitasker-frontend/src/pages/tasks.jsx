@@ -4,6 +4,11 @@ import TaskForm from '../features/tasks/taskForm';
 import { getTasks, createTask, updateTask, deleteTask } from '../services/taskService';
 import { useTheme } from '../context/ThemeContext';
 
+const mockTasks = [
+  { id: 1, title: 'Mock Task 1', status: 'pending', completed: false, subtasks: [] },
+  { id: 2, title: 'Mock Task 2', status: 'completed', completed: true, subtasks: [] },
+];
+
 const Tasks = () => {
   const { theme } = useTheme();
 
@@ -19,8 +24,10 @@ const Tasks = () => {
         setLoading(true);
         const data = await getTasks();
         setTasks(data);
+        setError(null);
       } catch (err) {
-        setError('Failed to load tasks');
+        setError('Failed to load tasks, showing mock data');
+        setTasks(mockTasks);
       } finally {
         setLoading(false);
       }
