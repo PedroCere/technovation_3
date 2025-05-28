@@ -4,36 +4,66 @@ import SmartCalendar from '../features/calendar/SmartCalendar';
 import AutoPlanner from '../features/ai/AutoPlanner';
 import { getTasks } from '../services/taskService';
 
+const mockTasks = [
+  { id: 1, title: 'Mock Task 1', dueDate: new Date().toISOString(), priority: 'MEDIUM', status: 'pending', completed: false, subtasks: [] },
+  { id: 2, title: 'Mock Task 2', dueDate: new Date().toISOString(), priority: 'HIGH', status: 'completed', completed: true, subtasks: [] },
+];
+
 const Planner = () => {
   const [view, setView] = useState('list');
   const [tasks, setTasks] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         const fetchedTasks = await getTasks();
         setTasks(fetchedTasks);
+        setError(null);
       } catch (error) {
         console.error('Failed to fetch tasks:', error);
+        // Show error message and mock data
+        setTasks(mockTasks);
+        setError('Failed to load tasks, showing mock data');
       }
     };
     fetchTasks();
   }, []);
 
-  const calendarEvents = tasks.map(task => ({
-    title: task.title,
-    start: new Date(task.dueDate),
-    end: new Date(task.dueDate),
-    allDay: true,
-    meta: {
-      priority: task.priority,
-      status: task.status
+  const calendarEvents = tasks.map(task => {
+    // Defensive check for dueDate to avoid parse errors
+    let startDate = new Date();
+    let endDate = new Date();
+    if (task.dueDate) {
+      try {
+        // Use parseISO from date-fns to parse ISO strings safely
+        const { parseISO } = require('date-fns');
+        startDate = parseISO(task.dueDate);
+        endDate = parseISO(task.dueDate);
+      } catch {
+        // fallback to current date if parsing fails
+        startDate = new Date();
+        endDate = new Date();
+      }
     }
-  }));
+    return {
+      title: task.title,
+      start: startDate,
+      end: endDate,
+      allDay: true,
+      meta: {
+        priority: task.priority,
+        status: task.status
+      }
+    };
+  });
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2 space-y-6">
+        {error && (
+          <div className="mb-4 text-red-600">{error}</div>
+        )}
         <div className="flex gap-2 mb-4">
           <button 
             onClick={() => setView('list')}

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { IoRadioButtonOffOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
+import { useTheme } from "../context/ThemeContext";
 
 const Inbox = () => {
+  const { theme } = useTheme(); // Esto te permite hacer cambios si necesitas condicionales por tema
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -14,10 +16,7 @@ const Inbox = () => {
       id: 2,
       text: "Start My app",
       completed: false,
-      subtasks: [
-        "Obtén una recomendación especializada de Todoist",
-        "Tomorrow",
-      ],
+      subtasks: ["Obtén una recomendación especializada de Todoist", "Tomorrow"],
     },
     {
       id: 3,
@@ -46,7 +45,7 @@ const Inbox = () => {
   };
 
   return (
-    <div className="flex justify-center w-full min-h-full p-6">
+    <div className="flex justify-center w-full min-h-full p-6 bg-[var(--bg-color)] text-[var(--text-color)] transition-colors">
       <div className="max-w-4xl w-full">
         <h1 className="text-2xl font-bold mb-6">Inbox</h1>
 
@@ -54,14 +53,14 @@ const Inbox = () => {
           {tasks.map((task) => (
             <div
               key={task.id}
-              className="flex items-start gap-3 group hover:bg-gray-100 dark:hover:bg-white/5 px-3 py-2 rounded transition-all w-full"
+              className="flex items-start gap-3 group hover:bg-[color:var(--border-color)] px-3 py-2 rounded transition-all w-full"
             >
               <button
                 onClick={() => toggleTask(task.id)}
-                className="mt-1 text-gray-400 hover:text-red-500 transition-all p-0"
+                className="mt-1 text-[color:var(--text-color)] hover:text-[color:var(--primary-color)] transition-all p-0"
               >
                 {task.completed ? (
-                  <IoCheckmarkCircleOutline className="text-xl text-red-500" />
+                  <IoCheckmarkCircleOutline className="text-xl text-[color:var(--primary-color)]" />
                 ) : (
                   <IoRadioButtonOffOutline className="text-xl" />
                 )}
@@ -77,10 +76,10 @@ const Inbox = () => {
                 </p>
 
                 {task.subtasks.length > 0 && (
-                  <div className="flex flex-col mt-1 ml-1 text-xs text-gray-500 space-y-0.5">
+                  <div className="flex flex-col mt-1 ml-1 text-xs text-[color:var(--text-color)] opacity-70 space-y-0.5">
                     {task.subtasks.map((sub, index) => (
                       <div key={index} className="flex items-center gap-2">
-                        <FaRegCalendarAlt className="text-gray-400" />
+                        <FaRegCalendarAlt className="text-[color:var(--primary-color-hover)]" />
                         <span>{sub}</span>
                       </div>
                     ))}
@@ -92,7 +91,7 @@ const Inbox = () => {
 
           <button
             onClick={addNewTask}
-            className="mt-4 text-red-500 hover:text-red-600 text-sm font-medium flex items-center gap-2 bg-neutral-900 text-white px-4 py-1 rounded"
+            className="mt-4 text-sm font-medium flex items-center gap-2 bg-[color:var(--primary-color)] hover:bg-[color:var(--primary-color-hover)] text-white px-4 py-1 rounded"
           >
             <span className="text-xl">＋</span> Add task
           </button>
@@ -103,4 +102,3 @@ const Inbox = () => {
 };
 
 export default Inbox;
-

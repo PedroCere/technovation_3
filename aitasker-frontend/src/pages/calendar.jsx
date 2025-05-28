@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import TaskScheduler from '../features/tasks/TaskScheduler';
 import { getTasks } from '../services/taskService';
 
+const mockTasks = [
+  { id: 1, title: 'Mock Task 1', dueDate: new Date().toISOString(), status: 'pending', completed: false, subtasks: [] },
+  { id: 2, title: 'Mock Task 2', dueDate: new Date().toISOString(), status: 'completed', completed: true, subtasks: [] },
+];
+
 const CalendarPage = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,8 +17,10 @@ const CalendarPage = () => {
       try {
         const data = await getTasks();
         setTasks(data);
+        setError(null);
       } catch (err) {
-        setError('Failed to load tasks');
+        setError('Failed to load tasks, showing mock data');
+        setTasks(mockTasks);
       } finally {
         setLoading(false);
       }
@@ -27,7 +34,12 @@ const CalendarPage = () => {
   }
 
   if (error) {
-    return <div className="max-w-4xl mx-auto p-6 text-red-600">{error}</div>;
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="mb-4 text-red-600">{error}</div>
+        <TaskScheduler tasks={tasks} />
+      </div>
+    );
   }
 
   return (

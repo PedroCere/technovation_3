@@ -1,65 +1,56 @@
-import { Moon, Palette } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Palette } from 'lucide-react';
+import { useTheme } from '../../../context/ThemeContext';
 
 const ThemePanel = () => {
-  const [darkMode, setDarkMode] = useState(false);
-  const [primaryColor, setPrimaryColor] = useState('red');
+  const { theme, setTheme, themes } = useTheme();
 
   const colors = {
-    red: 'text-red-600',
-    blue: 'text-blue-600',
-    green: 'text-green-600',
-    violet: 'text-violet-600',
+    light: 'bg-white text-gray-900',
+    dark: 'bg-gray-900 text-white',
+    cyan: 'bg-cyan-600 text-white',
+    purple: 'bg-purple-600 text-white',
   };
 
-  // Aplica o quita modo oscuro al <html>
-  useEffect(() => {
-    const html = document.documentElement;
-    if (darkMode) {
-      html.classList.add('dark');
-    } else {
-      html.classList.remove('dark');
-    }
-  }, [darkMode]);
-
-  // Aplica color primario a una clase CSS variable
-  useEffect(() => {
-    document.documentElement.style.setProperty('--primary-color', primaryColor);
-  }, [primaryColor]);
-
   return (
-    <div className="max-w-2xl mx-auto bg-white dark:bg-gray-900 p-6 rounded-xl shadow space-y-6 transition-colors">
+    <div className="max-w-2xl mx-auto p-6 rounded-xl shadow space-y-6 transition-colors">
       <div className="flex items-center gap-2 mb-2">
-        <Palette className="w-6 h-6 text-red-500 dark:text-white" />
+        <Palette className="w-6 h-6 text-gray-700 dark:text-white" />
         <h2 className="text-xl font-bold text-gray-800 dark:text-white">Theme Settings</h2>
       </div>
 
       <div className="space-y-4">
-        {/* Modo oscuro */}
-        <label className="flex items-center justify-between text-sm text-gray-800 dark:text-gray-200">
-          <span>Dark Mode</span>
-          <input
-            type="checkbox"
-            checked={darkMode}
-            onChange={() => setDarkMode(!darkMode)}
-          />
-        </label>
-
-        {/* Colores */}
-        <div>
-          <p className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">Primary Color</p>
-          <div className="flex gap-3">
-            {Object.keys(colors).map((color) => (
-              <button
-                key={color}
-                onClick={() => setPrimaryColor(color)}
-                className={`w-8 h-8 rounded-full border-2 ${
-                  primaryColor === color ? 'border-black dark:border-white' : 'border-transparent'
-                } bg-${color}-500`}
-                title={color}
-              />
-            ))}
-          </div>
+        {/* Theme selection */}
+        <p className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">Select Theme</p>
+        <div className="flex gap-3">
+          {Object.keys(themes).map((key) => (
+            <button
+              key={key}
+              onClick={() => setTheme(themes[key])}
+              className={`w-10 h-10 rounded-full border-2 flex items-center justify-center ${
+                theme === themes[key] ? 'border-black dark:border-white' : 'border-transparent'
+              } ${colors[themes[key]]}`}
+              title={themes[key]}
+            >
+              {themes[key] === 'dark' ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 3v1m0 16v1m8.485-8.485h1M3 12H2m15.364 6.364l.707.707M6.343 6.343l-.707-.707m12.728 0l-.707-.707M6.343 17.657l-.707.707M12 5a7 7 0 000 14 7 7 0 000-14z"
+                  />
+                </svg>
+              ) : (
+                <span className="sr-only">{themes[key]}</span>
+              )}
+            </button>
+          ))}
         </div>
       </div>
     </div>

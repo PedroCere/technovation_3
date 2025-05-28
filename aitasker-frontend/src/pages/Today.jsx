@@ -3,6 +3,11 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 import { IoRadioButtonOffOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
 import { getTasks } from "../services/taskService";
 
+const mockTasks = [
+  { id: 1, title: 'Mock Task 1', dueDate: new Date().toISOString(), completed: false, subtasks: [] },
+  { id: 2, title: 'Mock Task 2', dueDate: new Date().toISOString(), completed: true, subtasks: [] },
+];
+
 const Today = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,8 +26,10 @@ const Today = () => {
           return task.dueDate.startsWith(todayStr);
         });
         setTasks(filteredTasks);
+        setError(null);
       } catch (err) {
-        setError("Failed to load tasks");
+        setError("Failed to load tasks, showing mock data");
+        setTasks(mockTasks);
       } finally {
         setLoading(false);
       }
@@ -44,7 +51,53 @@ const Today = () => {
   }
 
   if (error) {
-    return <div className="flex justify-center w-full min-h-full p-6 text-red-600">{error}</div>;
+    return (
+      <div className="flex justify-center w-full min-h-full p-6">
+        <div className="mb-4 text-red-600">{error}</div>
+        <div className="max-w-4xl w-full">
+          <div className="space-y-4">
+            {tasks.map((task) => (
+              <div
+                key={task.id}
+                className="flex items-start gap-3 group hover:bg-gray-100 dark:hover:bg-white/5 px-3 py-2 rounded transition-all w-full"
+              >
+                <button
+                  onClick={() => toggleTask(task.id)}
+                  className="mt-1 text-gray-400 hover:text-red-500 transition-all p-0"
+                >
+                  {task.completed ? (
+                    <IoCheckmarkCircleOutline className="text-xl text-red-500" />
+                  ) : (
+                    <IoRadioButtonOffOutline className="text-xl" />
+                  )}
+                </button>
+
+                <div className="flex-1">
+                  <p
+                    className={`font-medium text-sm ${
+                      task.completed ? "line-through opacity-50" : ""
+                    }`}
+                  >
+                    {task.title || task.text}
+                  </p>
+
+                  {task.subtasks && task.subtasks.length > 0 && (
+                    <div className="flex flex-col mt-1 ml-1 text-xs text-gray-500 space-y-0.5">
+                      {task.subtasks.map((sub, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <span className="text-gray-400">-</span>
+                          <span>{sub}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

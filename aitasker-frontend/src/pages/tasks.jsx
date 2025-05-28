@@ -1,10 +1,17 @@
-// aitasker-frontend/src/pages/tasks.jsx
 import React, { useState, useEffect } from 'react';
 import TaskList from '../features/tasks/TaskList';
 import TaskForm from '../features/tasks/taskForm';
 import { getTasks, createTask, updateTask, deleteTask } from '../services/taskService';
+import { useTheme } from '../context/ThemeContext';
+
+const mockTasks = [
+  { id: 1, title: 'Mock Task 1', status: 'pending', completed: false, subtasks: [] },
+  { id: 2, title: 'Mock Task 2', status: 'completed', completed: true, subtasks: [] },
+];
 
 const Tasks = () => {
+  const { theme } = useTheme();
+
   const [tasks, setTasks] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -17,8 +24,10 @@ const Tasks = () => {
         setLoading(true);
         const data = await getTasks();
         setTasks(data);
+        setError(null);
       } catch (err) {
-        setError('Failed to load tasks');
+        setError('Failed to load tasks, showing mock data');
+        setTasks(mockTasks);
       } finally {
         setLoading(false);
       }
@@ -27,7 +36,9 @@ const Tasks = () => {
   }, []);
 
   const handleStatusChange = (taskId, newStatus) => {
-    setTasks(tasks.map(task => task.id === taskId ? { ...task, status: newStatus } : task));
+    setTasks(tasks.map(task =>
+      task.id === taskId ? { ...task, status: newStatus } : task
+    ));
   };
 
   const handleDragEnd = (result) => {
@@ -81,10 +92,16 @@ const Tasks = () => {
     setEditingTask(null);
   };
 
-  if (loading) return <div className="max-w-4xl mx-auto p-6">Loading tasks...</div>;
+  if (loading) {
+    return (
+      <div className="max-w-4xl mx-auto p-6 text-[var(--text-color)]">
+        Loading tasks...
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-6 text-[var(--text-color)] transition-colors">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Tasks</h1>
         <button
@@ -92,13 +109,17 @@ const Tasks = () => {
             setEditingTask(null);
             setShowForm(true);
           }}
-          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          className="px-4 py-2 bg-[var(--primary-color)] hover:bg-[var(--primary-color-hover)] text-white rounded transition-colors"
         >
           Add Task
         </button>
       </div>
 
-      {error && <div className="mb-4 text-red-500">{error}</div>}
+      {error && (
+        <div className="mb-4 text-red-500 bg-[var(--button-bg)] p-3 rounded">
+          {error}
+        </div>
+      )}
 
       <TaskList
         tasks={tasks}
@@ -113,8 +134,6 @@ const Tasks = () => {
           onClose={handleFormClose}
           onSubmit={editingTask ? handleUpdateTask : handleAddTask}
           initialData={editingTask}
-          inputClassName="bg-white text-black"
-          selectClassName="bg-white text-black"
         />
       )}
     </div>

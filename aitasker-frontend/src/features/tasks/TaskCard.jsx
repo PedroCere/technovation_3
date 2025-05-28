@@ -1,4 +1,3 @@
-// aitasker-frontend/src/features/tasks/TaskCard.jsx
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FaRegCommentAlt, FaRegClock, FaTag } from 'react-icons/fa';
@@ -6,13 +5,13 @@ import { MdPriorityHigh } from 'react-icons/md';
 
 const TaskCard = ({ task, onStatusChange, onEditClick, onDeleteClick }) => {
   return (
-    <div className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-red-500 mb-2">
+    <div className="bg-[var(--bg-color)] p-4 rounded-lg shadow-sm border-l-4 border-[var(--primary-color)] mb-4 text-[var(--text-color)] transition-colors">
       <div className="flex items-center justify-between mb-2">
-        <h3 className="font-medium">{task.title}</h3>
-        <div>
+        <h3 className="font-medium text-[var(--text-color)]">{task.title}</h3>
+        <div className="flex gap-2">
           <button
             onClick={() => onEditClick(task)}
-            className="mr-2 px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-xs"
+            className="px-2 py-1 bg-[var(--primary-color)] text-white rounded hover:bg-[var(--primary-color-hover)] text-xs"
           >
             Edit
           </button>
@@ -24,28 +23,31 @@ const TaskCard = ({ task, onStatusChange, onEditClick, onDeleteClick }) => {
           </button>
         </div>
       </div>
+
       <select
         value={task.status}
         onChange={(e) => onStatusChange(task.id, e.target.value)}
-        className="text-xs px-2 py-1 rounded border border-gray-200 bg-white text-black"
+        className="text-xs px-2 py-1 rounded border border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-color)] mb-3"
       >
-        <option value="todo" className="bg-white text-black">To Do</option>
-        <option value="in-progress" className="bg-white text-black">In Progress</option>
-        <option value="done" className="bg-white text-black">Done</option>
+        <option value="todo">To Do</option>
+        <option value="in-progress">In Progress</option>
+        <option value="done">Done</option>
       </select>
 
-      {/* Etiquetas y AI */}
-      <div className="flex items-center gap-2 mb-3">
-        <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded flex items-center gap-1">
-          <FaTag className="w-3 h-3" /> {task.label}
-        </span>
-        <div className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded flex items-center gap-1">
+      {/* Etiquetas */}
+      <div className="flex flex-wrap items-center gap-2 mb-3">
+        {task.label && (
+          <span className="bg-[var(--label-bg-blue)] text-[var(--label-text-blue)] text-xs px-2 py-1 rounded flex items-center gap-1">
+            <FaTag className="w-3 h-3" /> {task.label}
+          </span>
+        )}
+        <div className="bg-[var(--label-bg-purple)] text-[var(--label-text-purple)] text-xs px-2 py-1 rounded flex items-center gap-1">
           <FaRegCommentAlt className="w-3 h-3" /> AI Note
         </div>
       </div>
 
       {/* Metadatos */}
-      <div className="flex items-center gap-4 text-gray-500 text-sm">
+      <div className="flex items-center gap-4 text-[var(--text-color)]/70 text-sm">
         <div className="flex items-center gap-1">
           <MdPriorityHigh className="w-4 h-4" />
           <span>{task.priority}</span>
