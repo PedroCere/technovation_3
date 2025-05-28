@@ -11,7 +11,7 @@ import Planner from './pages/Planner';
 import Stats from './pages/stats';
 import Assistant from './pages/Assistant';
 import Filters from './pages/Filters';
-import Landing from './pages/landing';
+import Landing from './pages/Landing';
 import Login from './pages/login';
 import Home from './pages/home';
 import List from './pages/list';
