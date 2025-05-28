@@ -7,15 +7,23 @@ export default function Landing() {
   const navigate = useNavigate();
   const { theme, setTheme, themes } = useTheme();
 
+  // Colores representativos por tema
+  const themeColors = {
+    light: '#f3f4f6',
+    dark: '#1f2937',
+    cyan: '#06b6d4',
+    purple: '#8b5cf6',
+  };
+
   return (
     <section className="min-h-screen bg-[var(--bg-color)] text-[var(--text-color)] transition-colors flex flex-col items-center justify-center px-4 md:px-12">
       {/* Top Navigation */}
       <header className="w-full max-w-7xl flex justify-between items-center py-4">
         <div className="flex items-center space-x-2">
-          <span className="font-semiboldtext-[var(--bg-color) text-xl">AITasker</span>
+          <span className="font-semibold text-red-500 text-xl">AITasker</span>
         </div>
 
-        <nav className="hidden md:flex space-x-6 text-sm">
+        <nav className="hidden md:flex items-center space-x-6 text-sm">
           <a href="#" className="hover:underline">Use Cases</a>
           <a href="#" className="hover:underline">Resources</a>
           <a href="#" className="hover:underline">Pricing</a>
@@ -24,22 +32,27 @@ export default function Landing() {
           </button>
           <button
             onClick={() => navigate('/register')}
-            className="bg-[var(--button-bg)] hover:bg-red-600t text-[var(--text)]  text-sm font-bold py-2 px-4 rounded-full"
+            className="bg-[var(--primary-color)] hover:bg-[var(--primary-color-hover)] text-white text-sm font-bold py-2 px-4 rounded-full"
           >
             Try it free
           </button>
-          {/* Theme Toggle */}
-          <select
-            value={theme}
-            onChange={(e) => setTheme(e.target.value)}
-            className="text-sm bg-[var(--button-bg)] border border-[var(--button-border)] rounded px-2 py-1 text-[var(--text-color)]"
-          >
+
+          {/* Theme Circles */}
+          <div className="flex items-center gap-2 ml-4">
             {Object.keys(themes).map((key) => (
-              <option key={key} value={themes[key]}>
-                {themes[key][0].toUpperCase() + themes[key].slice(1)}
-              </option>
+              <button
+                key={key}
+                onClick={() => setTheme(themes[key])}
+                className={`w-5 h-5 rounded-full border-2 ${
+                  theme === themes[key]
+                    ? 'border-[var(--text-color)]'
+                    : 'border-transparent'
+                }`}
+                style={{ backgroundColor: themeColors[key] }}
+                title={themes[key]}
+              />
             ))}
-          </select>
+          </div>
         </nav>
       </header>
 
@@ -55,13 +68,17 @@ export default function Landing() {
           </p>
 
           <div className="flex items-center gap-2 mb-4">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="App Store" className="w-5 h-5" />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
+              alt="App Store"
+              className="w-5 h-5"
+            />
             <p className="text-sm">Over 374K ★★★★★ ratings</p>
           </div>
 
           <button
             onClick={() => navigate('/register')}
-            className="bg-[var(--button-bg)] hover-[var(--primary-color-hover)] text-[var(--text)] font-semibold py-3 px-6 rounded-full text-base mb-1"
+            className="bg-[var(--primary-color)] hover:bg-[var(--primary-color-hover)] text-white font-semibold py-3 px-6 rounded-full text-base mb-1"
           >
             Try it free
           </button>
