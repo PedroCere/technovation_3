@@ -52,11 +52,16 @@ const SidebarMenu = ({ setShowAddTaskModal, setShowSearchMenu, primaryColor = 'v
             key={i}
             onClick={() => handleClick(item)}
             className={`flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer hover:bg-[${primaryColor}33] ${
-              active ? `bg-[${primaryColor}33] text-[${primaryColor}]` : 'text-[var(--text-color)]'
+              active ? 'bg-[var(--primary-color)33] text-[var(--primary-color)]' : 'text-[var(--text-color)]'
             }`}
           >
-            <Icon className={`w-4 h-4 ${item.name === 'Add task' ? `text-[${primaryColor}]` : 'text-[var(--text-color)]'}`} />
-            <span className="text-sm">{item.name}</span>
+            <Icon
+              className="w-4 h-4"
+              style={{ color: active || item.name === 'Add task' ? primaryColor : 'var(--text-color)' }}
+            />
+            <span className="text-sm" style={{ color: active ? primaryColor : 'var(--text-color)' }}>
+              {item.name}
+            </span>
           </li>
         );
       })}
