@@ -9,7 +9,7 @@ import Completed from './pages/Completed';
 import Calendar from './pages/calendar';
 import Planner from './pages/Planner';
 import Stats from './pages/stats';
-import Assistant from './pages/Assistant';
+import Assistant from './pages/assistant';
 import Filters from './pages/Filters';
 import Landing from './pages/Landing';
 import Login from './pages/login';
