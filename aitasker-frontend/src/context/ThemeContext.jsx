@@ -16,6 +16,8 @@ const themeColors = {
     '--primary-color': '#3b82f6',
     '--primary-color-hover': '#2563eb',
     '--border-color': '#e5e7eb',
+        '--footer-bg': '#1f2937',
+
 
     // Botones e inputs
     '--button-bg': '#f3f4f6',
@@ -39,6 +41,7 @@ const themeColors = {
     '--primary-color': '#3b82f6',
     '--primary-color-hover': '#2563eb',
     '--border-color': '#374151',
+    '--footer-bg': '#1f2937',
 
     '--button-bg': '#374151',
     '--button-bg-hover': '#4b5563',
