@@ -1,14 +1,25 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useUser } from '../../../context/UserContext';
 
 const AccountPanel = () => {
   const { user, updateUserPhoto } = useUser();
   const [uploading, setUploading] = useState(false);
+  const [photoUrlWithTimestamp, setPhotoUrlWithTimestamp] = useState('');
   const fileInputRef = useRef(null);
 
   const handlePhotoChangeClick = () => {
     fileInputRef.current?.click();
   };
+
+  useEffect(() => {
+    if (user?.photoUrl) {
+      const baseUrl = 'http://localhost:8080'; 
+      const fullUrl = user.photoUrl.startsWith('http') ? user.photoUrl : baseUrl + user.photoUrl;
+      setPhotoUrlWithTimestamp(fullUrl + '?t=' + new Date().getTime());
+    } else {
+      setPhotoUrlWithTimestamp('');
+    }
+  }, [user?.photoUrl]);
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
@@ -40,6 +51,7 @@ const AccountPanel = () => {
 
       const data = await response.json();
       const newPhotoUrl = data.photoUrl;
+      console.log('New photo URL from upload:', newPhotoUrl);
 
       // Update user photo in context and backend profile
       updateUserPhoto(newPhotoUrl);
@@ -88,11 +100,13 @@ const AccountPanel = () => {
         Plan: <strong>Beginner</strong>
       </p>
 
+      {console.log('Current user photoUrl:', user?.photoUrl)}
+
       {/* Photo */}
       <div className="flex items-center gap-4 mb-4">
-        {user?.photoUrl ? (
+        {photoUrlWithTimestamp ? (
           <img
-            src={user.photoUrl}
+            src={photoUrlWithTimestamp}
             alt="Profile"
             className="w-16 h-16 rounded-full object-cover"
           />

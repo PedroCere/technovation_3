@@ -23,7 +23,10 @@ public class WebConfig {
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
                 registry.addResourceHandler("/uploads/**")
-                        .addResourceLocations("file:uploads/");
+                        .addResourceLocations("file:c:/Repo-remoto10/technovation_3/Backend/uploads/")
+                        .setCachePeriod(3600) // Cache for 1 hour
+                        .resourceChain(true)
+                        .addResolver(new org.springframework.web.servlet.resource.PathResourceResolver());
             }
         };
     }
