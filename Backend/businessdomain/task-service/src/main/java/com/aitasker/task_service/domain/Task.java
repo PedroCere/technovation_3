@@ -24,6 +24,8 @@ public class Task {
     private Long id;
     @Column(nullable = true)
     private String title;
+    @Column(name = "project_id")
+    private Long projectId;
     @Column(nullable = true)
     private String description;
     @Column(nullable = true)

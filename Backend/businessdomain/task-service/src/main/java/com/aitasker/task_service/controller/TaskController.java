@@ -84,5 +84,11 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/by-project")
+    public ResponseEntity<List<TaskResponseDTO>> getTasksByProjectId(@RequestParam Long projectId) {
+        List<TaskResponseDTO> tasks = taskService.getTasksByProjectId(projectId);
+        return ResponseEntity.ok(tasks);
+    }
+
 
 }

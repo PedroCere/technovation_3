@@ -11,6 +11,8 @@ import java.util.List;
 @Data
 public class TaskRequestDTO {
 
+    private Long projectId;
+
     @NotBlank
     private String title;
 

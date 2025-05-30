@@ -10,4 +10,7 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends JpaRepository<Task,Long> {
     List<Task> findByDueDate(LocalDate dueDate);
+
+    List<Task> findByProjectId(Long projectId);
+
 }

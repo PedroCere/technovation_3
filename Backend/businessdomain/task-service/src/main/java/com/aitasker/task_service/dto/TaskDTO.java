@@ -10,6 +10,7 @@ import java.time.LocalDate;
 public class TaskDTO {
 
     private String title;
+    private Long projectId;
     private String description;
     private LocalDate dueDate;
     private Priority priority;

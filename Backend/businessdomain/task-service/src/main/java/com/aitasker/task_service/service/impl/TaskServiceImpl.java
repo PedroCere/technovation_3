@@ -127,4 +127,13 @@ public class TaskServiceImpl implements TaskService {
                 .map(taskMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<TaskResponseDTO> getTasksByProjectId(Long projectId) {
+        List<Task> tasks = taskRepository.findByProjectId(projectId);
+        return tasks.stream()
+                .map(taskMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
 }
