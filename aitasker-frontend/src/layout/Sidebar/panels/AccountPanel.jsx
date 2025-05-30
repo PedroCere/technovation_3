@@ -1,8 +1,85 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { useUser } from '../../../context/UserContext';
 
 const AccountPanel = () => {
-  const { user } = useUser();
+  const { user, updateUserPhoto } = useUser();
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
+
+  const handlePhotoChangeClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    setUploading(true);
+
+    try {
+      const token = localStorage.getItem('token');
+      // Create form data
+      const formData = new FormData();
+      formData.append('photo', file);
+
+      // Upload photo to backend
+      // Assuming backend accepts multipart/form-data at /api/user/upload-photo
+      // and returns the new photoUrl in response
+      const response = await fetch('/api/user/upload-photo', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',
+        headers: {
+          Authorization: token ? `Bearer ${token}` : '',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to upload photo');
+      }
+
+      const data = await response.json();
+      const newPhotoUrl = data.photoUrl;
+
+      // Update user photo in context and backend profile
+      updateUserPhoto(newPhotoUrl);
+
+      // Also update profile with new photoUrl
+      await fetch('/api/user/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? `Bearer ${token}` : '',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ photoUrl: newPhotoUrl }),
+      });
+    } catch (error) {
+      console.error(error);
+      alert('Error uploading photo');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemovePhoto = async () => {
+    setUploading(true);
+    try {
+      // Remove photo by setting photoUrl to null
+      await fetch('/api/user/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ photoUrl: null }),
+      });
+      updateUserPhoto(null);
+    } catch (error) {
+      console.error(error);
+      alert('Error removing photo');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   return (
     <div className="bg-[var(--bg-color)] p-6 rounded shadow max-w-3xl text-[var(--text-color)] transition-colors">
@@ -13,14 +90,39 @@ const AccountPanel = () => {
 
       {/* Photo */}
       <div className="flex items-center gap-4 mb-4">
-        <div className="w-16 h-16 bg-yellow-400 rounded-full" />
+        {user?.photoUrl ? (
+          <img
+            src={user.photoUrl}
+            alt="Profile"
+            className="w-16 h-16 rounded-full object-cover"
+          />
+        ) : (
+          <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center text-white font-bold text-xl">
+            {user?.username?.[0]?.toUpperCase() || 'U'}
+          </div>
+        )}
         <div className="flex flex-col gap-2">
-          <button className="text-sm px-3 py-1 bg-[var(--button-bg)] hover:bg-[var(--button-bg-hover)] border border-[var(--button-border)] rounded">
-            Change photo
+          <button
+            onClick={handlePhotoChangeClick}
+            disabled={uploading}
+            className="text-sm px-3 py-1 bg-[var(--button-bg)] hover:bg-[var(--button-bg-hover)] border border-[var(--button-border)] rounded"
+          >
+            {uploading ? 'Uploading...' : 'Change photo'}
           </button>
-          <button className="text-sm px-3 py-1 border border-red-500 text-red-500 rounded hover:bg-red-500/10">
+          <button
+            onClick={handleRemovePhoto}
+            disabled={uploading || !user?.photoUrl}
+            className="text-sm px-3 py-1 border border-red-500 text-red-500 rounded hover:bg-red-500/10"
+          >
             Remove photo
           </button>
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            className="hidden"
+          />
         </div>
       </div>
 

@@ -31,6 +31,9 @@ const Login = () => {
 
       const authResponse = await response.json();
       setUser(authResponse.user);
+      if (authResponse.token) {
+        localStorage.setItem('token', authResponse.token);
+      }
       console.log('Logged in user set in context:', authResponse.user);
 
       setError('');

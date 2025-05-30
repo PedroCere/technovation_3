@@ -52,6 +52,9 @@ const Register = () => {
 
       const authResponse = await response.json();
       setUser(authResponse.user);
+      if (authResponse.token) {
+        localStorage.setItem('token', authResponse.token);
+      }
       console.log('Registered user set in context:', authResponse.user);
 
       setError('');
