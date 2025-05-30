@@ -20,12 +20,10 @@ public class UserController {
         return userService.getProfile();
     }
 
-    /*@PutMapping("/profile")
-    public UserProfileResponse updateProfile(@RequestBody UpdateUserProfileRequest req) {
-        return userService.updateProfile(req);
-    }
-
-     */
+@PutMapping("/profile")
+public UserProfileResponse updateProfile(@RequestBody UpdateUserProfileRequest req) {
+    return userService.updateProfile(req);
+}
 
     @GetMapping("/preferences")
     public UserPreferencesResponse preferences() {

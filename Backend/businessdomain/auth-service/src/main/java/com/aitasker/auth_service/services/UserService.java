@@ -21,25 +21,29 @@ public class UserService {
         return repo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public UserProfileResponse getProfile() {
-        User u = getCurrentUser();
-        UserProfileResponse p = new UserProfileResponse();
-        p.username = u.getUsername();
-        p.email = u.getEmail();
-        p.role = u.getRole();
-        p.createdAt = u.getCreatedAt();
-        p.description = u.getDescription();
-        p.location = u.getLocation();
-        return p;
-    }
+public UserProfileResponse getProfile() {
+    User u = getCurrentUser();
+    UserProfileResponse p = new UserProfileResponse();
+    p.username = u.getUsername();
+    p.email = u.getEmail();
+    p.role = u.getRole();
+    p.createdAt = u.getCreatedAt();
+    p.description = u.getDescription();
+    p.location = u.getLocation();
+    p.photoUrl = u.getPhotoUrl();
+    return p;
+}
 
-    public UserProfileResponse updateProfile(UpdateUserProfileRequest req) {
-        User u = getCurrentUser();
-        u.setDescription(req.description);
-        u.setLocation(req.location);
-        repo.save(u);
-        return getProfile();
+public UserProfileResponse updateProfile(UpdateUserProfileRequest req) {
+    User u = getCurrentUser();
+    u.setDescription(req.description);
+    u.setLocation(req.location);
+    if (req.photoUrl != null) {
+        u.setPhotoUrl(req.photoUrl);
     }
+    repo.save(u);
+    return getProfile();
+}
 
     public UserPreferencesResponse getPreferences() {
         User u = getCurrentUser();

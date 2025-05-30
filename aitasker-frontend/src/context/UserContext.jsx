@@ -16,8 +16,15 @@ export const UserProvider = ({ children }) => {
     }
   }, [user]);
 
+  const updateUserPhoto = (photoUrl) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      photoUrl,
+    }));
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, updateUserPhoto }}>
       {children}
     </UserContext.Provider>
   );
