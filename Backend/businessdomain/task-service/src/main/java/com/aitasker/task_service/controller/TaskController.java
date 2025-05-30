@@ -24,10 +24,17 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping
-    public ResponseEntity<TaskResponseDTO> createTask(@RequestBody @Valid TaskRequestDTO requestDTO) {
-        TaskResponseDTO created = taskService.createTask(requestDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    public ResponseEntity<?> createTask(@RequestBody @Valid TaskRequestDTO requestDTO) {
+        try {
+            TaskResponseDTO created = taskService.createTask(requestDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(created);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
     }
+
+   
 
     @GetMapping
     public ResponseEntity<List<TaskResponseDTO>> getTasks(
@@ -76,5 +83,6 @@ public class TaskController {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
     }
+
 
 }

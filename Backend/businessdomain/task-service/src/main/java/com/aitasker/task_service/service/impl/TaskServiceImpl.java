@@ -31,16 +31,21 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskMapper.toEntity(taskDTO);
         Task saved = taskRepository.save(task);
 
-        List<ScoredTaskDTO> scoredList = aiServiceClient.recalculatePriority(
-                List.of(taskMapper.toRequestDTO(saved))
-        );
+        try {
+            List<ScoredTaskDTO> scoredList = aiServiceClient.recalculatePriority(
+                    List.of(taskMapper.toRequestDTO(saved))
+            );
 
-        scoredList.forEach(scored -> {
-            if (scored.getTitle().equals(saved.getTitle())) {
-                saved.setImportanceScore(scored.getImportanceScore());
-                taskRepository.save(saved);
-            }
-        });
+            scoredList.forEach(scored -> {
+                if (scored.getTitle().equals(saved.getTitle())) {
+                    saved.setImportanceScore(scored.getImportanceScore());
+                    taskRepository.save(saved);
+                }
+            });
+        } catch (Exception e) {
+            // Log the error and continue without failing task creation
+            System.err.println("AI service call failed: " + e.getMessage());
+        }
 
         return taskMapper.toDTO(saved);
     }
