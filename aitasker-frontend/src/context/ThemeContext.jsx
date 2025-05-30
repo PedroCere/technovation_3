@@ -11,15 +11,15 @@ const themes = {
 
 const themeColors = {
   light: {
+    // Base colors
     '--bg-color': '#ffffff',
     '--text-color': '#1f2937',
     '--primary-color': '#3b82f6',
     '--primary-color-hover': '#2563eb',
     '--border-color': '#e5e7eb',
-        '--footer-bg': '#1f2937',
+    '--footer-bg': '#1f2937',
 
-
-    // Botones e inputs
+    // Buttons & inputs
     '--button-bg': '#f3f4f6',
     '--button-bg-hover': '#e5e7eb',
     '--button-text': '#1f2937',
@@ -27,45 +27,70 @@ const themeColors = {
     '--input-bg': '#ffffff',
     '--input-border': '#d1d5db',
 
-    // Etiquetas
+    // Labels
     '--label-bg-blue': '#bfdbfe',
     '--label-text-blue': '#1e40af',
     '--label-bg-purple': '#ddd6fe',
     '--label-text-purple': '#5b21b6',
     '--label-bg-yellow': '#fde68a',
     '--label-text-yellow': '#92400e',
+
+    // Calendar specific
+    '--event-day-bg': '#b3d4fc',
+    '--calendar-header-bg': '#f3f4f6',
+    '--calendar-border': '#e5e7eb',
+    '--calendar-time-gutter-bg': '#f9fafb',
+    '--calendar-today-bg': '#eff6ff',
+    '--calendar-selected-bg': '#dbeafe',
+    '--calendar-event-bg': '#3b82f6',
+    '--calendar-event-text': '#ffffff',
+    '--calendar-agenda-line': '#e5e7eb'
   },
-dark: {
-  '--bg-color': '#0F172A',
-  '--text-color': '#f9fafb',
-  '--primary-color': '#3b82f6',
-  '--primary-color-hover': '#2563eb',
-  '--border-color': '#334155',
-  '--footer-bg': '#1f2937',
+  dark: {
+    // Base colors
+    '--bg-color': '#0F172A',
+    '--text-color': '#f9fafb',
+    '--primary-color': '#3b82f6',
+    '--primary-color-hover': '#2563eb',
+    '--border-color': '#334155',
+    '--footer-bg': '#1f2937',
 
-  '--button-bg': '#1e293b',
-  '--button-bg-hover': '#334155',
-  '--button-text': '#f1f5f9',
-  '--button-border': '#475569',
+    // Buttons & inputs
+    '--button-bg': '#1e293b',
+    '--button-bg-hover': '#334155',
+    '--button-text': '#f1f5f9',
+    '--button-border': '#475569',
+    '--input-bg': '#1e293b',
+    '--input-border': '#475569',
 
-  '--input-bg': '#1e293b',
-  '--input-border': '#475569',
+    // Labels
+    '--label-bg-blue': '#1e40af',
+    '--label-text-blue': '#bfdbfe',
+    '--label-bg-purple': '#5b21b6',
+    '--label-text-purple': '#ddd6fe',
+    '--label-bg-yellow': '#92400e',
+    '--label-text-yellow': '#fde68a',
 
-  '--label-bg-blue': '#1e40af',
-  '--label-text-blue': '#bfdbfe',
-  '--label-bg-purple': '#5b21b6',
-  '--label-text-purple': '#ddd6fe',
-  '--label-bg-yellow': '#92400e',
-  '--label-text-yellow': '#fde68a',
-}
-,
+    // Calendar specific
+    '--event-day-bg': '#1e3a8a',
+    '--calendar-header-bg': '#1e293b',
+    '--calendar-border': '#334155',
+    '--calendar-time-gutter-bg': '#0F172A',
+    '--calendar-today-bg': '#1e3a8a',
+    '--calendar-selected-bg': '#1e40af',
+    '--calendar-event-bg': '#2563eb',
+    '--calendar-event-text': '#ffffff',
+    '--calendar-agenda-line': '#334155'
+  },
   cyan: {
+    // Base colors
     '--bg-color': '#ffffff',
     '--text-color': '#1f2937',
     '--primary-color': '#06b6d4',
     '--primary-color-hover': '#0e7490',
     '--border-color': '#0c4a6e',
 
+    // Buttons & inputs
     '--button-bg': '#164e63',
     '--button-bg-hover': '#155e75',
     '--button-text': '#f0fdfa',
@@ -73,20 +98,34 @@ dark: {
     '--input-bg': '#0f172a',
     '--input-border': '#155e75',
 
+    // Labels
     '--label-bg-blue': '#bae6fd',
     '--label-text-blue': '#0369a1',
     '--label-bg-purple': '#ddd6fe',
     '--label-text-purple': '#5b21b6',
     '--label-bg-yellow': '#facc15',
     '--label-text-yellow': '#92400e',
+
+    // Calendar specific
+    '--event-day-bg': '#bae6fd',
+    '--calendar-header-bg': '#164e63',
+    '--calendar-border': '#0e7490',
+    '--calendar-time-gutter-bg': '#f0fdfa',
+    '--calendar-today-bg': '#ecfeff',
+    '--calendar-selected-bg': '#a5f3fc',
+    '--calendar-event-bg': '#06b6d4',
+    '--calendar-event-text': '#ffffff',
+    '--calendar-agenda-line': '#cffafe'
   },
   purple: {
+    // Base colors
     '--bg-color': '#ffffff',
     '--text-color': '#1f2937',
     '--primary-color': '#8b5cf6',
     '--primary-color-hover': '#7c3aed',
     '--border-color': '#5b21b6',
 
+    // Buttons & inputs
     '--button-bg': '#6d28d9',
     '--button-bg-hover': '#5b21b6',
     '--button-text': '#f9fafb',
@@ -94,12 +133,24 @@ dark: {
     '--input-bg': '#4c1d95',
     '--input-border': '#7e22ce',
 
+    // Labels
     '--label-bg-blue': '#c4b5fd',
     '--label-text-blue': '#312e81',
     '--label-bg-purple': '#5b21b6',
     '--label-text-purple': '#ddd6fe',
     '--label-bg-yellow': '#fde68a',
     '--label-text-yellow': '#92400e',
+
+    // Calendar specific
+    '--event-day-bg': '#ddd6fe',
+    '--calendar-header-bg': '#6d28d9',
+    '--calendar-border': '#7e22ce',
+    '--calendar-time-gutter-bg': '#f5f3ff',
+    '--calendar-today-bg': '#ede9fe',
+    '--calendar-selected-bg': '#c4b5fd',
+    '--calendar-event-bg': '#8b5cf6',
+    '--calendar-event-text': '#ffffff',
+    '--calendar-agenda-line': '#ddd6fe'
   }
 };
 

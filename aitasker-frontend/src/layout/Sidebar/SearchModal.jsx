@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Command, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '../../context/ThemeContext'; // Adjust the import path as needed
+import { useTheme } from '../../context/ThemeContext'; 
 
 const pages = [
   { name: 'Assistant', path: '/assistant' },
