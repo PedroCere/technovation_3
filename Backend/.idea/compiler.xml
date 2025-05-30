@@ -12,12 +12,10 @@
         <module name="api-gateway" />
         <module name="task-service" />
         <module name="eureka-server" />
+        <module name="project-service" />
         <module name="ai-service" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="project-service" target="21" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
