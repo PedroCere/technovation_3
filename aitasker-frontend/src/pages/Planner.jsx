@@ -69,7 +69,7 @@ const Planner = () => {
             onClick={() => setView('list')}
             className={`px-4 py-2 rounded-lg ${
               view === 'list' 
-                ? 'bg-red-500 text-white' 
+                ? 'bg-[var(--primary-color)] text-white' 
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
@@ -79,7 +79,7 @@ const Planner = () => {
             onClick={() => setView('calendar')}
             className={`px-4 py-2 rounded-lg ${
               view === 'calendar' 
-                ? 'bg-red-500 text-white' 
+                ? 'bg-[var(--primary-color)] text-white' 
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
@@ -96,20 +96,20 @@ const Planner = () => {
 
       <div className="space-y-6">
         <AutoPlanner tasks={tasks} />
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        <div className="bg-[var(--bg-color)] p-4 rounded-xl shadow-sm border border-[var(--border-color)]">
           <h3 className="font-medium mb-3">Weekly Summary</h3>
           <div className="space-y-2">
             <div className="flex justify-between">
               <span>Tasks completed:</span>
-              <span className="text-red-500">3/5</span>
+              <span className="text-[var(--primary-color-hover)]">3/5</span>
             </div>
             <div className="flex justify-between">
               <span>Average time:</span>
-              <span className="text-red-500">2.4h/day</span>
+              <span className="text-[var(--primary-color-hover)]">2.4h/day</span>
             </div>
             <div className="flex justify-between">
               <span>Productivity:</span>
-              <span className="text-red-500">78%</span>
+              <span className="text-[var(--primary-color-hover)]">78%</span>
             </div>
           </div>
         </div>

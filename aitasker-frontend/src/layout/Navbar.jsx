@@ -21,7 +21,7 @@ const Navbar = ({ sidebarCollapsed }) => {
   };
 
   return (
-    <header className="relative h-12 flex items-center justify-end pr-4 bg-[var(--bg-color)] text-[var(--text-color)] shadow-sm transition-colors border-b border-[var(--border-color)]">
+<header className="relative h-12 flex items-center justify-end pr-4 bg-[var(--bg-color)] text-[var(--text-color)] shadow-sm transition-colors">
       {!sidebarCollapsed && (
         <div className="flex items-center gap-4 relative">
           {/* View Options */}

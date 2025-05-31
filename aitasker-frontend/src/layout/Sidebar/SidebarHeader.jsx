@@ -15,7 +15,7 @@ const SidebarHeader = ({ collapsed, onToggleSidebar }) => {
               className="p-1 rounded hover:bg-[var(--primary-color-hover)] transition"
               title="Collapse Sidebar"
             >
-              <Layout className="w-4 h-4 text-[var(--text-color)]" />
+          
             </button>
           </div>
         </>
