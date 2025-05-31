@@ -63,9 +63,9 @@ const SettingsLayout = () => {
   };
 
   return (
-    <div className="flex flex-1 min-h-0 w-full h-full text-[var(--text-color)] overflow-hidden">
+    <div className="flex flex-1 min-h-0 text-[var(--text-color)] overflow-hidden">
       {/* Sidebar */}
-      <div className="w-64 p-4 overflow-y-auto bg-[var(--bg-color)] border-r border-[var(--border-color)] flex-shrink-0">
+      <div className="w-64 bg-[var(--bg-color)] border-r border-[var(--border-color)] p-4 overflow-y-auto flex-shrink-0">
         <input
           type="text"
           placeholder="Search"
@@ -92,7 +92,7 @@ const SettingsLayout = () => {
       </div>
 
       {/* Panel de contenido */}
-      <div className="flex-1 p-6 overflow-y-auto bg-[var(--bg-color)] border-l border-[var(--border-color)] min-h-0">
+      <div className="flex-1 overflow-y-auto bg-[var(--bg-color)] p-6 border-l border-[var(--border-color)] min-h-0">
         {renderPanel()}
       </div>
     </div>
