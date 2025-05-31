@@ -8,6 +8,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Brain } from 'lucide-react';
 
 const menuItems = [
+  { name: 'Dashboard', icon: LayoutGrid, path: '/dashboard' },
   { name: 'Add task', icon: PlusCircle, path: '/tasks' },
   { name: 'Search', icon: Search },
   { name: 'Inbox', icon: Inbox, path: '/inbox' },

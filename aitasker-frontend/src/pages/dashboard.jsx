@@ -1,79 +1,108 @@
 import React from 'react';
-import { FaPenFancy } from 'react-icons/fa';
+import { useTheme } from '../context/ThemeContext';
 
-function StatBox({ title, value, change, isPositive }) {
-  return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
-      <h3 className="text-lg font-semibold">{title}</h3>
-      <p className="text-2xl font-bold">{value}</p>
-      <p className={`text-sm ${isPositive ? 'text-green-500' : 'text-red-500'}`}>
-        {change > 0 ? '+' : ''}
-        {change}%
-      </p>
-    </div>
-  );
-}
+const Dashboard = () => {
+  const { theme } = useTheme();
 
-export default function Dashboard() {
-  const articles = [];
-  const highlights = [];
+  const user = {
+    name: 'Pedro Cereghetti',
+    recentPages: [
+      { title: 'Primeros pasos', icon: '📄' },
+      { title: 'Lista de lectura', icon: '📚' },
+    ],
+    events: [
+      { date: 'Hoy', time: '9:00', title: 'Reunión diaria de equipo', location: 'Oficina' },
+      { date: 'Dom 1 jun', time: '10:00', title: 'Seguimiento del proyecto', location: 'Oficina' },
+    ],
+  };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-10 relative text-gray-900 dark:text-gray-100">
-      
-      <div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-          <StatBox title="Total artículos" value={3} change={15} isPositive={true} />
-          <StatBox title="Total palabras" value={1500} change={-5} isPositive={false} />
-          <StatBox title="Última edición" value={'N/A'} change={0} isPositive={true} />
-        </div>
-
-        <h2 className="text-2xl font-serif font-semibold text-gray-800 dark:text-gray-200 mb-4">Trabajos recientes</h2>
-        {articles.length === 0 ? (
-          <div>No articles available</div>
-        ) : (
-          <div className="space-y-4">
-            {articles.map((article) => (
-              <div key={article.id}>{article.title}</div>
-            ))}
+    <div className="min-h-screen px-6 py-8 font-sans transition-colors" style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}>
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-xl font-semibold flex items-center gap-2">
+          <div className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center font-bold">
+            {user.name[0]}
           </div>
-        )}
+          Buenas tardes, {user.name}
+        </h1>
+        <p className="text-sm text-gray-400 mt-1">
+          Consulta o busca cualquier información dentro de tu espacio de trabajo...
+        </p>
       </div>
 
-      
-      <aside className="hidden lg:block space-y-8">
-        <section>
-          <h3 className="text-lg font-semibold mb-3 text-gray-900 dark:text-gray-100">Blogs de la comunidad</h3>
-          <div className="space-y-4">
-            {highlights.map((item, idx) => (
-              <div key={idx}>
-                <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{item.title}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{item.author} • {item.date}</p>
+      {/* Filtro de búsqueda */}
+      <div className="bg-[#2b2b2b] p-4 rounded-md mb-10 shadow" style={{ backgroundColor: 'var(--button-bg)' }}>
+        <div className="flex flex-wrap gap-4 items-center">
+          <select className="bg-[#1e1e1e] border border-gray-600 text-sm px-3 py-2 rounded text-white" style={{ backgroundColor: 'var(--input-bg)', color: 'var(--input-text)', borderColor: 'var(--input-border)' }}>
+            <option>Consultar</option>
+            <option>Crear</option>
+            <option>Investigar</option>
+          </select>
+          <input
+            type="text"
+            placeholder="Buscar..."
+            className="flex-1 border rounded px-3 py-2 text-sm"
+            style={{ backgroundColor: 'var(--input-bg)', color: 'var(--input-text)', borderColor: 'var(--input-border)' }}
+          />
+          <button className="text-sm px-3 py-2 rounded hover:bg-gray-600" style={{ backgroundColor: 'var(--button-bg)', color: 'var(--button-text)', borderColor: 'var(--button-border)', borderStyle: 'solid' }}>
+            Todas las fuentes ✓
+          </button>
+        </div>
+      </div>
+
+      {/* Recientes + Eventos */}
+      <div className="grid md:grid-cols-2 gap-8">
+        {/* Páginas recientes */}
+        <div>
+          <h2 className="text-sm font-medium mb-2 text-gray-400">Páginas recientes</h2>
+          <div className="flex gap-4">
+            {user.recentPages.map((page, i) => (
+              <div
+                key={i}
+                className="w-40 h-32 rounded-md flex flex-col justify-center items-center hover:bg-[#3a3a3a] transition cursor-pointer"
+                style={{ backgroundColor: 'var(--button-bg)' }}
+              >
+                <div className="text-3xl mb-2">{page.icon}</div>
+                <p className="text-sm font-semibold text-center" style={{ color: 'var(--text-color)' }}>{page.title}</p>
+              </div>
+            ))}
+            <div className="w-40 h-32 rounded-md flex justify-center items-center text-gray-500 hover:bg-[#3a3a3a] transition cursor-pointer" style={{ backgroundColor: 'var(--button-bg)' }}>
+              + Nueva página
+            </div>
+          </div>
+        </div>
+
+        {/* Eventos próximos */}
+        <div>
+          <h2 className="text-sm font-medium mb-2 text-gray-400">Próximos eventos</h2>
+          <div className="rounded-md p-4 shadow-sm" style={{ backgroundColor: 'var(--button-bg)' }}>
+            <p className="text-sm text-gray-300 mb-4">
+              Conecta el Anotador con IA a los eventos de tu calendario.
+              <br />
+              <span className="text-blue-400 underline cursor-pointer">
+                Conectar con Notion Calendar
+              </span>
+            </p>
+            {user.events.map((event, i) => (
+              <div key={i} className="mb-3">
+                <p className="text-xs text-gray-400">{event.date}</p>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="text-sm">{event.title}</p>
+                    <p className="text-xs text-gray-500">{event.time} · {event.location}</p>
+                  </div>
+                  <button className="text-xs px-2 py-1 border rounded hover:bg-gray-700" style={{ borderColor: 'var(--button-border)', color: 'var(--button-text)' }}>
+                    Unirse y tomar notas
+                  </button>
+                </div>
               </div>
             ))}
           </div>
-        </section>
-
-        <section className="bg-blue-50 dark:bg-gray-800 rounded-xl p-5 shadow">
-          <div className="flex items-center justify-between mb-3">
-            <h4 className="font-semibold text-gray-700 dark:text-gray-300">Escribe en GenAirate</h4>
-          </div>
-          <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
-            <li><FaPenFancy className="inline mr-2 text-gray-500 dark:text-gray-400" /> Guía de nuevos escritores</li>
-            <li><FaPenFancy className="inline mr-2 text-gray-500 dark:text-gray-400" /> Consejos para escribir</li>
-            <li><FaPenFancy className="inline mr-2 text-gray-500 dark:text-gray-400" /> Cómo ampliar tu audiencia</li>
-          </ul>
-          <button className="mt-4 w-full bg-black dark:bg-white text-white dark:text-black py-2 rounded-full hover:bg-gray-800 dark:hover:bg-gray-300 transition text-sm">
-            Empezar a escribir
-          </button>
-        </section>
-      </aside>
-
-   
-      <button className="fixed bottom-6 right-6 bg-black dark:bg-white text-white dark:text-black px-5 py-3 rounded-full hover:bg-gray-800 dark:hover:bg-gray-300 transition z-10">
-        + Nueva Ta
-      </button>
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default Dashboard;
