@@ -5,53 +5,37 @@ const AccountPanel = () => {
   const { user, updateUserPhoto } = useUser();
   const [uploading, setUploading] = useState(false);
   const [photoUrlWithTimestamp, setPhotoUrlWithTimestamp] = useState('');
-  const fileInputRef = useRef(null);
+  const [selectedImage, setSelectedImage] = useState(user?.photoUrl || '');
 
-  const handlePhotoChangeClick = () => {
-    fileInputRef.current?.click();
-  };
+  // Predefined images for profile picture selection
+  const predefinedImages = [
+    '/src/assets/profile-pics/sample6.jpg',
+    '/src/assets/profile-pics/sample1.jpg',
+    '/src/assets/profile-pics/sample2.jpg',
+    '/src/assets/profile-pics/sample3.jpg',
+    '/src/assets/profile-pics/sample4.jpg',
+    '/src/assets/profile-pics/sample5.jpg',
+  ];
 
   useEffect(() => {
     if (user?.photoUrl) {
-      const baseUrl = 'http://localhost:8080'; 
+      const baseUrl = 'http://localhost:8080';
       const fullUrl = user.photoUrl.startsWith('http') ? user.photoUrl : baseUrl + user.photoUrl;
       setPhotoUrlWithTimestamp(fullUrl + '?t=' + new Date().getTime());
+      setSelectedImage(fullUrl);
     } else {
       setPhotoUrlWithTimestamp('');
+      setSelectedImage('');
     }
   }, [user?.photoUrl]);
 
-  const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
+  const handleImageSelect = async (event) => {
+    const newPhotoUrl = event.target.value;
+    setSelectedImage(newPhotoUrl);
     setUploading(true);
 
     try {
       const token = localStorage.getItem('token');
-      // Create form data
-      const formData = new FormData();
-      formData.append('photo', file);
-
-      // Upload photo to backend
-      // Assuming backend accepts multipart/form-data at /api/user/upload-photo
-      // and returns the new photoUrl in response
-      const response = await fetch('/api/user/upload-photo', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
-        headers: {
-          Authorization: token ? `Bearer ${token}` : '',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to upload photo');
-      }
-
-      const data = await response.json();
-      const newPhotoUrl = data.photoUrl;
-      console.log('New photo URL from upload:', newPhotoUrl);
 
       // Update user photo in context and backend profile
       updateUserPhoto(newPhotoUrl);
@@ -68,7 +52,7 @@ const AccountPanel = () => {
       });
     } catch (error) {
       console.error(error);
-      alert('Error uploading photo');
+      alert('Error updating photo');
     } finally {
       setUploading(false);
     }
@@ -85,6 +69,7 @@ const AccountPanel = () => {
         body: JSON.stringify({ photoUrl: null }),
       });
       updateUserPhoto(null);
+      setSelectedImage('');
     } catch (error) {
       console.error(error);
       alert('Error removing photo');
@@ -100,13 +85,11 @@ const AccountPanel = () => {
         Plan: <strong>Beginner</strong>
       </p>
 
-      {console.log('Current user photoUrl:', user?.photoUrl)}
-
       {/* Photo */}
       <div className="flex items-center gap-4 mb-4">
-        {photoUrlWithTimestamp ? (
+        {selectedImage ? (
           <img
-            src={photoUrlWithTimestamp}
+            src={selectedImage}
             alt="Profile"
             className="w-16 h-16 rounded-full object-cover"
           />
@@ -116,13 +99,19 @@ const AccountPanel = () => {
           </div>
         )}
         <div className="flex flex-col gap-2">
-          <button
-            onClick={handlePhotoChangeClick}
+          <select
+            value={selectedImage}
+            onChange={handleImageSelect}
             disabled={uploading}
-            className="text-sm px-3 py-1 bg-[var(--button-bg)] hover:bg-[var(--button-bg-hover)] border border-[var(--button-border)] rounded"
+            className="text-sm px-3 py-1 bg-[var(--button-bg)] border border-[var(--button-border)] rounded"
           >
-            {uploading ? 'Uploading...' : 'Change photo'}
-          </button>
+            <option value="">Select a profile image</option>
+            {predefinedImages.map((imgUrl, index) => (
+              <option key={index} value={imgUrl}>
+                {`Image ${index + 1}`}
+              </option>
+            ))}
+          </select>
           <button
             onClick={handleRemovePhoto}
             disabled={uploading || !user?.photoUrl}
@@ -130,13 +119,6 @@ const AccountPanel = () => {
           >
             Remove photo
           </button>
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            className="hidden"
-          />
         </div>
       </div>
 
