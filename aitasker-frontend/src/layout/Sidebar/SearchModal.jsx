@@ -85,7 +85,7 @@ const SearchModal = ({ onClose }) => {
           </button>
         </div>
         <div 
-          className="divide-y max-h-60 overflow-y-auto p-2 text-sm"
+          className="divide-y max-h-60 overflow-y-auto scrollbar-custom p-2 text-sm"
           style={{
             color: 'var(--text-color)',
             divideColor: 'var(--border-color)'

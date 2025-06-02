@@ -77,7 +77,7 @@ const Assistant = () => {
       {/* Chat container */}
       <div className="bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl shadow-sm overflow-hidden flex flex-col h-[600px]">
         {/* Chat body */}
-        <div className="flex-1 p-4 overflow-y-auto space-y-4">
+        <div className="flex-1 p-4 overflow-y-auto scrollbar-custom space-y-4">
           {messages.map((msg, i) => (
             <div
               key={i}

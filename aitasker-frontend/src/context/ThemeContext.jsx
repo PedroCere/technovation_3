@@ -7,6 +7,9 @@ const themes = {
   dark: 'dark',
   cyan: 'cyan',
   purple: 'purple',
+  notion: 'notion',
+  github: 'github',
+  midnight: 'midnight',
 };
 
 const themeColors = {
@@ -44,7 +47,11 @@ const themeColors = {
     '--calendar-selected-bg': '#dbeafe',
     '--calendar-event-bg': '#3b82f6',
     '--calendar-event-text': '#ffffff',
-    '--calendar-agenda-line': '#e5e7eb'
+    '--calendar-agenda-line': '#e5e7eb',
+
+    // Scrollbar colors
+    '--scroll-thumb': '#888',
+    '--scroll-track': '#f1f1f1'
   },
   dark: {
     // Base colors
@@ -80,7 +87,118 @@ const themeColors = {
     '--calendar-selected-bg': '#1e40af',
     '--calendar-event-bg': '#2563eb',
     '--calendar-event-text': '#ffffff',
-    '--calendar-agenda-line': '#334155'
+    '--calendar-agenda-line': '#334155',
+
+    // Scrollbar colors
+    '--scroll-thumb': '#555',
+    '--scroll-track': '#1e1e1e'
+  },
+  notion: {
+    '--bg-color': '#1D1D1D',
+    '--text-color': '#EBEBEB',
+    '--primary-color': '#2F80ED',
+    '--primary-color-hover': '#1C6DD0',
+    '--border-color': '#3A3A3A',
+    '--footer-bg': '#2A2A2A',
+
+    '--button-bg': '#2C2C2C',
+    '--button-bg-hover': '#3A3A3A',
+    '--button-text': '#FFFFFF',
+    '--button-border': '#4B4B4B',
+    '--input-bg': '#1F1F1F',
+    '--input-border': '#3D3D3D',
+
+    '--label-bg-blue': '#2F80ED',
+    '--label-text-blue': '#D0E2FF',
+    '--label-bg-purple': '#9B51E0',
+    '--label-text-purple': '#EEDCFF',
+    '--label-bg-yellow': '#F2C94C',
+    '--label-text-yellow': '#FFF8DC',
+
+    '--event-day-bg': '#1F1F1F',
+    '--calendar-header-bg': '#2C2C2C',
+    '--calendar-border': '#3A3A3A',
+    '--calendar-time-gutter-bg': '#1D1D1D',
+    '--calendar-today-bg': '#2F80ED',
+    '--calendar-selected-bg': '#1C6DD0',
+    '--calendar-event-bg': '#2F80ED',
+    '--calendar-event-text': '#FFFFFF',
+    '--calendar-agenda-line': '#3D3D3D',
+
+    '--scroll-thumb': '#4B4B4B',
+    '--scroll-track': '#1A1A1A'
+  },
+
+  github: {
+    '--bg-color': '#0d1117',
+    '--text-color': '#c9d1d9',
+    '--primary-color': '#58a6ff',
+    '--primary-color-hover': '#1f6feb',
+    '--border-color': '#30363d',
+    '--footer-bg': '#161b22',
+
+    '--button-bg': '#21262d',
+    '--button-bg-hover': '#30363d',
+    '--button-text': '#f0f6fc',
+    '--button-border': '#30363d',
+    '--input-bg': '#0d1117',
+    '--input-border': '#30363d',
+
+    '--label-bg-blue': '#0a3069',
+    '--label-text-blue': '#58a6ff',
+    '--label-bg-purple': '#8250df',
+    '--label-text-purple': '#d2a8ff',
+    '--label-bg-yellow': '#9e6a03',
+    '--label-text-yellow': '#f2cc60',
+
+    '--event-day-bg': '#161b22',
+    '--calendar-header-bg': '#161b22',
+    '--calendar-border': '#30363d',
+    '--calendar-time-gutter-bg': '#0d1117',
+    '--calendar-today-bg': '#1f6feb',
+    '--calendar-selected-bg': '#58a6ff',
+    '--calendar-event-bg': '#238636',
+    '--calendar-event-text': '#ffffff',
+    '--calendar-agenda-line': '#30363d',
+
+    '--scroll-thumb': '#484f58',
+    '--scroll-track': '#161b22'
+  },
+
+  midnight: {
+    '--bg-color': '#13111c',
+    '--text-color': '#f0eff4',
+    '--primary-color': '#7f5af0',
+    '--primary-color-hover': '#6246ea',
+    '--border-color': '#2e2a3f',
+    '--footer-bg': '#1b1926',
+
+    '--button-bg': '#201d2f',
+    '--button-bg-hover': '#2c2940',
+    '--button-text': '#e0def4',
+    '--button-border': '#3c3759',
+    '--input-bg': '#1a1828',
+    '--input-border': '#3c3759',
+
+    '--label-bg-blue': '#3b82f6',
+    '--label-text-blue': '#dbeafe',
+    '--label-bg-purple': '#a78bfa',
+    '--label-text-purple': '#f3e8ff',
+    '--label-bg-yellow': '#facc15',
+    '--label-text-yellow': '#fef3c7',
+
+    '--event-day-bg': '#1f1b2e',
+    '--calendar-header-bg': '#2a273f',
+    '--calendar-border': '#3c3759',
+    '--calendar-time-gutter-bg': '#13111c',
+    '--calendar-today-bg': '#6246ea',
+    '--calendar-selected-bg': '#7f5af0',
+    '--calendar-event-bg': '#2cb67d',
+    '--calendar-event-text': '#ffffff',
+    '--calendar-agenda-line': '#3c3759',
+
+    '--scroll-thumb': '#55516b',
+    '--scroll-track': '#1a1828'
   },
   cyan: {
     // Base colors
@@ -115,7 +233,12 @@ const themeColors = {
     '--calendar-selected-bg': '#a5f3fc',
     '--calendar-event-bg': '#06b6d4',
     '--calendar-event-text': '#ffffff',
-    '--calendar-agenda-line': '#cffafe'
+    '--calendar-agenda-line': '#cffafe',
+
+    
+    // Scrollbar colors
+    '--scroll-thumb': '#888',
+    '--scroll-track': '#f1f1f1'
   },
   purple: {
     // Base colors
@@ -150,7 +273,11 @@ const themeColors = {
     '--calendar-selected-bg': '#c4b5fd',
     '--calendar-event-bg': '#8b5cf6',
     '--calendar-event-text': '#ffffff',
-    '--calendar-agenda-line': '#ddd6fe'
+    '--calendar-agenda-line': '#ddd6fe',
+    
+    // Scrollbar colors
+    '--scroll-thumb': '#888',
+    '--scroll-track': '#f1f1f1'
   }
 };
 

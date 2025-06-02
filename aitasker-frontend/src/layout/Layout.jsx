@@ -18,7 +18,7 @@ function LayoutContent() {
         <div className="flex-1 flex flex-col bg-[var(--bg-color)] text-[var(--text-color)] transition-colors duration-300 min-w-0">
         {!isLanding && <Navbar />}
           
-        <main className="flex-1 overflow-y-auto p-6 min-w-0">
+        <main className="flex-1 overflow-y-auto scrollbar-custom p-6 min-w-0">
           <Outlet />
         </main>
       </div>
