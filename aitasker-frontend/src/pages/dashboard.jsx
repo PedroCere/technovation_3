@@ -21,13 +21,7 @@ const Dashboard = () => {
     { id: 10, title: 'Plan weekend trip: 🚗 🏕️ 🏖️', status: 'todo', label: 'Travel', priority: 'Medium', dueDate: '2024-06-22' },
   ]);
 
-  const userData = {
-    name: 'Pedro Cereghetti',
-    reminders: [
-      { date: 'Today', time: '9:00 AM', title: 'Daily team standup', location: 'Office' },
-      { date: 'Sun Jun 1', time: '10:00 AM', title: 'Project follow-up', location: 'Office' },
-    ],
-  };
+ 
 
   const onStatusChange = (taskId, newStatus) => {
     const updatedTasks = tasks.map(task =>
@@ -64,7 +58,7 @@ const Dashboard = () => {
               'P'
             )}
           </motion.div>
-          Good afternoon, {userData.name}
+          Good afternoon, {user?.name || 'User'}
         </h1>
         <p className="text-sm text-gray-400 mt-1">
           View or search your tasks from your workspace...
@@ -119,7 +113,7 @@ const Dashboard = () => {
                 Connect with Notion Calendar
               </span>
             </p>
-            {userData.reminders.map((reminder, i) => (
+            {(user?.reminders || []).map((reminder, i) => (
               <div key={i} className="mb-3">
                 <p className="text-xs text-gray-400">{reminder.date}</p>
                 <div className="flex justify-between items-center">
