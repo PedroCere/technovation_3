@@ -9,6 +9,9 @@ const ThemePanel = () => {
     dark: 'bg-gray-900 text-white',
     cyan: 'bg-cyan-600 text-white',
     purple: 'bg-purple-600 text-white',
+    notion: 'bg-[#1D1D1D] text-[#EBEBEB]',
+    github: 'bg-[#0d1117] text-[#c9d1d9]',
+    midnight: 'bg-[#13111c] text-[#f0eff4]',
   };
 
   return (

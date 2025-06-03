@@ -8,6 +8,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Brain } from 'lucide-react';
 
 const menuItems = [
+  { name: 'Dashboard', icon: LayoutGrid, path: '/dashboard' },
   { name: 'Add task', icon: PlusCircle, path: '/tasks' },
   { name: 'Search', icon: Search },
   { name: 'Inbox', icon: Inbox, path: '/inbox' },
@@ -15,7 +16,6 @@ const menuItems = [
   { name: 'Upcoming', icon: CalendarClock, path: '/upcoming' },
   { name: 'Filters & Labels', icon: Tag, path: '/filters' },
   { name: 'Completed', icon: CheckCircle, path: '/completed' },
-  // Removed 'Mis Cosas' menu item as per user request
   { name: 'Tasks', icon: ListTodo, path: '/tasks' },
   { name: 'Calendar', icon: Calendar, path: '/calendar' },
   { name: 'Planner', icon: LayoutGrid, path: '/planner' },

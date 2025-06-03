@@ -29,6 +29,8 @@ public class User {
     private String description;
     private String location;
 
+    private String photoUrl;
+
     private int totalTasks = 0;
     private int totalWords = 0;
     private String tonesUsed = "";
@@ -127,7 +129,13 @@ public class User {
         this.location = location;
     }
 
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
 
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
 
     public int getTotalWords() {
         return totalWords;

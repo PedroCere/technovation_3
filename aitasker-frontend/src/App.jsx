@@ -20,6 +20,7 @@ import Settings from './pages/Inbox';
 import Register from './pages/Register';
 import MyThings from './pages/MyThings';
 import { UserProvider } from './context/UserContext';
+import Dashboard from './pages/dashboard';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Landing /> },
+      { path: 'dashboard', element: <Dashboard /> },
       { path: 'inbox', element: <Inbox /> },
       { path: 'today', element: <Today /> },
       { path: 'filters', element: <Filters /> },

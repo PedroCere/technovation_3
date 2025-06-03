@@ -1,8 +1,82 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useUser } from '../../../context/UserContext';
 
 const AccountPanel = () => {
-  const { user } = useUser();
+  const { user, updateUserPhoto } = useUser();
+  const [uploading, setUploading] = useState(false);
+  const [photoUrlWithTimestamp, setPhotoUrlWithTimestamp] = useState('');
+  const [selectedImage, setSelectedImage] = useState(user?.photoUrl || '');
+
+  // Predefined images for profile picture selection
+  const predefinedImages = [
+    '/src/assets/profile-pics/sample6.jpg',
+    '/src/assets/profile-pics/sample1.jpg',
+    '/src/assets/profile-pics/sample2.jpg',
+    '/src/assets/profile-pics/sample3.jpg',
+    '/src/assets/profile-pics/sample4.jpg',
+    '/src/assets/profile-pics/sample5.jpg',
+  ];
+
+  useEffect(() => {
+    if (user?.photoUrl) {
+      const baseUrl = 'http://localhost:8080';
+      const fullUrl = user.photoUrl.startsWith('http') ? user.photoUrl : baseUrl + user.photoUrl;
+      setPhotoUrlWithTimestamp(fullUrl + '?t=' + new Date().getTime());
+      setSelectedImage(fullUrl);
+    } else {
+      setPhotoUrlWithTimestamp('');
+      setSelectedImage('');
+    }
+  }, [user?.photoUrl]);
+
+  const handleImageSelect = async (event) => {
+    const newPhotoUrl = event.target.value;
+    setSelectedImage(newPhotoUrl);
+    setUploading(true);
+
+    try {
+      const token = localStorage.getItem('token');
+
+      // Update user photo in context and backend profile
+      updateUserPhoto(newPhotoUrl);
+
+      // Also update profile with new photoUrl
+      await fetch('/api/user/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? `Bearer ${token}` : '',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ photoUrl: newPhotoUrl }),
+      });
+    } catch (error) {
+      console.error(error);
+      alert('Error updating photo');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemovePhoto = async () => {
+    setUploading(true);
+    try {
+      // Remove photo by setting photoUrl to null
+      await fetch('/api/user/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ photoUrl: null }),
+      });
+      updateUserPhoto(null);
+      setSelectedImage('');
+    } catch (error) {
+      console.error(error);
+      alert('Error removing photo');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   return (
     <div className="bg-[var(--bg-color)] p-6 rounded shadow max-w-3xl text-[var(--text-color)] transition-colors">
@@ -13,12 +87,36 @@ const AccountPanel = () => {
 
       {/* Photo */}
       <div className="flex items-center gap-4 mb-4">
-        <div className="w-16 h-16 bg-yellow-400 rounded-full" />
+        {selectedImage ? (
+          <img
+            src={selectedImage}
+            alt="Profile"
+            className="w-16 h-16 rounded-full object-cover"
+          />
+        ) : (
+          <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center text-white font-bold text-xl">
+            {user?.username?.[0]?.toUpperCase() || 'U'}
+          </div>
+        )}
         <div className="flex flex-col gap-2">
-          <button className="text-sm px-3 py-1 bg-[var(--button-bg)] hover:bg-[var(--button-bg-hover)] border border-[var(--button-border)] rounded">
-            Change photo
-          </button>
-          <button className="text-sm px-3 py-1 border border-red-500 text-red-500 rounded hover:bg-red-500/10">
+          <select
+            value={selectedImage}
+            onChange={handleImageSelect}
+            disabled={uploading}
+            className="text-sm px-3 py-1 bg-[var(--button-bg)] border border-[var(--button-border)] rounded"
+          >
+            <option value="">Select a profile image</option>
+            {predefinedImages.map((imgUrl, index) => (
+              <option key={index} value={imgUrl}>
+                {`Image ${index + 1}`}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={handleRemovePhoto}
+            disabled={uploading || !user?.photoUrl}
+            className="text-sm px-3 py-1 border border-red-500 text-red-500 rounded hover:bg-red-500/10"
+          >
             Remove photo
           </button>
         </div>

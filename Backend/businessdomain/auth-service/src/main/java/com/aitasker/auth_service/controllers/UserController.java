@@ -4,6 +4,7 @@ package com.aitasker.auth_service.controllers;
 import com.aitasker.auth_service.dtos.*;
 import com.aitasker.auth_service.services.UserService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/user")
@@ -20,12 +21,15 @@ public class UserController {
         return userService.getProfile();
     }
 
-    /*@PutMapping("/profile")
+    @PutMapping("/profile")
     public UserProfileResponse updateProfile(@RequestBody UpdateUserProfileRequest req) {
         return userService.updateProfile(req);
     }
 
-     */
+    @PostMapping("/upload-photo")
+    public UploadPhotoResponse uploadPhoto(@RequestParam("photo") MultipartFile photo) {
+        return userService.uploadPhoto(photo);
+    }
 
     @GetMapping("/preferences")
     public UserPreferencesResponse preferences() {
@@ -42,3 +46,4 @@ public class UserController {
         return userService.getStats();
     }
 }
+

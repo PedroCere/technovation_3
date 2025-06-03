@@ -9,4 +9,5 @@ public class UserProfileResponse {
     public LocalDateTime createdAt;
     public String description;
     public String location;
+    public String photoUrl;
 }

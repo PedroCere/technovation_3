@@ -1,30 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { FaRegCalendarAlt } from "react-icons/fa";
-import { IoRadioButtonOffOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
+import TaskList from "../features/tasks/TaskList";
+import TaskForm from "../features/tasks/TaskForm";
 import { getTasks } from "../services/taskService";
 
 const mockTasks = [
-  { id: 1, title: 'Mock Task 1', dueDate: new Date().toISOString(), completed: false, subtasks: [] },
-  { id: 2, title: 'Mock Task 2', dueDate: new Date().toISOString(), completed: true, subtasks: [] },
+  { id: 1, title: 'Mock Task 1', dueDate: new Date().toISOString(), status: "todo", completed: false, subtasks: [] },
+  { id: 2, title: 'Mock Task 2', dueDate: new Date().toISOString(), status: "done", completed: true, subtasks: [] },
 ];
 
 const Today = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [editingTask, setEditingTask] = useState(null);
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         const data = await getTasks();
-        // Filter tasks to only those with dueDate equal to today
         const today = new Date();
-        const todayStr = today.toISOString().split('T')[0]; // YYYY-MM-DD format
-        const filteredTasks = data.filter(task => {
-          if (!task.dueDate) return false;
-          // Compare only date part
-          return task.dueDate.startsWith(todayStr);
-        });
+        const todayStr = today.toISOString().split('T')[0];
+        const filteredTasks = data.filter(task =>
+          task.dueDate?.startsWith(todayStr)
+        );
         setTasks(filteredTasks);
         setError(null);
       } catch (err) {
@@ -34,120 +32,71 @@ const Today = () => {
         setLoading(false);
       }
     };
-
     fetchTasks();
   }, []);
 
-  const toggleTask = (taskId) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === taskId ? { ...task, completed: !task.completed } : task
+  const toggleTaskStatus = (taskId, newStatus) => {
+    setTasks(prev =>
+      prev.map((task) =>
+        task.id === taskId ? { ...task, status: newStatus } : task
       )
     );
   };
 
-  if (loading) {
-    return <div className="flex justify-center w-full min-h-full p-6">Loading tasks...</div>;
-  }
+  const handleEditClick = (task) => {
+    setEditingTask(task);
+  };
 
-  if (error) {
-    return (
-      <div className="flex justify-center w-full min-h-full p-6">
-        <div className="mb-4 text-red-600">{error}</div>
-        <div className="max-w-4xl w-full">
-          <div className="space-y-4">
-            {tasks.map((task) => (
-              <div
-                key={task.id}
-                className="flex items-start gap-3 group hover:bg-gray-100 dark:hover:bg-white/5 px-3 py-2 rounded transition-all w-full"
-              >
-                <button
-                  onClick={() => toggleTask(task.id)}
-                  className="mt-1 text-gray-400 hover:text-red-500 transition-all p-0"
-                >
-                  {task.completed ? (
-                    <IoCheckmarkCircleOutline className="text-xl text-red-500" />
-                  ) : (
-                    <IoRadioButtonOffOutline className="text-xl" />
-                  )}
-                </button>
+  const handleDeleteClick = (taskId) => {
+    setTasks(prev => prev.filter((task) => task.id !== taskId));
+  };
 
-                <div className="flex-1">
-                  <p
-                    className={`font-medium text-sm ${
-                      task.completed ? "line-through opacity-50" : ""
-                    }`}
-                  >
-                    {task.title || task.text}
-                  </p>
-
-                  {task.subtasks && task.subtasks.length > 0 && (
-                    <div className="flex flex-col mt-1 ml-1 text-xs text-gray-500 space-y-0.5">
-                      {task.subtasks.map((sub, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <span className="text-gray-400">-</span>
-                          <span>{sub}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+  const handleFormSubmit = (updatedTask) => {
+    setTasks(prev =>
+      prev.map((task) => (task.id === updatedTask.id ? updatedTask : task))
     );
+    setEditingTask(null);
+  };
+
+  const handleFormClose = () => {
+    setEditingTask(null);
+  };
+
+  if (loading) {
+    return <div className="flex justify-center w-full min-h-full p-6" style={{ color: "var(--text-color)" }}>Loading tasks...</div>;
   }
 
   return (
-    <div className="flex justify-center w-full min-h-full p-6">
+    <div className="flex justify-center w-full min-h-full p-6" style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}>
       <div className="max-w-4xl w-full">
         <div className="flex items-center gap-3 mb-6">
           <h1 className="text-2xl font-bold">Today</h1>
-          <span className="text-sm text-gray-500">May 21 - Today - Wednesday</span>
+          <span className="text-sm" style={{ color: "var(--text-color)", opacity: 0.6 }}>
+            {new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
+          </span>
         </div>
 
-        <div className="space-y-4">
-          {tasks.map((task) => (
-            <div
-              key={task.id}
-              className="flex items-start gap-3 group hover:bg-gray-100 dark:hover:bg-white/5 px-3 py-2 rounded transition-all w-full"
-            >
-              <button
-                onClick={() => toggleTask(task.id)}
-                className="mt-1 text-gray-400 hover:text-red-500 transition-all p-0"
-              >
-                {task.completed ? (
-                  <IoCheckmarkCircleOutline className="text-xl text-red-500" />
-                ) : (
-                  <IoRadioButtonOffOutline className="text-xl" />
-                )}
-              </button>
+        {error && (
+          <div className="mb-4" style={{ color: "red" }}>
+            {error}
+          </div>
+        )}
 
-              <div className="flex-1">
-                <p
-                  className={`font-medium text-sm ${
-                    task.completed ? "line-through opacity-50" : ""
-                  }`}
-                >
-                  {task.title || task.text}
-                </p>
+        <TaskList
+          tasks={tasks}
+          onDragEnd={() => {}}
+          onStatusChange={toggleTaskStatus}
+          onEditClick={handleEditClick}
+          onDeleteClick={handleDeleteClick}
+        />
 
-                {task.subtasks && task.subtasks.length > 0 && (
-                  <div className="flex flex-col mt-1 ml-1 text-xs text-gray-500 space-y-0.5">
-                    {task.subtasks.map((sub, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <span className="text-gray-400">-</span>
-                        <span>{sub}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+        {editingTask && (
+          <TaskForm
+            initialData={editingTask}
+            onSubmit={handleFormSubmit}
+            onClose={handleFormClose}
+          />
+        )}
       </div>
     </div>
   );

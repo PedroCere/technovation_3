@@ -39,8 +39,12 @@ const SidebarUserMenu = () => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-3 w-full p-2 hover:bg-[var(--primary-color-hover)] rounded-lg transition-colors"
       >
-        <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
-          <User className="w-4 h-4 text-white" />
+        <div className="w-8 h-8 rounded-full overflow-hidden bg-yellow-400 flex items-center justify-center">
+          {user?.photoUrl ? (
+            <img src={user.photoUrl} alt="User" className="w-full h-full object-cover" />
+          ) : (
+            <User className="w-4 h-4 text-white" />
+          )}
         </div>
         <div className="text-left text-[var(--text-color)]">
           <p className="text-sm font-medium">{user?.username || 'Usuario'}</p>
@@ -97,7 +101,7 @@ const SidebarUserMenu = () => {
               &times;
             </button>
             <h2 className="text-2xl font-semibold mb-6">Settings</h2>
-            <div className="flex-1 overflow-auto">
+            <div className="flex-1 min-h-0 flex">
               <SettingsLayout />
             </div>
           </div>
