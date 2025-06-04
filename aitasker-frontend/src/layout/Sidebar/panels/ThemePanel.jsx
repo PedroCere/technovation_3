@@ -12,6 +12,14 @@ const ThemePanel = () => {
     notion: 'bg-[#1D1D1D] text-[#EBEBEB]',
     github: 'bg-[#0d1117] text-[#c9d1d9]',
     midnight: 'bg-[#13111c] text-[#f0eff4]',
+    focus: 'bg-[#fdfdfd] text-[#111827]',
+    sunset: 'bg-[#fff7ed] text-[#1f2937]',
+    neon: 'bg-[#0a0a23] text-[#d1d5db]',
+    volcano: 'bg-[#1b1a1f] text-[#fce8e8]',
+    forest: 'bg-[#0f1f1a] text-[#e4f5ec]',
+    monochrome: 'bg-[#121212] text-[#e5e5e5]',
+    grape: 'bg-[#1c1624] text-[#f3e8ff]',
+    coffee: 'bg-[#1c1b18] text-[#f5f5dc]',
   };
 
   return (
