@@ -9,86 +9,88 @@ const Dashboard = () => {
   const { user } = useUser();
 
   const [tasks, setTasks] = useState([
-    { id: 1, title: 'Get started with tasks', status: 'todo', label: 'Start', priority: 'High', dueDate: '2024-06-10' },
-    { id: 2, title: 'Reading list', status: 'in-progress', label: 'Reading', priority: 'Medium', dueDate: '2024-06-15' },
-    { id: 3, title: 'Buy groceries 🛒', status: 'done', label: 'Shopping', priority: 'Low', dueDate: '2024-06-05' },
-    { id: 4, title: 'Fix broken light in hallway', status: 'todo', label: 'Home', priority: 'High', dueDate: '2024-06-12' },
-    { id: 5, title: 'Write blog post: "How to use GPTs!"', status: 'in-progress', label: 'Writing', priority: 'Medium', dueDate: '2024-06-20' },
-    { id: 6, title: 'Refactor legacy code 🚀', status: 'done', label: 'Coding', priority: 'High', dueDate: '2024-06-08' },
-    { id: 7, title: 'Review pull requests (15!)', status: 'todo', label: 'Review', priority: 'High', dueDate: '2024-06-11' },
-    { id: 8, title: 'Book dentist appointment', status: 'in-progress', label: 'Health', priority: 'Medium', dueDate: '2024-06-18' },
-    { id: 9, title: 'Water the plants 🌱', status: 'todo', label: 'Garden', priority: 'Low', dueDate: '2024-06-07' },
-    { id: 10, title: 'Plan weekend trip: 🚗 🏕️ 🏖️', status: 'todo', label: 'Travel', priority: 'Medium', dueDate: '2024-06-22' },
+    // ... tus tareas (igual)
   ]);
 
- 
-
   const onStatusChange = (taskId, newStatus) => {
-    const updatedTasks = tasks.map(task =>
-      task.id === taskId ? { ...task, status: newStatus } : task
-    );
-    setTasks(updatedTasks);
+    setTasks(tasks.map(task => task.id === taskId ? { ...task, status: newStatus } : task));
   };
 
-  const onEditClick = (task) => {
-    alert(`Edit task: ${task.title}`);
-  };
-
-  const onDeleteClick = (taskId) => {
-    const updatedTasks = tasks.filter(task => task.id !== taskId);
-    setTasks(updatedTasks);
-  };
+  const onEditClick = (task) => alert(`Edit task: ${task.title}`);
+  const onDeleteClick = (taskId) => setTasks(tasks.filter(task => task.id !== taskId));
 
   return (
-    <div className="min-h-screen px-6 py-8 font-sans transition-colors" style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}>
-      <div className="mb-8">
-        <h1 className="text-xl font-semibold flex items-center gap-2">
+    <div className="min-h-screen px-6 py-10 font-sans transition-colors"
+         style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}>
+      
+      {/* Header */}
+      <div className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between">
+        <div className="flex items-center gap-4">
           <motion.div
-            className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center font-bold overflow-hidden"
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 1.2, repeat: Infinity }}
+            className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center font-bold overflow-hidden"
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 1.4, repeat: Infinity }}
           >
             {user?.photoUrl ? (
-              <img
-                src={user.photoUrl}
-                alt="User Profile"
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              'P'
-            )}
+              <img src={user.photoUrl} alt="User Profile" className="w-full h-full object-cover" />
+            ) : user?.name?.[0]?.toUpperCase() || 'U'}
           </motion.div>
-          Good afternoon, {user?.name || 'User'}
-        </h1>
-        <p className="text-sm text-gray-400 mt-1">
-          View or search your tasks from your workspace...
-        </p>
+          <div>
+            <h1 className="text-2xl font-bold">Good afternoon, {user?.name || 'User'}</h1>
+            <p className="text-sm text-[var(--button-text)]/70 mt-1">
+              View or search your tasks from your workspace...
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div className="p-4 rounded-md mb-10 shadow" style={{ backgroundColor: 'var(--button-bg)' }}>
+      {/* Search + Filter Bar */}
+      <div className="mb-8 bg-[var(--button-bg)] p-4 rounded-lg shadow-sm border border-[var(--border-color)]">
         <div className="flex flex-wrap gap-4 items-center">
-          <select className="bg-[#1e1e1e] border border-gray-600 text-sm px-3 py-2 rounded text-white" style={{ backgroundColor: 'var(--input-bg)', color: 'var(--input-text)', borderColor: 'var(--input-border)' }}>
+          <select
+            className="text-sm px-3 py-2 rounded border"
+            style={{
+              backgroundColor: 'var(--input-bg)',
+              color: 'var(--input-text)',
+              borderColor: 'var(--input-border)',
+            }}
+          >
             <option>Search</option>
             <option>Create</option>
             <option>Explore</option>
           </select>
+
           <input
             type="text"
             placeholder="Search tasks..."
-            className="flex-1 border rounded px-3 py-2 text-sm"
-            style={{ backgroundColor: 'var(--input-bg)', color: 'var(--input-text)', borderColor: 'var(--input-border)' }}
+            className="flex-1 px-3 py-2 rounded border text-sm"
+            style={{
+              backgroundColor: 'var(--input-bg)',
+              color: 'var(--input-text)',
+              borderColor: 'var(--input-border)',
+            }}
           />
-          <button className="text-sm px-3 py-2 rounded hover:bg-gray-600" style={{ backgroundColor: 'var(--button-bg)', color: 'var(--button-text)', borderColor: 'var(--button-border)', borderStyle: 'solid' }}>
-            All sources ✓
+
+          <button
+            className="text-sm px-3 py-2 rounded border hover:brightness-110"
+            style={{
+              backgroundColor: 'var(--primary-color)',
+              color: 'var(--button-text)',
+              borderColor: 'var(--primary-color-hover)',
+            }}
+          >
+            All Sources ✓
           </button>
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8">
-        <div>
-          <h2 className="text-sm font-medium mb-2 text-gray-400">Recent Tasks</h2>
-          <div className="flex flex-col gap-4 overflow-y-auto max-h-[600px] scrollbar-custom">
-            {tasks.map((task) => (
+      {/* Main Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+        {/* Left: Tasks */}
+        <div className="md:col-span-8 space-y-4">
+          <h2 className="text-lg font-semibold">Recent Tasks</h2>
+          <div className="flex flex-col gap-4 max-h-[70vh] overflow-y-auto pr-1 scrollbar-thin">
+            {tasks.map(task => (
               <TaskCard
                 key={task.id}
                 task={task}
@@ -97,38 +99,57 @@ const Dashboard = () => {
                 onDeleteClick={onDeleteClick}
               />
             ))}
-            <div className="w-full rounded-md flex justify-center items-center text-gray-500 hover:bg-[#3a3a3a] transition cursor-pointer p-4" style={{ backgroundColor: 'var(--button-bg)' }}>
-              + New task
-            </div>
+
+            <button
+              className="w-full py-3 text-center rounded-lg border-dashed border-2 text-sm hover:scale-[1.02] transition"
+              style={{
+                backgroundColor: 'var(--button-bg)',
+                color: 'var(--text-color)',
+                borderColor: 'var(--primary-color)',
+              }}
+            >
+              + New Task
+            </button>
           </div>
         </div>
 
-        <div>
-          <h2 className="text-sm font-medium mb-2 text-gray-400">Upcoming Reminders</h2>
-          <div className="rounded-md p-4 shadow-sm" style={{ backgroundColor: 'var(--button-bg)' }}>
-            <p className="text-sm text-gray-300 mb-4">
-              Sync your tasks with your calendar using AI Notes.
-              <br />
-              <span className="text-blue-400 underline cursor-pointer">
+        {/* Right: Reminders */}
+        <aside className="md:col-span-4 space-y-4">
+          <h2 className="text-lg font-semibold">Upcoming Reminders</h2>
+          <div className="rounded-xl border border-[var(--border-color)] p-4 bg-[var(--button-bg)] shadow-sm">
+            <p className="text-sm text-[var(--button-text)] mb-4">
+              Sync your tasks with your calendar using AI Notes. <br />
+              <span className="text-[var(--primary-color)] underline cursor-pointer">
                 Connect with Notion Calendar
               </span>
             </p>
-            {(user?.reminders || []).map((reminder, i) => (
-              <div key={i} className="mb-3">
-                <p className="text-xs text-gray-400">{reminder.date}</p>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <p className="text-sm">{reminder.title}</p>
-                    <p className="text-xs text-gray-500">{reminder.time} · {reminder.location}</p>
+
+            {(user?.reminders || []).length > 0 ? (
+              user.reminders.map((reminder, i) => (
+                <div key={i} className="mb-3">
+                  <p className="text-xs text-gray-400">{reminder.date}</p>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-sm">{reminder.title}</p>
+                      <p className="text-xs text-gray-500">{reminder.time} · {reminder.location}</p>
+                    </div>
+                    <button
+                      className="text-xs px-3 py-1 rounded border hover:bg-opacity-20"
+                      style={{
+                        borderColor: 'var(--button-border)',
+                        color: 'var(--button-text)',
+                      }}
+                    >
+                      Join & Take Notes
+                    </button>
                   </div>
-                  <button className="text-xs px-2 py-1 border rounded hover:bg-gray-700" style={{ borderColor: 'var(--button-border)', color: 'var(--button-text)' }}>
-                    Join & Take Notes
-                  </button>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-sm text-gray-500 italic">No reminders.</p>
+            )}
           </div>
-        </div>
+        </aside>
       </div>
     </div>
   );
