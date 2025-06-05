@@ -1,56 +1,64 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FaRegCommentAlt, FaRegClock, FaTag } from 'react-icons/fa';
-import { MdPriorityHigh } from 'react-icons/md';
+import { MdPriorityHigh, MdEdit, MdDelete } from 'react-icons/md';
 
 const TaskCard = ({ task, onStatusChange, onEditClick, onDeleteClick }) => {
   return (
-    <div className="bg-[var(--bg-color)] p-4 rounded-lg shadow-sm border-l-4 border-[var(--primary-color)] mb-4 text-[var(--text-color)] transition-colors">
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="font-medium text-[var(--text-color)]">{task.title}</h3>
+    <div className="bg-[var(--bg-color)] p-5 rounded-xl shadow border border-[var(--card-border)] mb-4 transition hover:shadow-md">
+      {/* Header: Title and Actions */}
+      <div className="flex items-start justify-between mb-4">
+        <h3 className="font-semibold text-lg leading-tight text-[var(--text-color)]">
+          {task.title}
+        </h3>
         <div className="flex gap-2">
           <button
             onClick={() => onEditClick(task)}
-            className="px-2 py-1 bg-[var(--primary-color)] text-white rounded hover:bg-[var(--primary-color-hover)] text-xs"
+            className="p-2 bg-[var(--primary-color)] text-white rounded-full hover:bg-[var(--primary-color-hover)]"
+            title="Edit Task"
           >
-            Edit
+            <MdEdit className="w-4 h-4" />
           </button>
           <button
             onClick={() => onDeleteClick(task.id)}
-            className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-xs"
+            className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+            title="Delete Task"
           >
-            Delete
+            <MdDelete className="w-4 h-4" />
           </button>
         </div>
       </div>
 
-      <select
-        value={task.status}
-        onChange={(e) => onStatusChange(task.id, e.target.value)}
-        className="text-xs px-2 py-1 rounded border border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-color)] mb-3"
-      >
-        <option value="todo">To Do</option>
-        <option value="in-progress">In Progress</option>
-        <option value="done">Done</option>
-      </select>
+      {/* Status Dropdown */}
+      <div className="mb-3">
+        <select
+          value={task.status}
+          onChange={(e) => onStatusChange(task.id, e.target.value)}
+          className="text-sm px-3 py-2 rounded-md border border-[var(--input-border)] bg-[var(--input-bg)] text-[var(--text-color)] w-full"
+        >
+          <option value="todo">📝 To Do</option>
+          <option value="in-progress">🚧 In Progress</option>
+          <option value="done">✅ Done</option>
+        </select>
+      </div>
 
-      {/* Etiquetas */}
+      {/* Labels */}
       <div className="flex flex-wrap items-center gap-2 mb-3">
         {task.label && (
-          <span className="bg-[var(--label-bg-blue)] text-[var(--label-text-blue)] text-xs px-2 py-1 rounded flex items-center gap-1">
+          <span className="bg-[var(--label-bg-blue)] text-[var(--label-text-blue)] text-xs px-2 py-1 rounded-full flex items-center gap-1">
             <FaTag className="w-3 h-3" /> {task.label}
           </span>
         )}
-        <div className="bg-[var(--label-bg-purple)] text-[var(--label-text-purple)] text-xs px-2 py-1 rounded flex items-center gap-1">
+        <span className="bg-[var(--label-bg-purple)] text-[var(--label-text-purple)] text-xs px-2 py-1 rounded-full flex items-center gap-1">
           <FaRegCommentAlt className="w-3 h-3" /> AI Note
-        </div>
+        </span>
       </div>
 
-      {/* Metadatos */}
-      <div className="flex items-center gap-4 text-[var(--text-color)]/70 text-sm">
+      {/* Metadata */}
+      <div className="flex items-center justify-between text-[var(--text-color)]/70 text-sm">
         <div className="flex items-center gap-1">
-          <MdPriorityHigh className="w-4 h-4" />
-          <span>{task.priority}</span>
+          <MdPriorityHigh className="w-4 h-4 text-yellow-500" />
+          <span className="capitalize">{task.priority}</span>
         </div>
         <div className="flex items-center gap-1">
           <FaRegClock className="w-4 h-4" />
