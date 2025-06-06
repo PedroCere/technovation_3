@@ -63,7 +63,7 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
 
   return (
     <>
-      <aside className={`${collapsed ? 'w-16' : 'w-72'} transition-all h-screen flex flex-col bg-[var(--bg-color)] text-[var(--text-color)] font-sans text-sm`}>
+<aside className={`${collapsed ? 'w-16' : 'w-72'} transition-width duration-500 ease-in-out h-screen flex flex-col bg-[var(--bg-color)] text-[var(--text-color)] font-sans text-sm`}>
         
         <SidebarHeader
           collapsed={collapsed}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import TaskList from "../features/tasks/TaskList";
 import TaskForm from "../features/tasks/TaskForm";
 
@@ -24,16 +25,7 @@ const Inbox = () => {
       label: "",
       description: "",
     },
-    {
-      id: 3,
-      title: "Present new Package",
-      status: "todo",
-      subtasks: ["ejemplo1", "Tomorrow"],
-      priority: "medium",
-      dueDate: "",
-      label: "",
-      description: "",
-    },
+    
   ]);
 
   const [editingTask, setEditingTask] = useState(null);
@@ -66,25 +58,43 @@ const Inbox = () => {
   };
 
   return (
-    <div className="flex justify-center w-full min-h-full px-2 py-6 bg-[var(--bg-color)] text-[var(--text-color)] transition-colors">
-      <div className="max-w-4xl w-full">
-        <h1 className="text-2xl font-bold mb-6">Inbox</h1>
-        <TaskList
+    <motion.div
+      className="min-h-screen px-6 py-8 font-sans transition-colors"
+      style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <div className="mb-8">
+        <h1 className="text-xl font-semibold flex items-center gap-2">
+          Inbox
+        </h1>
+        <p className="text-sm text-gray-400 mt-1">
+          Your personal catch-all list. Organize what’s on your mind.
+        </p>
+      </div>
+
+
+
+      <div className="flex flex-col gap-4 overflow-y-auto max-h-[600px] scrollbar-custom">
+     <TaskList
           tasks={tasks}
           onDragEnd={() => {}}
           onStatusChange={toggleTaskStatus}
           onEditClick={handleEditClick}
           onDeleteClick={handleDeleteClick}
         />
-        {editingTask && (
-          <TaskForm
-            initialData={editingTask}
-            onSubmit={handleFormSubmit}
-            onClose={handleFormClose}
-          />
-        )}
+    
       </div>
-    </div>
+
+      {editingTask && (
+        <TaskForm
+          initialData={editingTask}
+          onSubmit={handleFormSubmit}
+          onClose={handleFormClose}
+        />
+      )}
+    </motion.div>
   );
 };
 

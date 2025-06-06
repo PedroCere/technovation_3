@@ -23,8 +23,9 @@ const Stats = () => {
   }));
 
   return (
-    <div className="flex justify-center w-full min-h-full p-6">
-      <div className="max-w-6xl w-full">
+    <div className="min-h-screen px-6 py-10 font-sans transition-colors"
+         style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}>
+      <div className="max-w-6xl w-full mx-auto">
         <h1 className="text-2xl font-bold mb-6 text-[var(--text-color)]">Productivity Stats</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">

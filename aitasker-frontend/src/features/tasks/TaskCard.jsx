@@ -1,11 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
 import { FaRegCommentAlt, FaRegClock, FaTag } from 'react-icons/fa';
 import { MdPriorityHigh, MdEdit, MdDelete } from 'react-icons/md';
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -10 },
+};
+
 const TaskCard = ({ task, onStatusChange, onEditClick, onDeleteClick }) => {
   return (
-    <div className="bg-[var(--bg-color)] p-5 rounded-xl shadow border border-[var(--card-border)] mb-4 transition hover:shadow-md">
+    <motion.div
+      className="w-full bg-[var(--bg-color)] p-5 rounded-xl shadow border border-[var(--card-border)] transition hover:shadow-md flex-shrink-0"
+      variants={cardVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      layout
+    >
       {/* Header: Title and Actions */}
       <div className="flex items-start justify-between mb-4">
         <h3 className="font-semibold text-lg leading-tight text-[var(--text-color)]">
@@ -65,7 +79,7 @@ const TaskCard = ({ task, onStatusChange, onEditClick, onDeleteClick }) => {
           <span>{task.dueDate}</span>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
