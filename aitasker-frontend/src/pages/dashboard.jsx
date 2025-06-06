@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from '../context/UserContext';
 import TaskCard from '../features/tasks/TaskCard';
 
@@ -21,53 +21,51 @@ const Dashboard = () => {
     { id: 10, title: 'Plan weekend trip: 🚗 🏕️ 🏖️', status: 'todo', label: 'Travel', priority: 'Medium', dueDate: '2024-06-22' },
   ]);
 
- 
-
   const onStatusChange = (taskId, newStatus) => {
-    const updatedTasks = tasks.map(task =>
-      task.id === taskId ? { ...task, status: newStatus } : task
-    );
-    setTasks(updatedTasks);
+    setTasks(tasks.map(task => task.id === taskId ? { ...task, status: newStatus } : task));
   };
 
-  const onEditClick = (task) => {
-    alert(`Edit task: ${task.title}`);
-  };
-
-  const onDeleteClick = (taskId) => {
-    const updatedTasks = tasks.filter(task => task.id !== taskId);
-    setTasks(updatedTasks);
-  };
+  const onEditClick = (task) => alert(`Edit task: ${task.title}`);
+  const onDeleteClick = (taskId) => setTasks(tasks.filter(task => task.id !== taskId));
 
   return (
-    <div className="min-h-screen px-6 py-8 font-sans transition-colors" style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}>
-      <div className="mb-8">
-        <h1 className="text-xl font-semibold flex items-center gap-2">
+    <motion.main
+      className="min-h-screen px-6 py-10 font-sans transition-colors"
+      style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <header className="flex flex-col md:flex-row md:items-center md:justify-between mb-10">
+        <div className="flex items-center gap-4">
           <motion.div
-            className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center font-bold overflow-hidden"
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 1.2, repeat: Infinity }}
+            className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center font-bold overflow-hidden"
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 1.4, repeat: Infinity }}
           >
             {user?.photoUrl ? (
-              <img
-                src={user.photoUrl}
-                alt="User Profile"
-                className="w-full h-full object-cover"
-              />
+              <img src={user.photoUrl} alt="User" className="w-full h-full object-cover" />
             ) : (
-              'P'
+              user?.name?.[0]?.toUpperCase() || 'U'
             )}
           </motion.div>
-          Good afternoon, {user?.name || 'User'}
-        </h1>
-        <p className="text-sm text-gray-400 mt-1">
-          View or search your tasks from your workspace...
-        </p>
-      </div>
+          <div>
+            <h1 className="text-2xl font-bold">Welcome back, {user?.name || 'User'}</h1>
+            <p className="text-sm opacity-70 mt-1">Here’s what’s on your plate today.</p>
+          </div>
+        </div>
+      </header>
 
-      <div className="p-4 rounded-md mb-10 shadow" style={{ backgroundColor: 'var(--button-bg)' }}>
+      <motion.section
+        className="mb-8 bg-[var(--button-bg)] p-5 rounded-xl shadow border border-[var(--border-color)]"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
         <div className="flex flex-wrap gap-4 items-center">
-          <select className="bg-[#1e1e1e] border border-gray-600 text-sm px-3 py-2 rounded text-white" style={{ backgroundColor: 'var(--input-bg)', color: 'var(--input-text)', borderColor: 'var(--input-border)' }}>
+          <select className="text-sm px-3 py-2 rounded border"
+            style={{ backgroundColor: 'var(--input-bg)', color: 'var(--input-text)', borderColor: 'var(--input-border)' }}>
             <option>Search</option>
             <option>Create</option>
             <option>Explore</option>
@@ -75,62 +73,89 @@ const Dashboard = () => {
           <input
             type="text"
             placeholder="Search tasks..."
-            className="flex-1 border rounded px-3 py-2 text-sm"
+            className="flex-1 px-3 py-2 rounded border text-sm"
             style={{ backgroundColor: 'var(--input-bg)', color: 'var(--input-text)', borderColor: 'var(--input-border)' }}
           />
-          <button className="text-sm px-3 py-2 rounded hover:bg-gray-600" style={{ backgroundColor: 'var(--button-bg)', color: 'var(--button-text)', borderColor: 'var(--button-border)', borderStyle: 'solid' }}>
-            All sources ✓
+          <button
+            className="text-sm px-3 py-2 rounded border hover:brightness-110"
+            style={{ backgroundColor: 'var(--primary-color)', color: 'var(--button-text)', borderColor: 'var(--primary-color-hover)' }}
+          >
+            All Sources ✓
           </button>
         </div>
-      </div>
+      </motion.section>
 
-      <div className="grid md:grid-cols-2 gap-8">
-        <div>
-          <h2 className="text-sm font-medium mb-2 text-gray-400">Recent Tasks</h2>
-          <div className="flex flex-col gap-4 overflow-y-auto max-h-[600px] scrollbar-custom">
-            {tasks.map((task) => (
-              <TaskCard
-                key={task.id}
-                task={task}
-                onStatusChange={onStatusChange}
-                onEditClick={onEditClick}
-                onDeleteClick={onDeleteClick}
-              />
-            ))}
-            <div className="w-full rounded-md flex justify-center items-center text-gray-500 hover:bg-[#3a3a3a] transition cursor-pointer p-4" style={{ backgroundColor: 'var(--button-bg)' }}>
-              + New task
-            </div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <section className="lg:col-span-8 space-y-4">
+          <h2 className="text-lg font-semibold mb-2">Tasks</h2>
+          <div className="flex flex-col gap-4 max-h-[70vh] overflow-y-auto pr-1 scrollbar-thin">
+            <AnimatePresence>
+              {tasks.map(task => (
+                <motion.div
+                  key={task.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <TaskCard
+                    task={task}
+                    onStatusChange={onStatusChange}
+                    onEditClick={onEditClick}
+                    onDeleteClick={onDeleteClick}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full py-3 text-center rounded-lg border-dashed border-2 text-sm"
+              style={{ backgroundColor: 'var(--button-bg)', color: 'var(--text-color)', borderColor: 'var(--primary-color)' }}
+            >
+              + New Task
+            </motion.button>
           </div>
-        </div>
+        </section>
 
-        <div>
-          <h2 className="text-sm font-medium mb-2 text-gray-400">Upcoming Reminders</h2>
-          <div className="rounded-md p-4 shadow-sm" style={{ backgroundColor: 'var(--button-bg)' }}>
-            <p className="text-sm text-gray-300 mb-4">
-              Sync your tasks with your calendar using AI Notes.
+        <aside className="lg:col-span-4 space-y-4">
+          <h2 className="text-lg font-semibold mb-2">Reminders</h2>
+          <motion.div
+            className="rounded-xl border border-[var(--border-color)] p-5 bg-[var(--button-bg)] shadow-sm"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <p className="text-sm mb-4 text-[var(--button-text)]">
+              Sync tasks with your calendar via AI Notes.
               <br />
-              <span className="text-blue-400 underline cursor-pointer">
-                Connect with Notion Calendar
-              </span>
+              <span className="text-[var(--primary-color)] underline cursor-pointer">Connect with Notion</span>
             </p>
-            {(user?.reminders || []).map((reminder, i) => (
-              <div key={i} className="mb-3">
-                <p className="text-xs text-gray-400">{reminder.date}</p>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <p className="text-sm">{reminder.title}</p>
-                    <p className="text-xs text-gray-500">{reminder.time} · {reminder.location}</p>
+            {(user?.reminders || []).length ? (
+              user.reminders.map((reminder, i) => (
+                <div key={i} className="mb-3">
+                  <p className="text-xs text-gray-400">{reminder.date}</p>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-sm">{reminder.title}</p>
+                      <p className="text-xs text-gray-500">{reminder.time} · {reminder.location}</p>
+                    </div>
+                    <button
+                      className="text-xs px-3 py-1 rounded border hover:bg-opacity-20"
+                      style={{ borderColor: 'var(--button-border)', color: 'var(--button-text)' }}
+                    >
+                      Join & Note
+                    </button>
                   </div>
-                  <button className="text-xs px-2 py-1 border rounded hover:bg-gray-700" style={{ borderColor: 'var(--button-border)', color: 'var(--button-text)' }}>
-                    Join & Take Notes
-                  </button>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
+              ))
+            ) : (
+              <p className="text-sm text-gray-500 italic">No reminders for now.</p>
+            )}
+          </motion.div>
+        </aside>
       </div>
-    </div>
+    </motion.main>
   );
 };
 

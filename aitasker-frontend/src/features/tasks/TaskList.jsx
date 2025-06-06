@@ -1,4 +1,3 @@
-// aitasker-frontend/src/features/tasks/TaskList.jsx
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import TaskCard from './TaskCard';
 
@@ -10,15 +9,16 @@ const TaskList = ({ tasks, onDragEnd, onStatusChange, onEditClick, onDeleteClick
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
-            className="space-y-2 overflow-y-auto max-h-[600px] scrollbar-custom"
+            className="flex flex-col gap-4 w-full"
           >
             {tasks.map((task, index) => (
-<Draggable key={task.id} draggableId={task.id.toString()} index={index}>
+              <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
+                    className="w-full"
                   >
                     <TaskCard
                       task={task}

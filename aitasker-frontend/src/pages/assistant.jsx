@@ -71,52 +71,55 @@ const Assistant = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 text-[var(--text-color)] transition-colors">
-      <h1 className="text-2xl font-bold mb-4">Productivity Assistant</h1>
+    <div className="min-h-screen px-6 py-10 font-sans transition-colors"
+         style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}>
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-2xl font-bold mb-4">Productivity Assistant</h1>
 
-      {/* Chat container */}
-      <div className="bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl shadow-sm overflow-hidden flex flex-col h-[600px]">
-        {/* Chat body */}
-        <div className="flex-1 p-4 overflow-y-auto scrollbar-custom space-y-4">
-          {messages.map((msg, i) => (
-            <div
-              key={i}
-              className={`p-3 rounded-lg max-w-xs ${
-                msg.fromAI
-                  ? 'bg-[var(--button-bg)] text-[var(--text-color)]'
-                  : 'bg-[var(--primary-color)] text-white ml-auto'
-              }`}
-            >
-              {msg.text}
-            </div>
-          ))}
-        </div>
+        {/* Chat container */}
+        <div className="bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl shadow-sm overflow-hidden flex flex-col h-[600px]">
+          {/* Chat body */}
+          <div className="flex-1 p-4 overflow-y-auto scrollbar-custom space-y-4">
+            {messages.map((msg, i) => (
+              <div
+                key={i}
+                className={`p-3 rounded-lg max-w-xs ${
+                  msg.fromAI
+                    ? 'bg-[var(--button-bg)] text-[var(--text-color)]'
+                    : 'bg-[var(--primary-color)] text-white ml-auto'
+                }`}
+              >
+                {msg.text}
+              </div>
+            ))}
+          </div>
 
-        {/* Chat input */}
-        <div className="p-4 border-t border-[var(--border-color)] bg-[var(--bg-color)]">
-          <form onSubmit={handleSubmit} className="flex gap-2">
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Ask something like 'Give me optimization tips'"
-              className="flex-1 p-2 rounded-lg bg-[var(--input-bg)] text-[var(--text-color)] border border-[var(--input-border)] placeholder-opacity-70 focus:ring-2 focus:ring-[var(--primary-color)] outline-none transition"
-            />
-            <button
-              type="button"
-              className="p-2 text-[var(--text-color)]/60 hover:text-[var(--primary-color)]"
-              title="Voice input (not implemented)"
-            >
-              <FiMic />
-            </button>
-            <button
-              type="submit"
-              className="p-2 text-[var(--primary-color)] hover:text-[var(--primary-color-hover)]"
-              title="Send"
-            >
-              <FiSend />
-            </button>
-          </form>
+          {/* Chat input */}
+          <div className="p-4 border-t border-[var(--border-color)] bg-[var(--bg-color)]">
+            <form onSubmit={handleSubmit} className="flex gap-2">
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Ask something like 'Give me optimization tips'"
+                className="flex-1 p-2 rounded-lg bg-[var(--input-bg)] text-[var(--text-color)] border border-[var(--input-border)] placeholder-opacity-70 focus:ring-2 focus:ring-[var(--primary-color)] outline-none transition"
+              />
+              <button
+                type="button"
+                className="p-2 text-[var(--text-color)]/60 hover:text-[var(--primary-color)]"
+                title="Voice input (not implemented)"
+              >
+                <FiMic />
+              </button>
+              <button
+                type="submit"
+                className="p-2 text-[var(--primary-color)] hover:text-[var(--primary-color-hover)]"
+                title="Send"
+              >
+                <FiSend />
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>

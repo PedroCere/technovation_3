@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useUser } from '../../../context/UserContext';
 
 const AccountPanel = () => {
@@ -7,7 +7,6 @@ const AccountPanel = () => {
   const [photoUrlWithTimestamp, setPhotoUrlWithTimestamp] = useState('');
   const [selectedImage, setSelectedImage] = useState(user?.photoUrl || '');
 
-  // Predefined images for profile picture selection
   const predefinedImages = [
     '/src/assets/profile-pics/sample6.jpg',
     '/src/assets/profile-pics/sample1.jpg',
@@ -29,18 +28,12 @@ const AccountPanel = () => {
     }
   }, [user?.photoUrl]);
 
-  const handleImageSelect = async (event) => {
-    const newPhotoUrl = event.target.value;
-    setSelectedImage(newPhotoUrl);
+  const handleImageSelect = async (imgUrl) => {
+    setSelectedImage(imgUrl);
     setUploading(true);
-
     try {
       const token = localStorage.getItem('token');
-
-      // Update user photo in context and backend profile
-      updateUserPhoto(newPhotoUrl);
-
-      // Also update profile with new photoUrl
+      updateUserPhoto(imgUrl);
       await fetch('/api/user/profile', {
         method: 'PUT',
         headers: {
@@ -48,7 +41,7 @@ const AccountPanel = () => {
           Authorization: token ? `Bearer ${token}` : '',
         },
         credentials: 'include',
-        body: JSON.stringify({ photoUrl: newPhotoUrl }),
+        body: JSON.stringify({ photoUrl: imgUrl }),
       });
     } catch (error) {
       console.error(error);
@@ -61,7 +54,6 @@ const AccountPanel = () => {
   const handleRemovePhoto = async () => {
     setUploading(true);
     try {
-      // Remove photo by setting photoUrl to null
       await fetch('/api/user/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -81,44 +73,51 @@ const AccountPanel = () => {
   return (
     <div className="bg-[var(--bg-color)] p-6 rounded shadow max-w-3xl text-[var(--text-color)] transition-colors">
       <h2 className="text-xl font-semibold mb-4">Account</h2>
-      <p className="text-sm mb-2">
-        Plan: <strong>Beginner</strong>
-      </p>
+      <p className="text-sm mb-2">Plan: <strong>Beginner</strong></p>
 
-      {/* Photo */}
+      {/* Photo Section */}
       <div className="flex items-center gap-4 mb-4">
         {selectedImage ? (
-          <img
-            src={selectedImage}
-            alt="Profile"
-            className="w-16 h-16 rounded-full object-cover"
-          />
+          <img src={selectedImage} alt="Profile" className="w-16 h-16 rounded-full object-cover" />
         ) : (
           <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center text-white font-bold text-xl">
             {user?.username?.[0]?.toUpperCase() || 'U'}
           </div>
         )}
-        <div className="flex flex-col gap-2">
-          <select
-            value={selectedImage}
-            onChange={handleImageSelect}
-            disabled={uploading}
-            className="text-sm px-3 py-1 bg-[var(--button-bg)] border border-[var(--button-border)] rounded"
-          >
-            <option value="">Select a profile image</option>
-            {predefinedImages.map((imgUrl, index) => (
-              <option key={index} value={imgUrl}>
-                {`Image ${index + 1}`}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={handleRemovePhoto}
-            disabled={uploading || !user?.photoUrl}
-            className="text-sm px-3 py-1 border border-red-500 text-red-500 rounded hover:bg-red-500/10"
-          >
-            Remove photo
-          </button>
+        <button
+          onClick={handleRemovePhoto}
+          disabled={uploading || !user?.photoUrl}
+          className="text-sm px-3 py-1 border border-red-500 text-red-500 rounded hover:bg-red-500/10"
+        >
+          Remove photo
+        </button>
+      </div>
+
+      {/* Avatar Selection Grid */}
+      <div className="mb-6">
+        <p className="text-sm mb-2">Choose a profile image:</p>
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+          {predefinedImages.map((imgUrl, index) => {
+            const isSelected = selectedImage === imgUrl;
+            return (
+              <button
+                key={index}
+                onClick={() => handleImageSelect(imgUrl)}
+                disabled={uploading}
+                className={`overflow-hidden rounded-full border-2 transition ${
+                  isSelected
+                    ? 'border-blue-500 ring-2 ring-blue-300'
+                    : 'border-gray-300 dark:border-gray-600'
+                }`}
+              >
+                <img
+                  src={imgUrl}
+                  alt={`Avatar ${index + 1}`}
+                  className="w-16 h-16 object-cover"
+                />
+              </button>
+            );
+          })}
         </div>
       </div>
 

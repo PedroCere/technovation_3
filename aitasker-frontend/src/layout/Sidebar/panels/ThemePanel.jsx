@@ -12,6 +12,32 @@ const ThemePanel = () => {
     notion: 'bg-[#1D1D1D] text-[#EBEBEB]',
     github: 'bg-[#0d1117] text-[#c9d1d9]',
     midnight: 'bg-[#13111c] text-[#f0eff4]',
+    focus: 'bg-[#fdfdfd] text-[#111827]',
+    sunset: 'bg-[#fff7ed] text-[#1f2937]',
+    neon: 'bg-[#0a0a23] text-[#d1d5db]',
+    volcano: 'bg-[#1b1a1f] text-[#fce8e8]',
+    forest: 'bg-[#0f1f1a] text-[#e4f5ec]',
+    monochrome: 'bg-[#121212] text-[#e5e5e5]',
+    grape: 'bg-[#1c1624] text-[#f3e8ff]',
+    coffee: 'bg-[#1c1b18] text-[#f5f5dc]',
+  };
+
+  const themeNames = {
+    light: 'Light',
+    dark: 'Dark',
+    cyan: 'Cyan',
+    purple: 'Purple',
+    notion: 'Notion',
+    github: 'GitHub',
+    midnight: 'Midnight',
+    focus: 'Focus',
+    sunset: 'Sunset',
+    neon: 'Neon',
+    volcano: 'Volcano',
+    forest: 'Forest',
+    monochrome: 'Monochrome',
+    grape: 'Grape',
+    coffee: 'Coffee',
   };
 
   return (
@@ -22,38 +48,28 @@ const ThemePanel = () => {
       </div>
 
       <div className="space-y-4">
-        {/* Theme selection */}
-        <p className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">Select Theme</p>
-        <div className="flex gap-3">
-          {Object.keys(themes).map((key) => (
-            <button
-              key={key}
-              onClick={() => setTheme(themes[key])}
-              className={`w-10 h-10 rounded-full border-2 flex items-center justify-center ${
-                theme === themes[key] ? 'border-black dark:border-white' : 'border-transparent'
-              } ${colors[themes[key]]}`}
-              title={themes[key]}
-            >
-              {themes[key] === 'dark' ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 3v1m0 16v1m8.485-8.485h1M3 12H2m15.364 6.364l.707.707M6.343 6.343l-.707-.707m12.728 0l-.707-.707M6.343 17.657l-.707.707M12 5a7 7 0 000 14 7 7 0 000-14z"
-                  />
-                </svg>
-              ) : (
-                <span className="sr-only">{themes[key]}</span>
-              )}
-            </button>
-          ))}
+        <p className="text-sm font-medium text-gray-800 dark:text-gray-200">Select Theme</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {Object.keys(themes).map((key) => {
+            const currentTheme = themes[key];
+            const isSelected = theme === currentTheme;
+            const isLocked = false;
+
+            return (
+              <button
+                key={key}
+                onClick={() => !isLocked && setTheme(currentTheme)}
+                className={`relative flex flex-col items-center justify-center p-4 rounded-lg border text-sm font-medium transition hover:shadow-md ${
+                  isSelected
+                    ? 'border-blue-600 ring-2 ring-blue-400'
+                    : 'border-gray-300 dark:border-gray-600'
+                } ${isLocked ? 'opacity-60 cursor-not-allowed' : ''} ${colors[currentTheme]}`}
+              >
+                <div className="w-full h-8 rounded mb-2" />
+                <span className="capitalize">{themeNames[currentTheme] || currentTheme}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>
