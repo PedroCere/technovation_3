@@ -1,57 +1,74 @@
 import { IoCheckmarkCircle } from "react-icons/io5";
+import { motion } from "framer-motion";
 
 const Completed = () => {
   const activities = [
     {
-      task: "Enviar un paquete",
+      task: "Send a package",
       time: "3:31 PM",
       project: "Inbox ☉"
     },
     {
-      task: "Hacer el quiz de métodos de productividad",
+      task: "Make a productivity quiz",
       time: "3:31 PM",
       project: "Inbox ☉"
     }
   ];
 
   return (
-    <div className="flex justify-center w-full min-h-full p-6">
-      <div className="max-w-4xl w-full">
-        <h1 className="text-2xl font-bold mb-6 text-[var(--text-color)]">Activity: All projects</h1>
+    <motion.div
+      className="min-h-screen px-6 py-8 font-sans transition-colors"
+      style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <div className="mb-8">
+        <div className="flex justify-between items-center">
+          <h1 className="text-xl font-semibold">Completed</h1>
 
-        <div className="bg-[var(--bg-color)] rounded-lg shadow-sm p-4 border border-[var(--border-color)]">
-          <h2 className="text-lg font-medium text-[var(--text-color)] mb-4">
-            May 21 - Today - Wednesday
+        </div>
+        <p className="text-sm text-gray-400 mt-1">
+          A summary of your completed tasks across all projects.
+        </p>
+      </div>
+
+      <div className="max-w-5xl mx-auto">
+        <div className="rounded-lg border border-[var(--border-color)] bg-[var(--button-bg)] shadow-md p-6">
+          <h2 className="text-base font-medium text-[var(--text-color)] mb-6">
+            Today · May 21 · Wednesday
           </h2>
 
-          <div className="space-y-6">
+          <div className="flex flex-col gap-4">
             {activities.map((activity, index) => (
-              <div key={index} className="border-b border-[var(--border-color)] pb-6 last:border-0">
-                <div className="flex items-start gap-3">
-                  <IoCheckmarkCircle className="text-[var(--primary-color)] w-5 h-5 mt-0.5 flex-shrink-0" />
-                  <div className="flex-1">
-                    <p className="text-sm text-[var(--text-color)]">
-                      You completed a task: {activity.task}
-                    </p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="text-xs text-[var(--text-color)]/70">{activity.time}</span>
-                      <span className="text-xs text-[var(--text-color)]/70">•</span>
-                      <span className="text-xs text-[var(--text-color)]/70">{activity.project}</span>
-                    </div>
+              <motion.div
+                key={index}
+                className="flex items-start gap-3 p-4 rounded-md border border-[var(--border-color)] hover:shadow transition-colors bg-[var(--bg-color)]"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+              >
+                <IoCheckmarkCircle className="text-[var(--primary-color)] w-5 h-5 mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-sm text-[var(--text-color)]">
+                    You completed <span className="font-medium">{activity.task}</span>
+                  </p>
+                  <div className="flex items-center gap-2 text-xs text-[var(--text-color)]/60 mt-1">
+                    <span>{activity.time}</span>
+                    <span>•</span>
+                    <span>{activity.project}</span>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
 
-            <div className="text-center py-4">
-              <p className="text-sm text-[var(--text-color)]/70">
-                That's it. No more history to load.
-              </p>
+            <div className="text-center pt-6 text-sm text-[var(--text-color)]/60">
+              That’s it. No more history to load.
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
