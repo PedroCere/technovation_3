@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import TaskList from '../features/tasks/TaskList';
 import TaskForm from '../features/tasks/TaskForm';
 import { getTasks, createTask, updateTask, deleteTask } from '../services/taskService';
 import { useTheme } from '../context/ThemeContext';
 
 const mockTasks = [
-  { id: 1, title: 'Mock Task 1', status: 'pending', completed: false, subtasks: [] },
-  { id: 2, title: 'Mock Task 2', status: 'completed', completed: true, subtasks: [] },
+  { id: 1, title: 'Mock Task 1', status: 'todo', completed: false, subtasks: [], priority: 'medium', dueDate: '' },
+  { id: 2, title: 'Mock Task 2', status: 'done', completed: true, subtasks: [], priority: 'low', dueDate: '' },
 ];
 
 const Tasks = () => {
@@ -94,25 +95,36 @@ const Tasks = () => {
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto p-6 text-[var(--text-color)]">
+      <div className="min-h-screen px-6 py-8 text-[var(--text-color)] transition-colors">
         Loading tasks...
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 text-[var(--text-color)] transition-colors">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Tasks</h1>
-        <button
-          onClick={() => {
-            setEditingTask(null);
-            setShowForm(true);
-          }}
-          className="px-4 py-2 bg-[var(--primary-color)] hover:bg-[var(--primary-color-hover)] text-white rounded transition-colors"
-        >
-          Add Task
-        </button>
+    <motion.div
+      className="min-h-screen px-6 py-8 font-sans transition-colors"
+      style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <div className="mb-8">
+        <div className="flex justify-between items-center">
+          <h1 className="text-xl font-semibold">Tasks</h1>
+          <button
+            onClick={() => {
+              setEditingTask(null);
+              setShowForm(true);
+            }}
+            className="px-4 py-2 bg-[var(--primary-color)] hover:bg-[var(--primary-color-hover)] text-white rounded transition-colors"
+          >
+            Add Task
+          </button>
+        </div>
+        <p className="text-sm text-gray-400 mt-1">
+          Manage all your tasks from a central place.
+        </p>
       </div>
 
       {error && (
@@ -121,13 +133,15 @@ const Tasks = () => {
         </div>
       )}
 
-      <TaskList
-        tasks={tasks}
-        onDragEnd={handleDragEnd}
-        onStatusChange={handleStatusChange}
-        onEditClick={handleEditClick}
-        onDeleteClick={handleDeleteTask}
-      />
+      <div className="flex flex-col gap-4 overflow-y-auto max-h-[600px] scrollbar-custom">
+        <TaskList
+          tasks={tasks}
+          onDragEnd={handleDragEnd}
+          onStatusChange={handleStatusChange}
+          onEditClick={handleEditClick}
+          onDeleteClick={handleDeleteTask}
+        />
+      </div>
 
       {showForm && (
         <TaskForm
@@ -136,7 +150,7 @@ const Tasks = () => {
           initialData={editingTask}
         />
       )}
-    </div>
+    </motion.div>
   );
 };
 

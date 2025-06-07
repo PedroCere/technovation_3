@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import TaskList from "../features/tasks/TaskList";
 import TaskForm from "../features/tasks/TaskForm";
 import { getTasks } from "../services/taskService";
 
 const mockTasks = [
-  { id: 1, title: 'Mock Task 1', dueDate: new Date().toISOString(), status: "todo", completed: false, subtasks: [] },
-  { id: 2, title: 'Mock Task 2', dueDate: new Date().toISOString(), status: "done", completed: true, subtasks: [] },
+  { id: 1, title: 'Mock Task 1', dueDate: new Date().toISOString(), status: "todo", completed: false, subtasks: [], priority: 'medium' },
+  { id: 2, title: 'Mock Task 2', dueDate: new Date().toISOString(), status: "done", completed: true, subtasks: [], priority: 'low' },
 ];
 
 const Today = () => {
@@ -63,25 +64,36 @@ const Today = () => {
   };
 
   if (loading) {
-    return <div className="flex justify-center w-full min-h-full p-6" style={{ color: "var(--text-color)" }}>Loading tasks...</div>;
+    return <div className="min-h-screen px-6 py-8 text-[var(--text-color)] transition-colors">Loading tasks...</div>;
   }
 
   return (
-    <div className="flex justify-center w-full min-h-full p-6" style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}>
-      <div className="max-w-4xl w-full">
-        <div className="flex items-center gap-3 mb-6">
-          <h1 className="text-2xl font-bold">Today</h1>
-          <span className="text-sm" style={{ color: "var(--text-color)", opacity: 0.6 }}>
+    <motion.div
+      className="min-h-screen px-6 py-8 font-sans transition-colors"
+      style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <div className="mb-8">
+        <h1 className="text-xl font-semibold flex items-center gap-3">
+          Today
+          <span className="text-sm text-gray-400">
             {new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
           </span>
+        </h1>
+        <p className="text-sm text-gray-400 mt-1">
+          View tasks due today.
+        </p>
+      </div>
+
+      {error && (
+        <div className="mb-4 text-red-500 bg-[var(--button-bg)] p-3 rounded">
+          {error}
         </div>
+      )}
 
-        {error && (
-          <div className="mb-4" style={{ color: "red" }}>
-            {error}
-          </div>
-        )}
-
+      <div className="flex flex-col gap-4 overflow-y-auto max-h-[600px] scrollbar-custom">
         <TaskList
           tasks={tasks}
           onDragEnd={() => {}}
@@ -89,16 +101,16 @@ const Today = () => {
           onEditClick={handleEditClick}
           onDeleteClick={handleDeleteClick}
         />
-
-        {editingTask && (
-          <TaskForm
-            initialData={editingTask}
-            onSubmit={handleFormSubmit}
-            onClose={handleFormClose}
-          />
-        )}
       </div>
-    </div>
+
+      {editingTask && (
+        <TaskForm
+          initialData={editingTask}
+          onSubmit={handleFormSubmit}
+          onClose={handleFormClose}
+        />
+      )}
+    </motion.div>
   );
 };
 
