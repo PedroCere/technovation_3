@@ -5,6 +5,7 @@ import {
   getOptimizationAdvice,
   getAntiProcrastinationAdvice,
 } from '../services/adviceService';
+import { motion } from 'framer-motion';
 
 const Assistant = () => {
   const [query, setQuery] = useState('');
@@ -71,19 +72,27 @@ const Assistant = () => {
   };
 
   return (
-    <div className="min-h-screen px-6 py-10 font-sans transition-colors"
-         style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}>
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold mb-4">Productivity Assistant</h1>
+    <motion.div
+      className="min-h-screen px-6 py-8 font-sans transition-colors"
+      style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <div className="w-full">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold">Productivity Assistant</h1>
+          <p className="text-sm text-gray-400 mt-1">
+            How can I help you today?
+          </p>
+        </div>
 
-        {/* Chat container */}
-        <div className="bg-[var(--bg-color)] border border-[var(--border-color)] rounded-xl shadow-sm overflow-hidden flex flex-col h-[600px]">
-          {/* Chat body */}
+        <div className="bg-[var(--button-bg)] border border-[var(--border-color)] rounded-xl shadow-sm overflow-hidden flex flex-col h-[600px]">
           <div className="flex-1 p-4 overflow-y-auto scrollbar-custom space-y-4">
             {messages.map((msg, i) => (
               <div
                 key={i}
-                className={`p-3 rounded-lg max-w-xs ${
+                className={`p-3 rounded-lg max-w-full w-fit ${
                   msg.fromAI
                     ? 'bg-[var(--button-bg)] text-[var(--text-color)]'
                     : 'bg-[var(--primary-color)] text-white ml-auto'
@@ -94,7 +103,6 @@ const Assistant = () => {
             ))}
           </div>
 
-          {/* Chat input */}
           <div className="p-4 border-t border-[var(--border-color)] bg-[var(--bg-color)]">
             <form onSubmit={handleSubmit} className="flex gap-2">
               <input
@@ -122,7 +130,7 @@ const Assistant = () => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

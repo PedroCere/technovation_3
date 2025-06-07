@@ -16,7 +16,6 @@ function LayoutContent() {
     <div className={`${theme} flex h-screen`}>
       {!isLanding && <Sidebar collapsed={collapsed} onToggleSidebar={() => setCollapsed(prev => !prev)} />}
         <div className="flex-1 flex flex-col bg-[var(--bg-color)] text-[var(--text-color)] transition-colors duration-300 min-w-0">
-        {!isLanding && <Navbar />}
           
         <main className="flex-1 overflow-y-auto scrollbar-custom px-2 py-6 min-w-0">
           <Outlet />
