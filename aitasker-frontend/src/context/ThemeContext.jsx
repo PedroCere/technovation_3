@@ -626,7 +626,7 @@ const themeColors = {
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
-    return savedTheme || themes.light;
+    return savedTheme || themes.volcano;
   });
 
   useEffect(() => {

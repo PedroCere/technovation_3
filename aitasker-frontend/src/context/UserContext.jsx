@@ -5,7 +5,12 @@ const UserContext = createContext(null);
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem('user');
-    return storedUser ? JSON.parse(storedUser) : null;
+    return storedUser
+      ? JSON.parse(storedUser)
+      : {
+          username: 'Usuario',
+          photoUrl: 'src/assets/profile-pics/sample4.jpg',
+        };
   });
 
   useEffect(() => {
