@@ -3,6 +3,8 @@ import { useTheme } from '../context/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from '../context/UserContext';
 import TaskCard from '../features/tasks/TaskCard';
+import wallpaper1 from '../assets/wallpaper6.png';
+import wall from '../assets/wall2.mp4';
 
 const Dashboard = () => {
   const { theme } = useTheme();
@@ -37,53 +39,59 @@ const Dashboard = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <header className="flex flex-col md:flex-row md:items-center md:justify-between mb-10">
-        <div className="flex items-center gap-4">
-          <motion.div
-            className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center font-bold overflow-hidden"
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 1.4, repeat: Infinity }}
-          >
-            {user?.photoUrl ? (
-              <img src={user.photoUrl} alt="User" className="w-full h-full object-cover" />
-            ) : (
-              user?.name?.[0]?.toUpperCase() || 'U'
-            )}
-          </motion.div>
-          <div>
-            <h1 className="text-2xl font-bold">Welcome back, {user?.name || 'User'}</h1>
-            <p className="text-sm opacity-70 mt-1">Here’s what’s on your plate today.</p>
-          </div>
-        </div>
-      </header>
 
-      <motion.section
-        className="mb-8 bg-[var(--button-bg)] p-5 rounded-xl shadow border border-[var(--border-color)]"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+{/* Hero video section con contenido sobrepuesto */}
+<div className="relative w-full min-h-[45vh] overflow-hidden rounded-xl mb-12">
+ <video
+  className="absolute top-0 left-0 w-full h-full object-cover object-top"
+
+    src={wall}
+    autoPlay
+    muted
+    loop
+    playsInline
+  />
+  <div className="absolute inset-0 bg-black/40 dark:bg-black/50 backdrop-blur-sm" />
+
+  {/* Contenido sobre el video */}
+  <div className="relative z-10 h-full flex flex-col justify-center items-start px-6 py-8 gap-6 text-white dark:text-white">
+    <div className="flex items-center gap-4">
+      <motion.div
+        className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center font-bold overflow-hidden"
+        animate={{ scale: [1, 1.1, 1] }}
+        transition={{ duration: 1.4, repeat: Infinity }}
       >
-        <div className="flex flex-wrap gap-4 items-center">
-          <select className="text-sm px-3 py-2 rounded border"
-            style={{ backgroundColor: 'var(--input-bg)', color: 'var(--input-text)', borderColor: 'var(--input-border)' }}>
-            <option>Search</option>
-            <option>Create</option>
-            <option>Explore</option>
-          </select>
-          <input
-            type="text"
-            placeholder="Search tasks..."
-            className="flex-1 px-3 py-2 rounded border text-sm"
-            style={{ backgroundColor: 'var(--input-bg)', color: 'var(--input-text)', borderColor: 'var(--input-border)' }}
-          />
-          <button
-            className="text-sm px-3 py-2 rounded border hover:brightness-110"
-            style={{ backgroundColor: 'var(--primary-color)', color: 'var(--button-text)', borderColor: 'var(--primary-color-hover)' }}
-          >
-            All Sources ✓
-          </button>
-        </div>
-      </motion.section>
+        {user?.photoUrl ? (
+          <img src={user.photoUrl} alt="User" className="w-full h-full object-cover" />
+        ) : (
+          user?.name?.[0]?.toUpperCase() || 'U'
+        )}
+      </motion.div>
+      <div>
+        <h1 className="text-3xl font-bold">Bienvenido de nuevo, {user?.name || 'Usuario'}</h1>
+        <p className="text-base opacity-80 mt-1">Estas son tus tareas para hoy.</p>
+      </div>
+    </div>
+
+    {/* Search dentro del hero */}
+    <div className="w-full max-w-4xl bg-white/10 border border-white/20 backdrop-blur-md rounded-xl p-4 flex flex-wrap gap-3 items-center">
+      <select className="text-sm px-3 py-2 rounded border bg-white/20 text-white border-white/30">
+        <option>Search</option>
+        <option>Create</option>
+        <option>Explore</option>
+      </select>
+      <input
+        type="text"
+        placeholder="Buscar tareas..."
+        className="flex-1 px-3 py-2 rounded border bg-white/20 text-white placeholder-white/70 border-white/30"
+      />
+      <button className="text-sm px-3 py-2 rounded border bg-white/20 text-white border-white/30 hover:bg-white/30">
+        Todas ✓
+      </button>
+    </div>
+  </div>
+</div>
+
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <section className="lg:col-span-8 space-y-4">

@@ -23,7 +23,6 @@ public class UserService {
 
     public UserService(UserRepository repo) {
         this.repo = repo;
-        // Create upload directory if not exists
         File dir = new File(uploadDir);
         if (!dir.exists()) {
             dir.mkdirs();

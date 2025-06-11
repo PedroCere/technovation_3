@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IoRadioButtonOffOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
 import { useTheme } from "../context/ThemeContext";
+import { motion } from "framer-motion";
 
 const Filters = () => {
   const { theme } = useTheme();
@@ -16,7 +17,13 @@ const Filters = () => {
   };
 
   return (
-    <div className="flex justify-center w-full min-h-full p-6 bg-[var(--bg-color)] text-[var(--text-color)] transition-colors">
+    <motion.div
+      className="min-h-screen px-6 py-8 font-sans transition-colors"
+      style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <div className="max-w-4xl w-full">
         <h1 className="text-2xl font-bold mb-6">Filters & Labels</h1>
 
@@ -66,7 +73,7 @@ const Filters = () => {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

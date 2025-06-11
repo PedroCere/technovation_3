@@ -28,7 +28,7 @@ const TaskForm = ({ onClose, onSubmit, initialData }) => {
         <form onSubmit={handleSubmit}>
           {/* Header */}
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">Nueva Tarea</h2>
+            <h2 className="text-xl font-semibold">New Task</h2>
             <button
               type="button"
               onClick={onClose}
@@ -42,7 +42,7 @@ const TaskForm = ({ onClose, onSubmit, initialData }) => {
           {/* Title input */}
           <input
             type="text"
-            placeholder="Título de la tarea"
+            placeholder="Title of the task"
             className="w-full p-2 mb-4 border-b-2 border-[var(--border-color)] focus:border-black-500 outline-none bg-transparent text-[var(--text-color)] placeholder-opacity-70"
             value={formData.title}
             onChange={(e) =>
@@ -60,7 +60,7 @@ const TaskForm = ({ onClose, onSubmit, initialData }) => {
 
           {/* Description */}
           <textarea
-            placeholder="Descripción..."
+            placeholder="Description..."
             className="w-full p-3 mb-6 border rounded-lg bg-[var(--bg-color)] text-[var(--text-color)] placeholder-opacity-70 h-32 resize-none"
             value={formData.description}
             onChange={(e) =>
@@ -75,7 +75,7 @@ const TaskForm = ({ onClose, onSubmit, initialData }) => {
               onClick={() => setShowAISuggestions(!showAISuggestions)}
               className="bg-[var(--button-bg)] hover:bg-[var(--button-bg-hover)] text-[var(--button-text)] border border-[var(--button-border)] rounded px-4 py-2"
             >
-              {showAISuggestions ? 'Ocultar' : 'Mostrar'} sugerencias de IA
+              {showAISuggestions ? 'Hide' : 'Show'} IA suggestions
             </button>
 
             <div className="flex gap-2">
@@ -84,13 +84,13 @@ const TaskForm = ({ onClose, onSubmit, initialData }) => {
                 onClick={onClose}
                 className="px-4 py-2 text-[var(--text-color)]/70 hover:bg-[var(--border-color)] rounded-lg transition-colors"
               >
-                Cancelar
+                Cancel
               </button>
               <button
                 type="submit"
                 className="bg-[var(--button-bg)] hover:bg-[var(--button-bg-hover)] text-[var(--button-text)] border border-[var(--button-border)] rounded px-4 py-2"
               >
-                Crear Tarea
+                Create Task
               </button>
             </div>
           </div>
@@ -99,7 +99,7 @@ const TaskForm = ({ onClose, onSubmit, initialData }) => {
           {showAISuggestions && (
             <div className="mt-6 p-4 bg-[var(--border-color)] rounded-lg text-sm text-[var(--text-color)]/70">
               {/* Aquí puedes integrar tu motor de IA o un llamado a API */}
-              <p>Sugerencias generadas por IA aparecerán aquí.</p>
+              <p>Ia suggestions.</p>
             </div>
           )}
         </form>
