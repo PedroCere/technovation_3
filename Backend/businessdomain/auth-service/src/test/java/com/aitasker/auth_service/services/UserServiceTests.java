@@ -6,7 +6,6 @@ import com.aitasker.auth_service.model.User;
 import com.aitasker.auth_service.respository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -24,7 +23,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTests {
-
 
     @Mock
     UserRepository userRepo;
@@ -134,6 +132,7 @@ public class UserServiceTests {
 
         when(userRepo.findByEmail("pepito@gmail.com")).thenReturn(Optional.of(user));
 
+        //Action
         UserPreferencesResponse result = userService.getPreferences();
 
         assertEquals("spanish", result.defaultLanguage);
@@ -144,7 +143,7 @@ public class UserServiceTests {
 
     @Test
     void updatePreferencesShouldReturnAttributesChanged(){
-
+        //Arrange
         mockAuthContext("pepito@gmail.com");
 
         User user = new User();
@@ -158,8 +157,11 @@ public class UserServiceTests {
         req.defaultFormat = "windowed";
         req.defaultTone = "dark";
 
+        //Action
         UserPreferencesResponse result = userService.updatePreferences(req);
 
+
+        //Assert
         assertEquals("spanish", result.defaultLanguage);
         assertEquals("windowed",result.defaultFormat);
         assertEquals("dark",result.defaultTone);
@@ -201,8 +203,6 @@ public class UserServiceTests {
         when(photo.isEmpty()).thenReturn(false);
         when(photo.getOriginalFilename()).thenReturn("foto.png");
         when(photo.getBytes()).thenReturn("fake-bytes".getBytes());
-
-
 
         // Act
         UploadPhotoResponse response = userService.uploadPhoto(photo);
