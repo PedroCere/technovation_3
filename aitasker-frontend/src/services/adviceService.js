@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8081/tasks';
+const API_BASE_URL = 'http://localhost:8080/task-service/tasks';
 
 export async function getOptimizationAdvice(tasks) {
   const response = await fetch(`${API_BASE_URL}/optimization-tip`, {
