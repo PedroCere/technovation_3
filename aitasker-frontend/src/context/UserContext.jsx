@@ -10,6 +10,7 @@ export const UserProvider = ({ children }) => {
       : {
           username: 'Usuario',
           photoUrl: 'src/assets/profile-pics/sample4.jpg',
+          backgroundVideo: '', // new property for background video
         };
   });
 
@@ -28,8 +29,15 @@ export const UserProvider = ({ children }) => {
     }));
   };
 
+  const updateUserBackgroundVideo = (backgroundVideo) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      backgroundVideo,
+    }));
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser, updateUserPhoto }}>
+    <UserContext.Provider value={{ user, setUser, updateUserPhoto, updateUserBackgroundVideo }}>
       {children}
     </UserContext.Provider>
   );
