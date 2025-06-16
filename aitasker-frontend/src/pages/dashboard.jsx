@@ -90,8 +90,8 @@ const Dashboard = () => {
           user?.name?.[0]?.toUpperCase() || 'U'
         )}
       </div>
-      <h1 className="text-3xl font-bold">Bienvenido de nuevo, {user?.name || 'Usuario'}</h1>
-      <p className="text-base opacity-80">Estas son tus tareas para hoy.</p>
+      <h1 className="text-3xl font-bold">Welcome back, {user?.name || 'User'}</h1>
+      <p className="text-base opacity-80">These are your tasks for today </p>
     </motion.div>
 
     {/* Barra de búsqueda */}
