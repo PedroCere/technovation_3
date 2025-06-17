@@ -8,6 +8,7 @@ import SearchModal from './SearchModal';
 import HelpModal from './HelpModal';
 import TaskForm from './TaskForm';
 import { createTask } from '../../services/taskService';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Sidebar = ({ collapsed, onToggleSidebar }) => {
   const [showSearchMenu, setShowSearchMenu] = useState(false);
@@ -54,17 +55,20 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
     try {
       await createTask(taskData);
       setShowAddTaskModal(false);
-      // Optionally, you could trigger a refresh or state update here if needed
     } catch (error) {
       console.error('Failed to create task:', error);
-      // Optionally, show error feedback to user
     }
   };
 
   return (
     <>
-<aside className={`${collapsed ? 'w-16' : 'w-72'} transition-width duration-500 ease-in-out h-screen flex flex-col bg-[var(--bg-color)] text-[var(--text-color)] font-sans text-sm`}>
-        
+      <motion.aside
+        initial={{ opacity: 0, x: -30 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -30 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        className={`${collapsed ? 'w-16 opacity-70 scale-95' : 'w-72 opacity-100 scale-100'} transition-[width,opacity,transform] duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] h-screen flex flex-col bg-[var(--bg-color)] text-[var(--text-color)] font-sans text-sm`}
+      >
         <SidebarHeader
           collapsed={collapsed}
           onToggleSidebar={onToggleSidebar}
@@ -73,22 +77,38 @@ const Sidebar = ({ collapsed, onToggleSidebar }) => {
           showSettings={() => setShowSettingsModal(true)}
           userMenuRef={userMenuRef}
         />
+
         {!collapsed && (
-          <>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
             <SidebarMenu
               setShowAddTaskModal={setShowAddTaskModal}
               setShowSearchMenu={setShowSearchMenu}
               primaryColor="var(--primary-color)"
             />
             <SidebarProjects primaryColor="var(--primary-color)" />
-          </>
+          </motion.div>
         )}
-      </aside>
+      </motion.aside>
 
-      {showSettingsModal && <SettingsModal onClose={() => setShowSettingsModal(false)} />}
-      {showSearchMenu && <SearchModal onClose={() => setShowSearchMenu(false)} />}
-      {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
-      {showAddTaskModal && <TaskForm onClose={() => setShowAddTaskModal(false)} onSubmit={handleAddTaskSubmit} />}
+      <AnimatePresence>
+        {showSettingsModal && <SettingsModal onClose={() => setShowSettingsModal(false)} />}
+        {showSearchMenu && <SearchModal onClose={() => setShowSearchMenu(false)} />}
+        {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
+        {showAddTaskModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <TaskForm onClose={() => setShowAddTaskModal(false)} onSubmit={handleAddTaskSubmit} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };
