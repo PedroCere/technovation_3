@@ -130,4 +130,13 @@ public class TaskServiceImpl implements TaskService {
                 .map(taskMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<TaskResponseDTO> getTaskSuggestions(TaskRequestDTO taskDTO) {
+        // For now, a simple stub implementation returning all tasks as suggestions.
+        List<Task> tasks = taskRepository.findAll();
+        return tasks.stream()
+                .map(taskMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }

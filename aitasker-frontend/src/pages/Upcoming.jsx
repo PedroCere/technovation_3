@@ -4,7 +4,7 @@ import {
   IoRadioButtonOffOutline,
   IoCheckmarkCircleOutline,
 } from "react-icons/io5";
-import { getTasks } from "../services/taskService";
+import { getTasks, getTaskSuggestions } from "../services/taskService";
 import { format, parseISO, isValid } from "date-fns";
 
 const mockTasks = [
@@ -26,8 +26,10 @@ const mockTasks = [
 
 const Upcoming = () => {
   const [days, setDays] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [suggestionsError, setSuggestionsError] = useState(null);
 
   const groupTasksByDate = (tasks) => {
     const grouped = tasks.reduce((acc, task) => {
@@ -52,7 +54,7 @@ const Upcoming = () => {
   };
 
   useEffect(() => {
-    const fetchTasks = async () => {
+    const fetchTasksAndSuggestions = async () => {
       try {
         const data = await getTasks();
         setDays(groupTasksByDate(data));
@@ -61,12 +63,21 @@ const Upcoming = () => {
         console.error("Backend failed. Using mock data.");
         setError("Backend unavailable — showing mock data.");
         setDays(groupTasksByDate(mockTasks));
+      }
+
+      try {
+        const suggestionsData = await getTaskSuggestions({ title: "", subtasks: [] });
+        setSuggestions(suggestionsData);
+        setSuggestionsError(null);
+      } catch (err) {
+        console.error("Failed to fetch suggestions:", err);
+        setSuggestionsError("Failed to load suggestions.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchTasks();
+    fetchTasksAndSuggestions();
   }, []);
 
   const toggleTask = (dayIndex, taskId) => {
@@ -115,6 +126,12 @@ const Upcoming = () => {
       {error && (
         <div className="mb-4 p-3 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded">
           ⚠️ {error}
+        </div>
+      )}
+
+      {suggestionsError && (
+        <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-800 rounded">
+          ⚠️ {suggestionsError}
         </div>
       )}
 
@@ -189,6 +206,24 @@ const Upcoming = () => {
             </button>
           </div>
         ))}
+
+        {suggestions.length > 0 && (
+          <div className="bg-[var(--bg-color)] rounded-lg p-4 shadow border border-[var(--border-color)] mt-8">
+            <h3 className="font-medium text-[var(--text-color)] mb-4">Suggestions</h3>
+            <div className="space-y-2">
+              {suggestions.map((suggestion) => (
+                <div
+                  key={suggestion.id}
+                  className="flex items-center gap-3 group hover:bg-[var(--border-color)] px-2 py-1.5 rounded"
+                >
+                  <span className="text-sm text-[var(--text-color)]">
+                    {suggestion.title}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </motion.div>
   );

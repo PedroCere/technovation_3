@@ -33,16 +33,12 @@ const Stats = () => {
     >
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-[var(--text-color)]">Productivity Overview</h1>
+          <h1 className="text-2xl font-bold">Productivity Overview</h1>
           <p className="text-sm text-gray-400 mt-1">Insight into your performance trends</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          <motion.div className="p-5 rounded-xl shadow border border-[var(--border-color)] bg-[var(--button-bg)]">
-            <div className="flex items-center gap-3 mb-3">
-              <FiCheckSquare className="w-6 h-6 text-green-500" />
-              <span className="text-sm font-medium">Completion Rate</span>
-            </div>
+          <StatCard icon={<FiCheckSquare className="w-6 h-6 text-green-500" />} title="Completion Rate">
             <div className="text-3xl font-bold">{statsData.completionRate}%</div>
             <div className="h-2 mt-3 bg-[var(--border-color)] rounded-full overflow-hidden">
               <div 
@@ -50,13 +46,9 @@ const Stats = () => {
                 style={{ width: `${statsData.completionRate}%` }} 
               />
             </div>
-          </motion.div>
+          </StatCard>
 
-          <motion.div className="p-5 rounded-xl shadow border border-[var(--border-color)] bg-[var(--button-bg)]">
-            <div className="flex items-center gap-3 mb-4">
-              <FiActivity className="w-6 h-6 text-[var(--primary-color)]" />
-              <span className="text-sm font-medium">Weekly Tasks</span>
-            </div>
+          <StatCard icon={<FiActivity className="w-6 h-6 text-[var(--primary-color)]" />} title="Weekly Tasks">
             <div className="h-24 w-full grid grid-cols-7 items-end gap-1">
               {statsData.productivityTrend.map((v, i) => (
                 <div 
@@ -66,31 +58,23 @@ const Stats = () => {
                 />
               ))}
             </div>
-          </motion.div>
+          </StatCard>
 
-          <motion.div className="p-5 rounded-xl shadow border border-[var(--border-color)] bg-[var(--button-bg)]">
-            <div className="flex items-center gap-3 mb-4">
-              <FiPieChart className="w-6 h-6 text-[var(--label-text-purple)]" />
-              <span className="text-sm font-medium">By Category</span>
-            </div>
+          <StatCard icon={<FiPieChart className="w-6 h-6 text-[var(--label-text-purple)]" />} title="By Category">
             <div className="space-y-3">
               {statsData.categories.map((c, i) => (
                 <div key={i} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className={`w-3 h-3 rounded-full ${c.color}`} />
-                    <span className="text-sm text-[var(--text-color)]">{c.name}</span>
+                    <span className="text-sm">{c.name}</span>
                   </div>
                   <span className="text-sm text-[var(--text-color)]/70">{c.value}%</span>
                 </div>
               ))}
             </div>
-          </motion.div>
+          </StatCard>
 
-          <motion.div className="p-5 rounded-xl shadow border border-[var(--border-color)] bg-[var(--button-bg)]">
-            <div className="flex items-center gap-3 mb-4">
-              <FiCalendar className="w-6 h-6 text-[var(--label-text-yellow)]" />
-              <span className="text-sm font-medium">Daily Activity</span>
-            </div>
+          <StatCard icon={<FiCalendar className="w-6 h-6 text-[var(--label-text-yellow)]" />} title="Daily Activity">
             <div className="flex gap-1 h-20 items-end">
               {statsData.weeklyActivity.data.map((v, i) => (
                 <div
@@ -102,7 +86,7 @@ const Stats = () => {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </StatCard>
         </div>
 
         <div className="p-6 rounded-xl shadow border border-[var(--border-color)] bg-[var(--button-bg)]">
@@ -126,5 +110,15 @@ const Stats = () => {
     </motion.div>
   );
 };
+
+const StatCard = ({ icon, title, children }) => (
+  <motion.div className="p-5 rounded-xl shadow border border-[var(--border-color)] bg-[var(--button-bg)]">
+    <div className="flex items-center gap-3 mb-4">
+      {icon}
+      <span className="text-sm font-medium">{title}</span>
+    </div>
+    {children}
+  </motion.div>
+);
 
 export default Stats;
