@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import { useTheme } from '../context/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from '../context/UserContext';
 import TaskCard from '../features/tasks/TaskCard';
-import wallpaper1 from '../assets/wallpaper6.png';
-import wall from '../assets/wall2.mp4';
+import BackgroundVideoSelector from '../layout/Sidebar/panels/BackgroundVideoSelector';
 
 const Dashboard = () => {
   const { theme } = useTheme();
   const { user } = useUser();
+
+  const [showBackgroundSelector, setShowBackgroundSelector] = useState(false);
 
   const [tasks, setTasks] = useState([
     { id: 1, title: 'Get started with tasks', status: 'todo', label: 'Start', priority: 'High', dueDate: '2024-06-10' },
@@ -22,13 +24,24 @@ const Dashboard = () => {
     { id: 9, title: 'Water the plants 🌱', status: 'todo', label: 'Garden', priority: 'Low', dueDate: '2024-06-07' },
     { id: 10, title: 'Plan weekend trip: 🚗 🏕️ 🏖️', status: 'todo', label: 'Travel', priority: 'Medium', dueDate: '2024-06-22' },
   ]);
-
   const onStatusChange = (taskId, newStatus) => {
     setTasks(tasks.map(task => task.id === taskId ? { ...task, status: newStatus } : task));
   };
 
   const onEditClick = (task) => alert(`Edit task: ${task.title}`);
   const onDeleteClick = (taskId) => setTasks(tasks.filter(task => task.id !== taskId));
+
+  // Blur dinámico en scroll
+  const [blur, setBlur] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setBlur(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const backgroundVideoSrc = user?.backgroundVideo && user.backgroundVideo !== '' ? user.backgroundVideo : '/src/assets/wall2.mp4';
 
   return (
     <motion.main
@@ -40,41 +53,54 @@ const Dashboard = () => {
       transition={{ duration: 0.5 }}
     >
 
-{/* Hero video section con contenido sobrepuesto */}
-<div className="relative w-full min-h-[45vh] overflow-hidden rounded-xl mb-12">
- <video
-  className="absolute top-0 left-0 w-full h-full object-cover object-top"
-
-    src={wall}
+     {/* Hero con video */}
+<div
+  className="relative w-full min-h-[45vh] overflow-hidden rounded-xl mb-12 group"
+  onMouseLeave={() => setShowBackgroundSelector(false)}
+>
+  <video
+    className="absolute top-0 left-0 w-full h-full object-cover object-top"
+    src={backgroundVideoSrc}
     autoPlay
     muted
     loop
     playsInline
   />
-  <div className="absolute inset-0 bg-black/40 dark:bg-black/50 backdrop-blur-sm" />
+  <div className={`absolute inset-0 bg-black/40 dark:bg-black/50 transition-all duration-300 ${blur ? "backdrop-blur-md" : "backdrop-blur-sm"}`} />
 
-  {/* Contenido sobre el video */}
-  <div className="relative z-10 h-full flex flex-col justify-center items-start px-6 py-8 gap-6 text-white dark:text-white">
-    <div className="flex items-center gap-4">
-      <motion.div
-        className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center font-bold overflow-hidden"
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 1.4, repeat: Infinity }}
-      >
+  {/* Contenido alineado abajo con animación */}
+  <motion.div
+    className="absolute inset-0 z-10 flex flex-col justify-end items-center text-white text-center gap-8 px-6"
+    style={{ paddingBottom: '6vh' }}
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.8 }}
+  >
+    {/* Avatar + Bienvenida */}
+    <motion.div
+      className="flex flex-col items-center gap-3"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3, duration: 0.6 }}
+    >
+      <div className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center font-bold overflow-hidden shadow-lg">
         {user?.photoUrl ? (
           <img src={user.photoUrl} alt="User" className="w-full h-full object-cover" />
         ) : (
           user?.name?.[0]?.toUpperCase() || 'U'
         )}
-      </motion.div>
-      <div>
-        <h1 className="text-3xl font-bold">Bienvenido de nuevo, {user?.name || 'Usuario'}</h1>
-        <p className="text-base opacity-80 mt-1">Estas son tus tareas para hoy.</p>
       </div>
-    </div>
+      <h1 className="text-3xl font-bold">Welcome back, {user?.name || 'User'}</h1>
+      <p className="text-base opacity-80">These are your tasks for today </p>
+    </motion.div>
 
-    {/* Search dentro del hero */}
-    <div className="w-full max-w-4xl bg-white/10 border border-white/20 backdrop-blur-md rounded-xl p-4 flex flex-wrap gap-3 items-center">
+    {/* Barra de búsqueda */}
+    <motion.div
+      className="w-full max-w-4xl bg-white/10 border border-white/20 backdrop-blur-md rounded-xl p-4 flex flex-wrap gap-3 items-center"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.6, duration: 0.6 }}
+    >
       <select className="text-sm px-3 py-2 rounded border bg-white/20 text-white border-white/30">
         <option>Search</option>
         <option>Create</option>
@@ -88,12 +114,30 @@ const Dashboard = () => {
       <button className="text-sm px-3 py-2 rounded border bg-white/20 text-white border-white/30 hover:bg-white/30">
         Todas ✓
       </button>
-    </div>
+    </motion.div>
+  </motion.div>
+
+  {/* Button to toggle background video selector */}
+  <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+    <button
+      onClick={() => setShowBackgroundSelector(!showBackgroundSelector)}
+      className="bg-black bg-opacity-50 text-white px-3 py-1 rounded hover:bg-opacity-75"
+      aria-label="Change background video"
+    >
+     Change background
+    </button>
   </div>
+
+  {/* Background Video Selector menu */}
+  {showBackgroundSelector && (
+    <div className="absolute top-12 right-4 z-30 bg-[var(--bg-color)] p-4 rounded shadow max-w-xs">
+      <BackgroundVideoSelector />
+    </div>
+  )}
 </div>
-
-
+      {/* TAREAS + REMINDERS (igual que ya tenías) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Tasks */}
         <section className="lg:col-span-8 space-y-4">
           <h2 className="text-lg font-semibold mb-2">Tasks</h2>
           <div className="flex flex-col gap-4 max-h-[70vh] overflow-y-auto pr-1 scrollbar-thin">
@@ -121,11 +165,12 @@ const Dashboard = () => {
               className="w-full py-3 text-center rounded-lg border-dashed border-2 text-sm"
               style={{ backgroundColor: 'var(--button-bg)', color: 'var(--text-color)', borderColor: 'var(--primary-color)' }}
             >
-              + New Task
+              + Nueva Tarea
             </motion.button>
           </div>
         </section>
 
+        {/* Reminders */}
         <aside className="lg:col-span-4 space-y-4">
           <h2 className="text-lg font-semibold mb-2">Reminders</h2>
           <motion.div

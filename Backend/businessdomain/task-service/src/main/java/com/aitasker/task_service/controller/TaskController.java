@@ -34,7 +34,16 @@ public class TaskController {
         }
     }
 
-   
+    @PostMapping("/suggestions")
+    public ResponseEntity<List<TaskResponseDTO>> getTaskSuggestions(@RequestBody @Valid TaskRequestDTO requestDTO) {
+        try {
+            List<TaskResponseDTO> suggestions = taskService.getTaskSuggestions(requestDTO);
+            return ResponseEntity.ok(suggestions);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
     @GetMapping
     public ResponseEntity<List<TaskResponseDTO>> getTasks(

@@ -23,4 +23,5 @@ public interface TaskService {
     void deleteTask(Long id);
     public TaskResponseDTO updateSuggestedTimeBlock(Long taskId, SuggestedBlockDTO dto);
 
+    List<TaskResponseDTO> getTaskSuggestions(TaskRequestDTO taskDTO);
 }

@@ -11,6 +11,7 @@ import com.aitasker.task_service.mapper.TaskMapper;
 import com.aitasker.task_service.persistence.TaskRepository;
 import com.aitasker.task_service.service.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,6 +23,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
 
+    @Autowired
+    private ScoreAsyncService scoreAsyncService;
+
     private final TaskRepository taskRepository;
     private final AiServiceClient aiServiceClient;
     private final TaskMapper taskMapper;
@@ -30,7 +34,7 @@ public class TaskServiceImpl implements TaskService {
     public TaskResponseDTO createTask(TaskRequestDTO taskDTO) {
         Task task = taskMapper.toEntity(taskDTO);
         Task saved = taskRepository.save(task);
-
+        scoreAsyncService.reprocessScoreAsync(saved);
         try {
             List<ScoredTaskDTO> scoredList = aiServiceClient.recalculatePriority(
                     List.of(taskMapper.toRequestDTO(saved))
@@ -43,7 +47,6 @@ public class TaskServiceImpl implements TaskService {
                 }
             });
         } catch (Exception e) {
-            // Log the error and continue without failing task creation
             System.err.println("AI service call failed: " + e.getMessage());
         }
 
@@ -123,6 +126,15 @@ public class TaskServiceImpl implements TaskService {
     public List<TaskResponseDTO> getAllTasks() {
         List<Task> tasks = taskRepository.findAll();
 
+        return tasks.stream()
+                .map(taskMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskResponseDTO> getTaskSuggestions(TaskRequestDTO taskDTO) {
+        // For now, a simple stub implementation returning all tasks as suggestions.
+        List<Task> tasks = taskRepository.findAll();
         return tasks.stream()
                 .map(taskMapper::toDTO)
                 .collect(Collectors.toList());
