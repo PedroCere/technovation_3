@@ -10,4 +10,10 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends JpaRepository<Task,Long> {
     List<Task> findByDueDate(LocalDate dueDate);
+
+    List<Task> findByUserId(Long userId);
+
+    List<Task> findByDueDateAndUserId(LocalDate dueDate, Long userId);
+
+    java.util.Optional<Task> findByIdAndUserId(Long id, Long userId);
 }
