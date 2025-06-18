@@ -1,6 +1,7 @@
 package com.aitasker.task_service.service.impl;
 
 import com.aitasker.task_service.client.AiServiceClient;
+import com.aitasker.task_service.client.UserServiceClient;
 import com.aitasker.task_service.domain.Task;
 import com.aitasker.task_service.dto.ScoredTaskDTO;
 import com.aitasker.task_service.dto.SuggestedBlockDTO;
@@ -35,16 +36,23 @@ public class TaskServiceImplTest {
     @Mock
     private ScoreAsyncService scoreAsyncService;
 
+    @Mock
+    private UserServiceClient userServiceClient;
+
     @InjectMocks
     private TaskServiceImpl taskService;
 
     private Task task;
     private TaskRequestDTO taskRequestDTO;
     private TaskResponseDTO taskResponseDTO;
+    private final String userEmail = "test@example.com";
+    private final Long userId = 1L;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        when(userServiceClient.getUserIdByEmail(userEmail)).thenReturn(userId);
 
         taskRequestDTO = new TaskRequestDTO();
         taskRequestDTO.setTitle("Test Task");
@@ -58,6 +66,7 @@ public class TaskServiceImplTest {
         task.setDescription("Description");
         task.setDueDate(LocalDate.now());
         task.setPriority(com.aitasker.task_service.domain.Priority.HIGH);
+        task.setUserId(userId);
 
         taskResponseDTO = com.aitasker.task_service.dto.TaskResponseDTO.builder()
                 .id(1L)
@@ -82,10 +91,9 @@ public class TaskServiceImplTest {
         when(taskRepository.save(task)).thenReturn(task);
         when(taskMapper.toRequestDTO(task)).thenReturn(taskRequestDTO);
         when(aiServiceClient.recalculatePriority(anyList())).thenReturn(Collections.singletonList(scoredTaskDTO));
-        when(taskRepository.save(task)).thenReturn(task);
         when(taskMapper.toDTO(task)).thenReturn(taskResponseDTO);
 
-        TaskResponseDTO result = taskService.createTask(taskRequestDTO);
+        TaskResponseDTO result = taskService.createTask(taskRequestDTO, userEmail);
 
         assertNotNull(result);
         assertEquals("Test Task", result.getTitle());
@@ -98,10 +106,10 @@ public class TaskServiceImplTest {
     public void testGetTasks_WithDate() {
         LocalDate date = LocalDate.now();
         List<Task> tasks = Collections.singletonList(task);
-        when(taskRepository.findByDueDate(date)).thenReturn(tasks);
+        when(taskRepository.findByDueDateAndUserId(date, userId)).thenReturn(tasks);
         when(taskMapper.toDTO(task)).thenReturn(taskResponseDTO);
 
-        List<TaskResponseDTO> result = taskService.getTasks(Optional.of(date));
+        List<TaskResponseDTO> result = taskService.getTasks(Optional.of(date), userEmail);
 
         assertEquals(1, result.size());
         assertEquals("Test Task", result.get(0).getTitle());
@@ -110,10 +118,10 @@ public class TaskServiceImplTest {
     @Test
     public void testGetTasks_WithoutDate() {
         List<Task> tasks = Collections.singletonList(task);
-        when(taskRepository.findAll()).thenReturn(tasks);
+        when(taskRepository.findByUserId(userId)).thenReturn(tasks);
         when(taskMapper.toDTO(task)).thenReturn(taskResponseDTO);
 
-        List<TaskResponseDTO> result = taskService.getTasks(Optional.empty());
+        List<TaskResponseDTO> result = taskService.getTasks(Optional.empty(), userEmail);
 
         assertEquals(1, result.size());
         assertEquals("Test Task", result.get(0).getTitle());
@@ -125,43 +133,43 @@ public class TaskServiceImplTest {
         scoredTaskDTO.setTitle("Test Task");
         scoredTaskDTO.setImportanceScore(10.0);
 
-        when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
+        when(taskRepository.findByIdAndUserId(1L, userId)).thenReturn(Optional.of(task));
         when(taskRepository.save(task)).thenReturn(task);
         when(taskMapper.toRequestDTO(task)).thenReturn(taskRequestDTO);
         when(aiServiceClient.recalculatePriority(anyList())).thenReturn(Collections.singletonList(scoredTaskDTO));
         when(taskMapper.toDTO(task)).thenReturn(taskResponseDTO);
 
-        TaskResponseDTO result = taskService.updateTask(1L, taskRequestDTO);
+        TaskResponseDTO result = taskService.updateTask(1L, taskRequestDTO, userEmail);
 
         assertNotNull(result);
         assertEquals("Test Task", result.getTitle());
-        verify(taskRepository, times(1)).findById(1L);
+        verify(taskRepository, times(1)).findByIdAndUserId(1L, userId);
         verify(taskRepository, atLeastOnce()).save(task);
     }
 
     @Test
     public void testUpdateTask_NotFound() {
-        when(taskRepository.findById(1L)).thenReturn(Optional.empty());
+        when(taskRepository.findByIdAndUserId(1L, userId)).thenReturn(Optional.empty());
 
         assertThrows(TaskNotFoundException.class, () -> {
-            taskService.updateTask(1L, taskRequestDTO);
+            taskService.updateTask(1L, taskRequestDTO, userEmail);
         });
     }
 
     @Test
     public void testDeleteTask_Success() {
-        when(taskRepository.existsById(1L)).thenReturn(true);
-        doNothing().when(taskRepository).deleteById(1L);
+        when(taskRepository.findByIdAndUserId(1L, userId)).thenReturn(Optional.of(task));
+        doNothing().when(taskRepository).delete(task);
 
-        assertDoesNotThrow(() -> taskService.deleteTask(1L));
-        verify(taskRepository, times(1)).deleteById(1L);
+        assertDoesNotThrow(() -> taskService.deleteTask(1L, userEmail));
+        verify(taskRepository, times(1)).delete(task);
     }
 
     @Test
     public void testDeleteTask_NotFound() {
-        when(taskRepository.existsById(1L)).thenReturn(false);
+        when(taskRepository.findByIdAndUserId(1L, userId)).thenReturn(Optional.empty());
 
-        assertThrows(TaskNotFoundException.class, () -> taskService.deleteTask(1L));
+        assertThrows(TaskNotFoundException.class, () -> taskService.deleteTask(1L, userEmail));
     }
 
     @Test
@@ -171,24 +179,24 @@ public class TaskServiceImplTest {
         blockDTO.setStart(java.time.LocalTime.of(9, 0));
         blockDTO.setEnd(java.time.LocalTime.of(10, 0));
 
-        when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
+        when(taskRepository.findByIdAndUserId(1L, userId)).thenReturn(Optional.of(task));
         when(taskRepository.save(task)).thenReturn(task);
         when(taskMapper.toDTO(task)).thenReturn(taskResponseDTO);
 
-        TaskResponseDTO result = taskService.updateSuggestedTimeBlock(1L, blockDTO);
+        TaskResponseDTO result = taskService.updateSuggestedTimeBlock(1L, blockDTO, userEmail);
 
         assertNotNull(result);
         assertEquals("Test Task", result.getTitle());
-        verify(taskRepository, times(1)).findById(1L);
+        verify(taskRepository, times(1)).findByIdAndUserId(1L, userId);
         verify(taskRepository, times(1)).save(task);
     }
 
     @Test
     public void testGetTask_Success() {
-        when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
+        when(taskRepository.findByIdAndUserId(1L, userId)).thenReturn(Optional.of(task));
         when(taskMapper.toDTO(task)).thenReturn(taskResponseDTO);
 
-        TaskResponseDTO result = taskService.getTask(1L);
+        TaskResponseDTO result = taskService.getTask(1L, userEmail);
 
         assertNotNull(result);
         assertEquals("Test Task", result.getTitle());
@@ -196,18 +204,18 @@ public class TaskServiceImplTest {
 
     @Test
     public void testGetTask_NotFound() {
-        when(taskRepository.findById(1L)).thenReturn(Optional.empty());
+        when(taskRepository.findByIdAndUserId(1L, userId)).thenReturn(Optional.empty());
 
-        assertThrows(TaskNotFoundException.class, () -> taskService.getTask(1L));
+        assertThrows(TaskNotFoundException.class, () -> taskService.getTask(1L, userEmail));
     }
 
     @Test
     public void testGetAllTasks() {
         List<Task> tasks = Collections.singletonList(task);
-        when(taskRepository.findAll()).thenReturn(tasks);
+        when(taskRepository.findByUserId(userId)).thenReturn(tasks);
         when(taskMapper.toDTO(task)).thenReturn(taskResponseDTO);
 
-        List<TaskResponseDTO> result = taskService.getAllTasks();
+        List<TaskResponseDTO> result = taskService.getAllTasks(userEmail);
 
         assertEquals(1, result.size());
         assertEquals("Test Task", result.get(0).getTitle());
@@ -216,10 +224,10 @@ public class TaskServiceImplTest {
     @Test
     public void testGetTaskSuggestions() {
         List<Task> tasks = Collections.singletonList(task);
-        when(taskRepository.findAll()).thenReturn(tasks);
+        when(taskRepository.findByUserId(userId)).thenReturn(tasks);
         when(taskMapper.toDTO(task)).thenReturn(taskResponseDTO);
 
-        List<TaskResponseDTO> result = taskService.getTaskSuggestions(taskRequestDTO);
+        List<TaskResponseDTO> result = taskService.getTaskSuggestions(taskRequestDTO, userEmail);
 
         assertEquals(1, result.size());
         assertEquals("Test Task", result.get(0).getTitle());
