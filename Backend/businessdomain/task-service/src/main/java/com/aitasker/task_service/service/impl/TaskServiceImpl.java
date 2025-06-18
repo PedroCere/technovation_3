@@ -29,10 +29,15 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final AiServiceClient aiServiceClient;
     private final TaskMapper taskMapper;
+    private final UserServiceClient userServiceClient;
 
     @Override
-    public TaskResponseDTO createTask(TaskRequestDTO taskDTO) {
+    public TaskResponseDTO createTask(TaskRequestDTO taskDTO, String userEmail) {
+        // Fetch user info from auth-service or user-service if needed
+        Long userId = userServiceClient.getUserIdByEmail(userEmail);
+
         Task task = taskMapper.toEntity(taskDTO);
+        task.setUserId(userId);
         Task saved = taskRepository.save(task);
         scoreAsyncService.reprocessScoreAsync(saved);
         try {
@@ -55,17 +60,19 @@ public class TaskServiceImpl implements TaskService {
 
 
     @Override
-    public List<TaskResponseDTO> getTasks(Optional<LocalDate> date) {
-        List<Task> tasks = date.map(taskRepository::findByDueDate)
-                .orElseGet(taskRepository::findAll);
+    public List<TaskResponseDTO> getTasks(Optional<LocalDate> date, String userEmail) {
+        Long userId = userServiceClient.getUserIdByEmail(userEmail);
+        List<Task> tasks = date.map(d -> taskRepository.findByDueDateAndUserId(d, userId))
+                .orElseGet(() -> taskRepository.findByUserId(userId));
         return tasks.stream()
                 .map(taskMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public TaskResponseDTO updateTask(Long id, TaskRequestDTO taskDTO) {
-        Task task = taskRepository.findById(id)
+    public TaskResponseDTO updateTask(Long id, TaskRequestDTO taskDTO, String userEmail) {
+        Long userId = userServiceClient.getUserIdByEmail(userEmail);
+        Task task = taskRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new TaskNotFoundException(id));
 
         task.setTitle(taskDTO.getTitle());
@@ -92,16 +99,17 @@ public class TaskServiceImpl implements TaskService {
 
 
     @Override
-    public void deleteTask(Long id) {
-        if (!taskRepository.existsById(id)) {
-            throw new TaskNotFoundException(id);
-        }
-        taskRepository.deleteById(id);
+    public void deleteTask(Long id, String userEmail) {
+        Long userId = userServiceClient.getUserIdByEmail(userEmail);
+        Task task = taskRepository.findByIdAndUserId(id, userId)
+                .orElseThrow(() -> new TaskNotFoundException(id));
+        taskRepository.delete(task);
     }
 
     @Override
-    public TaskResponseDTO updateSuggestedTimeBlock(Long taskId, SuggestedBlockDTO dto) {
-        Task task = taskRepository.findById(taskId)
+    public TaskResponseDTO updateSuggestedTimeBlock(Long taskId, SuggestedBlockDTO dto, String userEmail) {
+        Long userId = userServiceClient.getUserIdByEmail(userEmail);
+        Task task = taskRepository.findByIdAndUserId(taskId, userId)
                 .orElseThrow(() -> new TaskNotFoundException(taskId));
 
         task.setRecommendedDay(dto.getDay());
@@ -109,22 +117,23 @@ public class TaskServiceImpl implements TaskService {
         task.setEndTime(dto.getEnd());
         task.setSuggestedTimeBlock(dto.getDay() + " " + dto.getStart() + " - " + dto.getEnd());
 
-
         Task updated = taskRepository.save(task);
         return taskMapper.toDTO(updated);
     }
 
     @Override
-    public TaskResponseDTO getTask(Long taskId) {
-        Task task = taskRepository.findById(taskId)
+    public TaskResponseDTO getTask(Long taskId, String userEmail) {
+        Long userId = userServiceClient.getUserIdByEmail(userEmail);
+        Task task = taskRepository.findByIdAndUserId(taskId, userId)
                 .orElseThrow(() -> new TaskNotFoundException(taskId));
 
         return taskMapper.toDTO(task);
     }
 
     @Override
-    public List<TaskResponseDTO> getAllTasks() {
-        List<Task> tasks = taskRepository.findAll();
+    public List<TaskResponseDTO> getAllTasks(String userEmail) {
+        Long userId = userServiceClient.getUserIdByEmail(userEmail);
+        List<Task> tasks = taskRepository.findByUserId(userId);
 
         return tasks.stream()
                 .map(taskMapper::toDTO)
@@ -132,9 +141,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskResponseDTO> getTaskSuggestions(TaskRequestDTO taskDTO) {
-        // For now, a simple stub implementation returning all tasks as suggestions.
-        List<Task> tasks = taskRepository.findAll();
+    public List<TaskResponseDTO> getTaskSuggestions(TaskRequestDTO taskDTO, String userEmail) {
+        Long userId = userServiceClient.getUserIdByEmail(userEmail);
+        // For now, a simple stub implementation returning all tasks for the user as suggestions.
+        List<Task> tasks = taskRepository.findByUserId(userId);
         return tasks.stream()
                 .map(taskMapper::toDTO)
                 .collect(Collectors.toList());

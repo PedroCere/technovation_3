@@ -16,6 +16,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 @RestController
 @RequestMapping("/tasks")
 @RequiredArgsConstructor
@@ -23,10 +26,16 @@ public class TaskController {
 
     private final TaskService taskService;
 
+    private String getCurrentUserEmail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
+
     @PostMapping
     public ResponseEntity<?> createTask(@RequestBody @Valid TaskRequestDTO requestDTO) {
         try {
-            TaskResponseDTO created = taskService.createTask(requestDTO);
+            String userEmail = getCurrentUserEmail();
+            TaskResponseDTO created = taskService.createTask(requestDTO, userEmail);
             return ResponseEntity.status(HttpStatus.CREATED).body(created);
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,7 +46,8 @@ public class TaskController {
     @PostMapping("/suggestions")
     public ResponseEntity<List<TaskResponseDTO>> getTaskSuggestions(@RequestBody @Valid TaskRequestDTO requestDTO) {
         try {
-            List<TaskResponseDTO> suggestions = taskService.getTaskSuggestions(requestDTO);
+            String userEmail = getCurrentUserEmail();
+            List<TaskResponseDTO> suggestions = taskService.getTaskSuggestions(requestDTO, userEmail);
             return ResponseEntity.ok(suggestions);
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,19 +61,22 @@ public class TaskController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate date
     ) {
-        List<TaskResponseDTO> tasks = taskService.getTasks(Optional.ofNullable(date));
+        String userEmail = getCurrentUserEmail();
+        List<TaskResponseDTO> tasks = taskService.getTasks(Optional.ofNullable(date), userEmail);
         return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TaskResponseDTO> getTask(@RequestParam(name = "id") @PathVariable Long id){
-        TaskResponseDTO task = taskService.getTask(id);
+        String userEmail = getCurrentUserEmail();
+        TaskResponseDTO task = taskService.getTask(id, userEmail);
         return ResponseEntity.ok(task);
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<TaskResponseDTO>> getAllTasks(){
-        List<TaskResponseDTO> tasks = taskService.getAllTasks();
+        String userEmail = getCurrentUserEmail();
+        List<TaskResponseDTO> tasks = taskService.getAllTasks(userEmail);
         return ResponseEntity.ok(tasks);
     }
 
@@ -73,7 +86,8 @@ public class TaskController {
             @PathVariable Long id,
             @RequestBody @Valid SuggestedBlockDTO blockDTO
     ) {
-        return ResponseEntity.ok(taskService.updateSuggestedTimeBlock(id, blockDTO));
+        String userEmail = getCurrentUserEmail();
+        return ResponseEntity.ok(taskService.updateSuggestedTimeBlock(id, blockDTO, userEmail));
     }
 
     @PutMapping("/{id}")
@@ -81,13 +95,15 @@ public class TaskController {
             @PathVariable Long id,
             @RequestBody @Valid TaskRequestDTO requestDTO
     ) {
-        TaskResponseDTO updated = taskService.updateTask(id, requestDTO);
+        String userEmail = getCurrentUserEmail();
+        TaskResponseDTO updated = taskService.updateTask(id, requestDTO, userEmail);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask( @RequestParam(name = "id") @PathVariable Long id) {
-        taskService.deleteTask(id);
+        String userEmail = getCurrentUserEmail();
+        taskService.deleteTask(id, userEmail);
         return ResponseEntity.noContent().build();
     }
 

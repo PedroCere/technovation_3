@@ -48,4 +48,7 @@ public class Task {
     @Column(nullable = true)
     private LocalTime endTime;
 
+    @Column(nullable = false)
+    private Long userId;
+
 }
