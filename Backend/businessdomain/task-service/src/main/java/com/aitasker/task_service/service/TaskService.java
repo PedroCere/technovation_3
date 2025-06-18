@@ -10,18 +10,19 @@ import java.util.Optional;
 
 public interface TaskService {
 
-    TaskResponseDTO createTask(TaskRequestDTO taskDTO);
+    TaskResponseDTO createTask(TaskRequestDTO taskDTO, String userEmail);
 
-    List<TaskResponseDTO> getTasks(Optional<LocalDate> date);
+    List<TaskResponseDTO> getTasks(Optional<LocalDate> date, String userEmail);
 
-    TaskResponseDTO getTask(Long id);
+    TaskResponseDTO getTask(Long id, String userEmail);
 
-    List<TaskResponseDTO> getAllTasks();
+    List<TaskResponseDTO> getAllTasks(String userEmail);
 
-    TaskResponseDTO updateTask(Long id, TaskRequestDTO taskDTO);
+    TaskResponseDTO updateTask(Long id, TaskRequestDTO taskDTO, String userEmail);
 
-    void deleteTask(Long id);
-    public TaskResponseDTO updateSuggestedTimeBlock(Long taskId, SuggestedBlockDTO dto);
+    void deleteTask(Long id, String userEmail);
 
-    List<TaskResponseDTO> getTaskSuggestions(TaskRequestDTO taskDTO);
+    TaskResponseDTO updateSuggestedTimeBlock(Long taskId, SuggestedBlockDTO dto, String userEmail);
+
+    List<TaskResponseDTO> getTaskSuggestions(TaskRequestDTO taskDTO, String userEmail);
 }

@@ -1,9 +1,22 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import {
   AiOutlineCalendar,
   AiOutlineFlag,
   AiOutlineClockCircle
 } from 'react-icons/ai';
+
+// Debounce utility function
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
 
 const TaskForm = ({ onClose, onSubmit, initialData }) => {
   const [formData, setFormData] = useState(initialData || {
@@ -15,6 +28,29 @@ const TaskForm = ({ onClose, onSubmit, initialData }) => {
   });
 
   const [showAISuggestions, setShowAISuggestions] = useState(false);
+
+  // Debounced setters
+  const debouncedSetTitle = useCallback(
+    debounce((value) => {
+      setFormData(prev => ({ ...prev, title: value }));
+    }, 300),
+    []
+  );
+
+  const debouncedSetDescription = useCallback(
+    debounce((value) => {
+      setFormData(prev => ({ ...prev, description: value }));
+    }, 300),
+    []
+  );
+
+  const handleTitleChange = (e) => {
+    debouncedSetTitle(e.target.value);
+  };
+
+  const handleDescriptionChange = (e) => {
+    debouncedSetDescription(e.target.value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,10 +80,8 @@ const TaskForm = ({ onClose, onSubmit, initialData }) => {
             type="text"
             placeholder="Título de la tarea"
             className="w-full p-2 mb-4 border-b-2 border-[var(--border-color)] focus:border-black-500 outline-none bg-transparent text-[var(--text-color)] placeholder-opacity-70"
-            value={formData.title}
-            onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
-            }
+            defaultValue={formData.title}
+            onChange={handleTitleChange}
             required
           />
 
@@ -62,10 +96,8 @@ const TaskForm = ({ onClose, onSubmit, initialData }) => {
           <textarea
             placeholder="Descripción..."
             className="w-full p-3 mb-6 border rounded-lg bg-[var(--bg-color)] text-[var(--text-color)] placeholder-opacity-70 h-32 resize-none"
-            value={formData.description}
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
-            }
+            defaultValue={formData.description}
+            onChange={handleDescriptionChange}
           />
 
           {/* Bottom controls */}
