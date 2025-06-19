@@ -10,7 +10,9 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -25,6 +27,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(TaskController.class)
+@Import(com.aitasker.task_service.config.TokenBucketRateLimitingFilter.class)
+@WithMockUser(username = "test@example.com")
 public class TaskControllerIntegrationTest {
 
     @Autowired
@@ -56,17 +60,18 @@ public class TaskControllerIntegrationTest {
                 .completed(false)
                 .importanceScore(0.0)
                 .suggestedTimeBlock(null)
-                .subtasks(java.util.Collections.emptyList())
+                .subtasks(Collections.emptyList())
                 .build();
     }
 
     @Test
     public void testCreateTask() throws Exception {
-        Mockito.when(taskService.createTask(any(TaskRequestDTO.class))).thenReturn(taskResponseDTO);
+        Mockito.when(taskService.createTask(any(TaskRequestDTO.class), any(String.class))).thenReturn(taskResponseDTO);
 
         mockMvc.perform(post("/tasks")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(taskRequestDTO)))
+                .content(objectMapper.writeValueAsString(taskRequestDTO))
+                .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.title").value("Test Task"));
     }
@@ -74,7 +79,7 @@ public class TaskControllerIntegrationTest {
     @Test
     public void testGetTasks() throws Exception {
         List<TaskResponseDTO> tasks = Collections.singletonList(taskResponseDTO);
-        Mockito.when(taskService.getTasks(Optional.empty())).thenReturn(tasks);
+        Mockito.when(taskService.getTasks(eq(Optional.empty()), any(String.class))).thenReturn(tasks);
 
         mockMvc.perform(get("/tasks"))
                 .andExpect(status().isOk())
@@ -83,7 +88,7 @@ public class TaskControllerIntegrationTest {
 
     @Test
     public void testGetTask() throws Exception {
-        Mockito.when(taskService.getTask(anyLong())).thenReturn(taskResponseDTO);
+        Mockito.when(taskService.getTask(anyLong(), any(String.class))).thenReturn(taskResponseDTO);
 
         mockMvc.perform(get("/tasks/{id}", 1L))
                 .andExpect(status().isOk())
@@ -92,20 +97,22 @@ public class TaskControllerIntegrationTest {
 
     @Test
     public void testUpdateTask() throws Exception {
-        Mockito.when(taskService.updateTask(eq(1L), any(TaskRequestDTO.class))).thenReturn(taskResponseDTO);
+        Mockito.when(taskService.updateTask(eq(1L), any(TaskRequestDTO.class), any(String.class))).thenReturn(taskResponseDTO);
 
         mockMvc.perform(put("/tasks/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(taskRequestDTO)))
+                .content(objectMapper.writeValueAsString(taskRequestDTO))
+                .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("Test Task"));
     }
 
     @Test
     public void testDeleteTask() throws Exception {
-        Mockito.doNothing().when(taskService).deleteTask(1L);
+        Mockito.doNothing().when(taskService).deleteTask(eq(1L), any(String.class));
 
-        mockMvc.perform(delete("/tasks/{id}", 1L))
+        mockMvc.perform(delete("/tasks/{id}", 1L)
+                .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isNoContent());
     }
 }

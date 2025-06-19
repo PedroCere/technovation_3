@@ -13,7 +13,8 @@ import com.aitasker.task_service.persistence.TaskRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -21,7 +22,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class TaskServiceImplTest {
 
     @Mock
@@ -50,7 +51,7 @@ public class TaskServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+        // MockitoAnnotations.openMocks(this); // No longer needed with MockitoExtension
 
         when(userServiceClient.getUserIdByEmail(userEmail)).thenReturn(userId);
 
@@ -77,7 +78,7 @@ public class TaskServiceImplTest {
                 .completed(false)
                 .importanceScore(0.0)
                 .suggestedTimeBlock(null)
-                .subtasks(java.util.Collections.emptyList())
+                .subtasks(Collections.emptyList())
                 .build();
     }
 
@@ -175,7 +176,7 @@ public class TaskServiceImplTest {
     @Test
     public void testUpdateSuggestedTimeBlock_Success() {
         SuggestedBlockDTO blockDTO = new SuggestedBlockDTO();
-        blockDTO.setDay(java.time.LocalDate.now());
+        blockDTO.setDay(LocalDate.now());
         blockDTO.setStart(java.time.LocalTime.of(9, 0));
         blockDTO.setEnd(java.time.LocalTime.of(10, 0));
 

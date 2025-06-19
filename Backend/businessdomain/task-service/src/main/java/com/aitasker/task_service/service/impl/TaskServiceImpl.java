@@ -1,6 +1,7 @@
 package com.aitasker.task_service.service.impl;
 
 import com.aitasker.task_service.client.AiServiceClient;
+import com.aitasker.task_service.client.UserServiceClient;
 import com.aitasker.task_service.domain.Task;
 import com.aitasker.task_service.dto.ScoredTaskDTO;
 import com.aitasker.task_service.dto.SuggestedBlockDTO;
@@ -23,8 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
 
-    @Autowired
-    private ScoreAsyncService scoreAsyncService;
+    private final ScoreAsyncService scoreAsyncService;
 
     private final TaskRepository taskRepository;
     private final AiServiceClient aiServiceClient;

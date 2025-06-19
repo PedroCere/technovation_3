@@ -23,7 +23,7 @@
       <module name="auth-service" options="" />
       <module name="config-server" options="" />
       <module name="eureka-server" options="" />
-      <module name="task-service" options="" />
+      <module name="task-service" options="-parameters" />
     </option>
   </component>
 </project>

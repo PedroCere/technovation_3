@@ -67,7 +67,7 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TaskResponseDTO> getTask(@RequestParam(name = "id") @PathVariable Long id){
+    public ResponseEntity<TaskResponseDTO> getTask(@PathVariable("id") Long id){
         String userEmail = getCurrentUserEmail();
         TaskResponseDTO task = taskService.getTask(id, userEmail);
         return ResponseEntity.ok(task);
@@ -92,7 +92,7 @@ public class TaskController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TaskResponseDTO> updateTask(
-            @PathVariable Long id,
+            @PathVariable("id") Long id,
             @RequestBody @Valid TaskRequestDTO requestDTO
     ) {
         String userEmail = getCurrentUserEmail();
@@ -101,7 +101,7 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTask( @RequestParam(name = "id") @PathVariable Long id) {
+    public ResponseEntity<Void> deleteTask(@PathVariable("id") Long id) {
         String userEmail = getCurrentUserEmail();
         taskService.deleteTask(id, userEmail);
         return ResponseEntity.noContent().build();
