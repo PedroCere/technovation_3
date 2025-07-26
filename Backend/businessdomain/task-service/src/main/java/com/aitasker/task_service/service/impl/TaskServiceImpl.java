@@ -33,8 +33,15 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskResponseDTO createTask(TaskRequestDTO taskDTO, String userEmail) {
-        // Fetch user info from auth-service or user-service if needed
-        Long userId = userServiceClient.getUserIdByEmail(userEmail);
+        Long userId = null;
+        if (userEmail != null && !userEmail.equals("anonymousUser")) {
+            // Fetch user info from auth-service or user-service if needed
+            userId = userServiceClient.getUserIdByEmail(userEmail);
+        } else {
+            // Handle anonymous or unauthenticated user case, e.g., assign default user or throw error
+            // For now, throw error
+            throw new RuntimeException("User email is required for task creation");
+        }
 
         Task task = taskMapper.toEntity(taskDTO);
         task.setUserId(userId);

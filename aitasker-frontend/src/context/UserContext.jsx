@@ -9,6 +9,7 @@ export const UserProvider = ({ children }) => {
       ? JSON.parse(storedUser)
       : {
           username: 'Usuario',
+          email: 'user@example.com', // Added email field with default value
           photoUrl: 'src/assets/profile-pics/sample4.jpg',
           backgroundVideo: '', // new property for background video
         };

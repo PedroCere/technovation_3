@@ -45,5 +45,16 @@ public class UserController {
     public UserStatsResponse stats() {
         return userService.getStats();
     }
+
+    @GetMapping("/by-email")
+    public com.aitasker.auth_service.dtos.UserDTO getUserByEmail(@RequestParam(name = "email") String email) {
+        System.out.println("UserController: getUserByEmail called with email: " + email);
+        com.aitasker.auth_service.model.User user = userService.getUserByEmail(email);
+        com.aitasker.auth_service.dtos.UserDTO dto = new com.aitasker.auth_service.dtos.UserDTO();
+        dto.setId(user.getId());
+        dto.setEmail(user.getEmail());
+        dto.setUsername(user.getUsername());
+        return dto;
+    }
 }
 

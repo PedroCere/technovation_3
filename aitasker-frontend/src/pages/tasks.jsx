@@ -4,6 +4,7 @@ import TaskList from '../features/tasks/TaskList';
 import TaskForm from '../features/tasks/TaskForm';
 import { getTasks, createTask, updateTask, deleteTask } from '../services/taskService';
 import { useTheme } from '../context/ThemeContext';
+import { useUser } from '../context/UserContext';
 
 const mockTasks = [
   { id: 1, title: 'Mock Task 1', status: 'todo', completed: false, subtasks: [], priority: 'medium', dueDate: '' },
@@ -12,6 +13,7 @@ const mockTasks = [
 
 const Tasks = () => {
   const { theme } = useTheme();
+  const { user } = useUser();
 
   const [tasks, setTasks] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -23,7 +25,7 @@ const Tasks = () => {
     const fetchTasks = async () => {
       try {
         setLoading(true);
-        const data = await getTasks();
+        const data = await getTasks(user?.email);
         setTasks(data);
         setError(null);
       } catch (err) {
@@ -34,7 +36,7 @@ const Tasks = () => {
       }
     };
     fetchTasks();
-  }, []);
+  }, [user]);
 
   const handleStatusChange = (taskId, newStatus) => {
     setTasks(tasks.map(task =>
@@ -52,7 +54,7 @@ const Tasks = () => {
 
   const handleAddTask = async (newTask) => {
     try {
-      const createdTask = await createTask(newTask);
+      const createdTask = await createTask(newTask, user?.email);
       setTasks([...tasks, createdTask]);
       setShowForm(false);
       setError(null);

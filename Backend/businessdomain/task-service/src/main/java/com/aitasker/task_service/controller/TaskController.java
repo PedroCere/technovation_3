@@ -32,9 +32,14 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createTask(@RequestBody @Valid TaskRequestDTO requestDTO) {
+    public ResponseEntity<?> createTask(@RequestBody @Valid TaskRequestDTO requestDTO, @RequestParam(name = "email", required = false) String email) {
         try {
-            String userEmail = getCurrentUserEmail();
+            String userEmail = email != null ? email : getCurrentUserEmail();
+            if (userEmail == null || userEmail.equals("anonymousUser")) {
+                // Allow task creation without user email by assigning a default user or null userId
+                // For now, throw error or handle as needed
+                // Here, we allow null userEmail to proceed (may require changes in service)
+            }
             TaskResponseDTO created = taskService.createTask(requestDTO, userEmail);
             return ResponseEntity.status(HttpStatus.CREATED).body(created);
         } catch (Exception e) {
@@ -59,9 +64,10 @@ public class TaskController {
     public ResponseEntity<List<TaskResponseDTO>> getTasks(
             @RequestParam(name = "date", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate date
+            LocalDate date,
+            @RequestParam(name = "email", required = false) String email
     ) {
-        String userEmail = getCurrentUserEmail();
+        String userEmail = email != null ? email : getCurrentUserEmail();
         List<TaskResponseDTO> tasks = taskService.getTasks(Optional.ofNullable(date), userEmail);
         return ResponseEntity.ok(tasks);
     }

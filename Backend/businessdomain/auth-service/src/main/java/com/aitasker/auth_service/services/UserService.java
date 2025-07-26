@@ -108,4 +108,8 @@ public class UserService {
             throw new RuntimeException("Failed to save file", e);
         }
     }
+
+    public User getUserByEmail(String email) {
+        return repo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+    }
 }

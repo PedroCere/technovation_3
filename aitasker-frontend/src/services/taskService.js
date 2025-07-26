@@ -1,3 +1,5 @@
+import { getAuthToken } from './authService';
+
 const API_BASE_URL = 'http://localhost:8082/tasks';
 
 function transformTaskForBackend(task) {
@@ -10,9 +12,20 @@ function transformTaskForBackend(task) {
   };
 }
 
-export async function getTasks() {
+function getAuthHeaders() {
+  const token = getAuthToken();
+  return token ? { 'Authorization': `Bearer ${token}` } : {};
+}
+
+export async function getTasks(userEmail) {
   try {
-    const response = await fetch(API_BASE_URL);
+    console.log('Fetching tasks for user email:', userEmail);
+    const url = userEmail ? `${API_BASE_URL}?email=${encodeURIComponent(userEmail)}` : API_BASE_URL;
+    const response = await fetch(url, {
+      headers: {
+        ...getAuthHeaders(),
+      },
+    });
     if (!response.ok) {
       throw new Error('Failed to fetch tasks');
     }
@@ -23,10 +36,11 @@ export async function getTasks() {
   }
 }
 
-export async function createTask(task) {
+export async function createTask(task, userEmail) {
   try {
     const backendTask = transformTaskForBackend(task);
-    const response = await fetch(API_BASE_URL, {
+    const url = userEmail ? `${API_BASE_URL}?email=${encodeURIComponent(userEmail)}` : API_BASE_URL;
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -50,6 +64,7 @@ export async function getTaskSuggestions(task) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        ...getAuthHeaders(),
       },
       body: JSON.stringify(backendTask),
     });
@@ -70,6 +85,7 @@ export async function updateTask(id, task) {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        ...getAuthHeaders(),
       },
       body: JSON.stringify(backendTask),
     });
@@ -87,6 +103,9 @@ export async function deleteTask(id) {
   try {
     const response = await fetch(`${API_BASE_URL}/${id}`, {
       method: 'DELETE',
+      headers: {
+        ...getAuthHeaders(),
+      },
     });
     if (!response.ok) {
       throw new Error('Failed to delete task');
